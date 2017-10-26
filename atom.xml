@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Isaac&#39;s Blog</title>
+  
+  <subtitle>Ayant le soleil en face, il faut que nous vivons fièrement</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2017-10-26T22:09:25.937Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Isaac Guan</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://yoursite.com/hello-world/"/>
+    <id>http://yoursite.com/hello-world/</id>
+    <published>2017-10-25T04:00:00.000Z</published>
+    <updated>2017-10-26T22:09:25.937Z</updated>
+    
+    <content type="html"><![CDATA[<p>Hi, this is the very first post of mine. Wish myself happy blogging!</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Hi, this is the very first post of mine. Wish myself happy blogging!&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+      <category term="hello world" scheme="http://yoursite.com/tags/hello-world/"/>
+    
+  </entry>
+  
+</feed>
