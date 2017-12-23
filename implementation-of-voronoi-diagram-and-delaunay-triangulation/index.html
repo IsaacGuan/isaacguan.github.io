@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>
+        
+        Implementation of Voronoi Diagram and Delaunay Triangulation · Isaac&#39;s Blog
+        
+    </title>
+    <link rel="icon" href= /favicon.ico>
+    <!-- TODO: 在font-face加载完毕后改变字体  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
+    <!-- 提前加载place holder  -->
+    <style type="text/css">
+        @font-face {
+            font-family: 'Oswald-Regular';
+            src: url('/font/Oswald-Regular.ttf');
+        }
+    </style>
+    <style type="text/css">
+        .site-intro-placeholder {
+            position: absolute;
+            z-index: -2;
+            top: 0;
+            left: 0px;
+            width: calc(100% + 300px);
+            height: 100%;
+            background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+            background-position: center center;
+            transform: translate3d(-226px, 0, 0);
+            animation: gradient-move 2.5s ease-out 0s 1;
+        }
+        @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+    <link rel="stylesheet" href = /css/style.css?v=20171020 />
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    
+    <script src="/scripts/main.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+    <script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-109312212-1', 'auto');
+        ga('send', 'pageview');
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    
+</head>
+    
+        <body class="post-body">
+    
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="header">
+
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Isaac&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Implementation of Voronoi Diagram and Delaunay Triangulation</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Isaac's Blog</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/post.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            Implementation of Voronoi Diagram and Delaunay Triangulation
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = computational geometry>computational geometry</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = voronoi diagram>voronoi diagram</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = delaunay triangulation>delaunay triangulation</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2017/12/22</span>
+            </div>
+        
+    </div>
+</div>
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <script>
+            var browser = {
+                    versions: function () {
+                        var u = window.navigator.userAgent;
+                        return {
+                            userAgent: u,
+                            trident: u.indexOf('Trident') > -1, //IE内核
+                            presto: u.indexOf('Presto') > -1, //opera内核
+                            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                            iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+                            iPad: u.indexOf('iPad') > -1, //是否为iPad
+                            webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+                            weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+                            uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+                        };
+                    }()
+                }
+
+            function fontLoaded(){
+                console.log('font loaded');
+                if (document.getElementsByClassName('site-intro-meta')) {
+                    document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+                    document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+                    var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+                        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+                        if (postIntroTags) {
+                            postIntroTags.classList.add('post-fade-in');
+                        }
+                        if (postIntroMeat) {
+                            postIntroMeat.classList.add('post-fade-in');
+                        }
+                    }
+                }
+                
+            console.log("userAgent:" + browser.versions.userAgent);
+            // UC不支持跨域，所以直接显示
+            if (browser.versions.uc) {
+                console.log("UCBrowser");
+                fontLoaded();
+            } else {
+                WebFont.load({
+                    custom: {
+                        families: ['Oswald-Regular']
+                    },
+                    loading: function () {  //所有字体开始加载
+                        // console.log('loading');
+                    },
+                    active: function () {  //所有字体已渲染
+                        fontLoaded();
+                    },
+                    inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+                        console.log('inactive: timeout');
+                        fontLoaded();
+                    },
+                    timeout: 7000 // Set the timeout to two seconds
+                });
+            }
+        </script>
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><a href="https://en.wikipedia.org/wiki/Voronoi_diagram" target="_blank" rel="external">Voronoi diagram</a> and <a href="https://en.wikipedia.org/wiki/Delaunay_triangulation" target="_blank" rel="external">Delaunay triangulation</a> are dual representations of a set of points to each other. Due to their wide application in science and technology, Voronoi diagram and Delaunay triangulation play important roles in the field of Computational Geometry. In this post, I am going to introduce an implementation of an algorithm to derive both Voronoi Diagram and Delaunay Triangulation of a set of points in the plane.</p>
+<h1 id="Voronoi-Diagram-and-Delaunay-Triangulation"><a href="#Voronoi-Diagram-and-Delaunay-Triangulation" class="headerlink" title="Voronoi Diagram and Delaunay Triangulation"></a>Voronoi Diagram and Delaunay Triangulation</h1><p>The Voronoi diagram of a set of points, also known as Thiessen polygons, is a partitioning of a plane into regions by a set of continuous polygons consisting of perpendicular bisectors of the straight line of connecting two adjacent points. These regions are called Voronoi cells. And for each point in the set, the corresponding Voronoi cell consists of all points closer to that point than to any other.</p>
+<p>The Delaunay triangulation of a set of points is dual to its Voronoi diagram. It is a collection of connected but non-overlapping triangles, and the outer circumcircle of these triangles does not contain any other points in this set.</p>
+<h1 id="Design-of-the-Algorithm"><a href="#Design-of-the-Algorithm" class="headerlink" title="Design of the Algorithm"></a>Design of the Algorithm</h1><p>There is a diversity of ways to generate a Voronoi diagram from a set of points in a plane. In this implementation, I obtained the Voronoi diagram from generating its dual, the Delaunay triangulation. Generally speaking, for the set of $n$ points $P={p_1, p_2, …, p_n}$ in $\mathbb{R}^2$, the algorithm goes in this way: the Delaunay triangulation of the set of points is firstly generated, then we calculate the center of the circumcircle of each triangle and finally we connect these centers with straight lines and form the polygon mesh generated from the vertices of the triangles.</p>
+<h2 id="Design-of-the-Data-Structure"><a href="#Design-of-the-Data-Structure" class="headerlink" title="Design of the Data Structure"></a>Design of the Data Structure</h2><p>I implemented this algorithm in object oriented language, so the design of data structure is in the form of class.</p>
+<p>Point:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="title">Point</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">double</span> x, y, z;</div><div class="line">    <span class="keyword">public</span> List&lt;<span class="keyword">int</span>&gt; adjoinTriangles;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Point</span>(<span class="params"><span class="keyword">double</span> x, <span class="keyword">double</span> y, <span class="keyword">double</span> z</span>)</span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">this</span>.x = x;</div><div class="line">        <span class="keyword">this</span>.y = y;</div><div class="line">        <span class="keyword">this</span>.z = z;</div><div class="line">        adjoinTriangles = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Voronoi edge:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="title">VoronoiEdge</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> Point start, end;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">VoronoiEdge</span>(<span class="params">Point start, Point end</span>)</span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">this</span>.start = start;</div><div class="line">        <span class="keyword">this</span>.end = end;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Delaunay edge:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="title">DelaunayEdge</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> start, end;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DelaunayEdge</span>(<span class="params"><span class="keyword">int</span> start, <span class="keyword">int</span> end</span>)</span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">this</span>.start = start;</div><div class="line">        <span class="keyword">this</span>.end = end;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Triangle:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="title">Triangle</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">int</span> vertex1, vertex2, vertex3;</div><div class="line">    <span class="keyword">public</span> Point center;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">double</span> radius;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Triangle</span>(<span class="params"><span class="keyword">int</span> vertex1, <span class="keyword">int</span> vertex2, <span class="keyword">int</span> vertex3</span>)</span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">this</span>.vertex1 = vertex1;</div><div class="line">        <span class="keyword">this</span>.vertex2 = vertex2;</div><div class="line">        <span class="keyword">this</span>.vertex3 = vertex3;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>On top of that, I defined a point list and a triangle list under the Collection class to store all the points in the set and all the triangles during the procedure of triangulation as global variables:</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="title">Collections</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> List&lt;Point&gt; allPoints;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> List&lt;Triangle&gt; allTriangles;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Thus, in the Point class, DelaunayEdge class and Triangle class, I can use an integer to represent the index of a certain point or triangle from the global lists, and retrieve it directly.</p>
+<h2 id="Build-up-the-Vonoroi-Diagram"><a href="#Build-up-the-Vonoroi-Diagram" class="headerlink" title="Build up the Vonoroi Diagram"></a>Build up the Vonoroi Diagram</h2><p>The algorithm of building up a Vonoroi diagram goes in this way:</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step 1:</em> Obtain the Delaunay triangulation by generating the list of Delaunay edges.</p>
+<p><em>Step 2:</em> Traverse all the Delaunay edges.</p>
+<p><em>Step 3:</em> For each Delaunay edge, traverse the two triangle lists that stores with the start point and end point, and find the two same triangles in the two lists which are the adjacent triangles of this Delaunay edge.</p>
+<p><em>Step 4:</em> Construct a Voronoi edge by connecting the two centers of the circumcles of the two adjacent triangles and add it into the Voronoi edge list.</p>
+<p><strong><em>End</em></strong></p>
+<h2 id="Conduct-the-Delaunay-Triangulation"><a href="#Conduct-the-Delaunay-Triangulation" class="headerlink" title="Conduct the Delaunay Triangulation"></a>Conduct the Delaunay Triangulation</h2><p>I planned to apply the <a href="https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm" target="_blank" rel="external">Bowyer–Watson algorithm</a> for computing the Delaunay triangulation. A most naïve Bowyer–Watson algorithm goes like this:</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step 1:</em> Construct a ‘super’ triangle that covers points from the point set, add it into the Delaunay triangle list. </p>
+<p><em>Step 2:</em> Insert points from the point set $P={p_1, p_2, …, p_n}$ to the ‘super’ triangle one by one.</p>
+<p><em>Step 3:</em> For each point $p_i$ inserted, find all the triangles whose circumcircles cover this point $p_i$, delete these triangles from the Delaunay triangle list and delete all the common edges of these triangles, and leave a star-shaped polygonal hole.</p>
+<p><em>Step 4:</em> Connect the point $p_i$ to all the vertices of this star-shaped polygon, and add the newly formed triangles to the Delaunay triangle list.</p>
+<p><em>Step 5:</em> After every point is inserted, obtain the Delaunay edge list from Delaunay triangle list, and delete the edges from the Delaunay edge list that contain a vertex of the original ‘super’ triangle.</p>
+<p><strong><em>End</em></strong></p>
+<p>The following pictures can better illustrate the key steps of this algorithm. As shown in <strong>Figure 1</strong>, when a new point is inserted, all the triangles whose circumcircles contain this point will be found. The common edges of these triangles, which are highlighted in yellow, will be deleted, leaving the star-shaped boundary in red.</p>
+<p><img src="/img/implementation-of-voronoi-diagram-and-delaunay-triangulation_1.jpg" alt="Implementation of Voronoi Diagram and Delaunay Triangulation figure 1"></p>
+<center><b>Figure 1</b></center>
+
+<p>And then, the inserted point will be connected to all the vertices of the star-shaped polygon, As shown in <strong>Figure 2</strong>, the new Delaunay triangles will be formed.</p>
+<p><img src="/img/implementation-of-voronoi-diagram-and-delaunay-triangulation_2.jpg" alt="Implementation of Voronoi Diagram and Delaunay Triangulation figure 2"></p>
+<center><b>Figure 2</b></center>
+
+<p>However, the aforementioned naïve manner of Delaunay triangulation is a clearly $O(n^2)$ time algorithm that is incapable of handling a massive amount of points.</p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/width-of-a-set-in-the-plane/" title= Width of a Set in the Plane >
+                    <span>Previous Post</span>
+                    <span>Width of a Set in the Plane</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = 'https://isaacguan.github.io' + "/implementation-of-voronoi-diagram-and-delaunay-triangulation/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "Implementation of Voronoi Diagram and Delaunay Triangulation"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://isaacguan.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:yanranguan1994@gmail.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/IsaacGuan" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+        
+            
+                <a href="//www.facebook.com/isaac.guan.96" class="iconfont-archer facebook" target="_blank" title="facebook"></a>
+            
+        
+    
+        
+            
+                <a href="//www.zhihu.com/people/guan-yan-ran" class="iconfont-archer zhihu" target="_blank" title="zhihu"></a>
+            
+        
+    
+        
+            
+                <a href="//www.linkedin.com/in/yanran-guan-87b411101" class="iconfont-archer linkedin" target="_blank" title="linkedin"></a>
+            
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title="rss"></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Copyright &copy; 2017 Isaac Guan</span><span class="iconfont-archer power">&#xe635;</span><span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">Welcome, No. <span id="busuanzi_value_site_pv"></span> visitor.
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Voronoi-Diagram-and-Delaunay-Triangulation"><span class="toc-number">1.</span> <span class="toc-text">Voronoi Diagram and Delaunay Triangulation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Design-of-the-Algorithm"><span class="toc-number">2.</span> <span class="toc-text">Design of the Algorithm</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Design-of-the-Data-Structure"><span class="toc-number">2.1.</span> <span class="toc-text">Design of the Data Structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Build-up-the-Vonoroi-Diagram"><span class="toc-number">2.2.</span> <span class="toc-text">Build up the Vonoroi Diagram</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conduct-the-Delaunay-Triangulation"><span class="toc-number">2.3.</span> <span class="toc-text">Conduct the Delaunay Triangulation</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top">&#xe639;</div>
+    <div class="sidebar">
+    <div class="sidebar-header sidebar-header-show-archive">
+        <div class="sidebar-category">
+            <span class="sidebar-archive-link"><span class="iconfont-archer">&#xe67d;</span>Archive</span>
+            <span class="sidebar-tags-link"><span class="iconfont-archer">&#xe610;</span>Tag</span>
+        </div>
+    </div>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-archive">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 3 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/22</span><a class="archive-post-title" href= "/implementation-of-voronoi-diagram-and-delaunay-triangulation/" >Implementation of Voronoi Diagram and Delaunay Triangulation</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/width-of-a-set-in-the-plane/" >Width of a Set in the Plane</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span><a class="archive-post-title" href= "/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name"><a href= "#">hello world</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">computational geometry</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">voronoi diagram</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">delaunay triangulation</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">convex hull</a></span>
+    
+    </div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #888; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tag-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var jsInfo = {
+        root: '/'
+    }
+</script>
+    <!-- 不蒜子  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ统计  -->
+    
+    </div>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>
+
+

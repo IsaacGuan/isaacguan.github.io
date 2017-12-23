@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        Width of a Set in the Plane · Isaac&#39;s Blog
+        Isaac&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -57,26 +57,15 @@
         })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         ga('create', 'UA-109312212-1', 'auto');
         ga('send', 'pageview');
-    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    </script>
     
 </head>
     
-        <body class="post-body">
     
-    
-<!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="header">
+<header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
-    
-    <div class="banner">
-            <div class="blog-title">
-                <a href="/" >Isaac&#39;s Blog</a>
-            </div>
-            <div class="post-title">
-                <a href="#" class="post-name">Width of a Set in the Plane</a>
-            </div>
-    </div>
     
     <a class="home-link" href=/>Isaac's Blog</a>
 </header>
@@ -84,45 +73,21 @@
         <div class="site-intro">
     
     <!-- 主页  -->
-    
-    
-    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/intro/post.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            Width of a Set in the Plane
-            <!-- 404 -->
-            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
-            
-            <!-- 404 -->
-            
         </p>
         <!-- 文章页meta -->
-        
-            <!-- 文章页标签  -->
-            
-                <div class= post-intro-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = computational geometry>computational geometry</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = convex hull>convex hull</a>
-    
-</div>
-            
-            <div class="post-intro-meta">
-                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2017/11/19</span>
-            </div>
         
     </div>
 </div>
@@ -190,88 +155,41 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main post-page">
-    <article class="article-entry">
-        <p>The book <a href="http://reports-archive.adm.cs.cmu.edu/anon/anon/usr/ftp/scan/CMU-CS-80-101.pdf" target="_blank" rel="external"><em>Geometric Transforms for Fast Geometric Algorithms</em></a> introduces an interesting algorithm from page 84 of computing the diameter of a set of points in two dimensions. Inspired by this, I come up with a solution of computing the width of a set using geometric transformation.</p>
-<h1 id="Definition-of-the-Width-of-a-Set"><a href="#Definition-of-the-Width-of-a-Set" class="headerlink" title="Definition of the Width of a Set"></a>Definition of the Width of a Set</h1><p>Let $S$ be a set of $n$ points in $\mathbb{R}^2$. If $l$ and $l’$ are two parallel lines, then the region between them is called a slab. The width of $S$ is defined to be the minimum distance between the bounding lines of any slab that contains all points of $S$.</p>
-<h1 id="Characterization-of-the-Width"><a href="#Characterization-of-the-Width" class="headerlink" title="Characterization of the Width"></a>Characterization of the Width</h1><p>Before presenting the width-finding algorithm, I’d like first to characterize the width of a set of points, introduce some terminology and prove several theorems.</p>
-<p>When we say that $A$ is contained in $B$, it means that every point of $A$ also lies in $B$. The bounding lines of a slab could contain a vertex or an edge of the convex hull $CH(S)$ of the set of points $S$.</p>
-<p><strong>Theorem 1:</strong> Let $l$ and $l’$ be two parallel lines that define the width of $S$, both $l$ and $l’$ contain a vertex of the convex hull $CH(S)$ of $S$.</p>
-<p><strong>Proof.</strong> Assume otherwise. The width is determined by parallel lines $l$ and $l’$, and $l$ contains a vertex of $CH(S)$, $l’$ does not, as shown in <strong>Figure 1</strong>. Then there must exists a line $l’’$ closer to the set of points $S$ and produces a smaller distance. Q.E.D.</p>
-<p><img src="/img/width-of-a-set-in-the-plane_1.jpg" alt="width of a set in the plane figure 1"></p>
-<center><b>Figure 1</b></center>
-
-<p><strong>Theorem 2:</strong> Let $l$ and $l’$ be two parallel lines that define the width of $S$, at least one of $l$ and $l’$ contain an edge of the convex hull $CH(S)$ of $S$.</p>
-<p><strong>Proof.</strong> Assume otherwise. The width is determined by parallel lines $l$ and $l’$ which both pass a vertex but neither of them passes an edge. We can rotate the parallel lines in preferred direction of rotation which means we rotate $l$ and $l’$ about the two vertices they pass to form new parallel lines $l_1$ and $l_1’$ and the distance between $l_1$ and $l_1’$ is smaller. This contradicts the assumption. Q.E.D.</p>
-<h1 id="Computing-the-Width"><a href="#Computing-the-Width" class="headerlink" title="Computing the Width"></a>Computing the Width</h1><p>We can divide the convex hull into 2 parts: the upper hull and the lower hull, so that when one of the parallel lines of support of $S$ meets the convex hull on the upper hull, the other is on the lower hull.</p>
-<p>According to the <a href="https://en.wikipedia.org/wiki/Linear_programming#Duality" target="_blank" rel="external">duality transformation</a>, a non-vertical line $y=kx+b$ can be transformed into the point $(k,b)$ which is formed by the slope and intercept of the line. And a point $(a,b)$ can be transformed into the line $y=k(x-a)+b$ which means the set of lines that pass through it.</p>
-<p>Hence, we define the transform of an edge of the convex hull $CH(S)$ of $S$ as the slope of the line containing that edge and the transform of a vertex of $CH(S)$ as the set of slopes of lines that pass through it. I.e., the line containing an edge: $y=kx+b$ can be mapped to the one dimensional point $(k)$ and the vertex that lies between two edges: $y=k_1x+b_1$ and $y=k_2x+b_2$ can be mapped to the closed interval $[k_1,k_2]$. As shown in <strong>Figure 2</strong>, the convex hull is transformed into a line which consists of a upper part and a lower part.</p>
-<p><img src="/img/width-of-a-set-in-the-plane_2.jpg" alt="width of a set in the plane figure 2"></p>
-<center><b>Figure 2:</b> The transform.</center>
-
-<p>As the slopes of the edges of the convex hull are already sorted, when we transform the convex hull to a line, the upper and lower sets of points and intervals on the line are in sorted order.</p>
-<p>As is known from <strong>Theorem 1</strong>, the parallel lines of support pass through an edge and a vertex of the convex hull $CH(S)$, which means the corresponding point and interval pair contained in the parallel lines must intersect on the upper and lower lines, e.g., $P_5$ and $l_8$, $P_6$ and $l_2$ in <strong>Figure 2</strong>.</p>
-<p>Thus, finding the width of a set of points $S$ can be reduced to scanning the intersections of point and interval pairs on the upper and lower hulls of its convex hull $CH(S)$.</p>
-<p>To summarize, the width of a set of points $S$ can be computed in the following manner.</p>
-<p><strong><em>Begin</em></strong></p>
-<p><em>Step 1:</em> Construct the convex hull $CH(S)$ of $S$.</p>
-<p><em>Step 2:</em> Apply the transform to obtain two ordered sets of points and intervals.</p>
-<p><em>Step 3:</em> Scan the sets for intersections between the intervals of one set and the points of the other, generating the corresponding vertex and edge pair. For each such pair, compute the distance between the vertex and the extended edge, and note the smallest such distance. When the scan is complete, that distance is the width.</p>
-<p><strong><em>End</em></strong></p>
-<h1 id="Time-Complexity"><a href="#Time-Complexity" class="headerlink" title="Time Complexity"></a>Time Complexity</h1><p>According to the <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm" target="_blank" rel="external">gift wrapping algorithm</a> and the <a href="https://en.wikipedia.org/wiki/Graham_scan" target="_blank" rel="external">Graham scan algorithm</a>, the running time of finding the convex hull of a set of points can be minimized to $O(nlogh)$, where $h$ is the number of points on the convex hull. And obtaining the two ordered sets and scanning the sets both takes $O(h)$ time. Therefore, finding the width of a set of points $S$ in $\mathbb{R}^2$ takes $O(nlogh)$ time.</p>
-
-    </article>
-    <!-- 前后页  -->
-    <ul class="post-pager">
-        
-            <li class="next">
-                <a href= "/implementation-of-voronoi-diagram-and-delaunay-triangulation/" title= Implementation of Voronoi Diagram and Delaunay Triangulation >
-                    <span>Next Post</span>
-                    <span>Implementation of Voronoi Diagram and Delaunay Triangulation</span>
-                </a>
-            </li>
-        
-        
-            <li class="previous">
-                <a href= "/hello-world/" title= Hello World >
-                    <span>Previous Post</span>
-                    <span>Hello World</span>
-                </a>
-            </li>
-        
-    </ul>
-    <!-- 评论插件 -->
-    <!-- 来必力City版安装代码 -->
-
-<!-- City版安装代码已完成 -->
+            <main class="main index-page">
     
-    <div id="disqus_thread"></div>
-    <script>
-        /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-        
-        var disqus_config = function () {
-        this.page.url = 'https://isaacguan.github.io' + "/width-of-a-set-in-the-plane/";  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = "Width of a Set in the Plane"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-        };
-        
-        (function () { // DON'T EDIT BELOW THIS LINE
-            var d = document, s = d.createElement('script');
-            s.src = 'https://isaacguan.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
     
-    <!--PC版-->
-
-    <!--PC版-->
-
-
+    
+        <article class="index-post">
+            <a class="content-show-full" href = "/implementation-of-voronoi-diagram-and-delaunay-triangulation/" >
+                    <h2 class="abstract-title">
+                        
+                        <span>Implementation of Voronoi Diagram and Delaunay Triangulation</span>
+                    </h2>
+                <div class="abstract-content">
+                    Voronoi diagram and Delaunay triangulation are dual representations of a set of points to each other. Due to their wide application in science and technology, Voronoi diagram and Delaunay triangulation play important roles in the field of Computational Geometry. In this post, I am going to introd...
+                </div>
+            </a>
+            <div class="abstract-post-meta">
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = computational geometry>computational geometry</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = voronoi diagram>voronoi diagram</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = delaunay triangulation>delaunay triangulation</a>
+    
+</div>
+                
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/22</span>
+                </div>
+            </div>
+        </article>
+    
+    <!-- paginator  -->
     
 </main>
             <!-- profile -->
@@ -336,13 +254,6 @@
 </footer>
     </div>
     <!-- toc -->
-    
-    <div class="toc-wrapper">
-        <div class="toc-catalog">
-            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
-        </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Definition-of-the-Width-of-a-Set"><span class="toc-number">1.</span> <span class="toc-text">Definition of the Width of a Set</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Characterization-of-the-Width"><span class="toc-number">2.</span> <span class="toc-text">Characterization of the Width</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Computing-the-Width"><span class="toc-number">3.</span> <span class="toc-text">Computing the Width</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Time-Complexity"><span class="toc-number">4.</span> <span class="toc-text">Time Complexity</span></a></li></ol>
-    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
@@ -479,7 +390,7 @@ jsonContent:
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
 
