@@ -15,10 +15,17 @@
     <style type="text/css">
         @font-face {
             font-family: 'Oswald-Regular';
-            src: url('/font/Oswald-Regular.ttf');
+            src: url(/font/Oswald-Regular.ttf);
         }
     </style>
     <style type="text/css">
+        .site-intro {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            overflow: hidden;
+            box-shadow: -0.1rem 0 0.5rem 0 rgba(0, 0, 0, 0.8);
+        }
         .site-intro-placeholder {
             position: absolute;
             z-index: -2;
@@ -40,7 +47,7 @@
         }
     }
 </style>
-    <link rel="stylesheet" href = /css/style.css?v=20171020 />
+    <link rel="stylesheet" href = /css/style.css?v=20171218 />
     <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
     
     <script src="/scripts/main.js" defer></script>
@@ -64,6 +71,7 @@
     
 <header class="header">
 
+    <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
     
@@ -326,11 +334,11 @@ Definition of th...
     
         <span class="sidebar-tag-name"><a href= "#">computational geometry</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">convex hull</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">voronoi diagram</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">delaunay triangulation</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">convex hull</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
@@ -339,7 +347,7 @@ Definition of th...
     2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
     <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
     3、在根目录_config.yml里添加配置：
-    <pre style="color: #888; font-size: 0.6rem;">
+    <pre style="color: #787878; font-size: 0.6rem;">
 jsonContent:
   meta: false
   pages: false
