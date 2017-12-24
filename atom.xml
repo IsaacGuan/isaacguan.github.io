@@ -5,9 +5,9 @@
   <subtitle>Ayant le soleil en face, il faut que nous vivons fièrement</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="https://isaacguan.github.io/"/>
   <updated>2017-12-24T02:38:55.548Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>https://isaacguan.github.io/</id>
   
   <author>
     <name>Isaac Guan</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Implementation of Voronoi Diagram and Delaunay Triangulation</title>
-    <link href="http://yoursite.com/implementation-of-voronoi-diagram-and-delaunay-triangulation/"/>
-    <id>http://yoursite.com/implementation-of-voronoi-diagram-and-delaunay-triangulation/</id>
+    <link href="https://isaacguan.github.io/implementation-of-voronoi-diagram-and-delaunay-triangulation/"/>
+    <id>https://isaacguan.github.io/implementation-of-voronoi-diagram-and-delaunay-triangulation/</id>
     <published>2017-12-22T05:00:00.000Z</published>
     <updated>2017-12-24T02:38:55.548Z</updated>
     
@@ -35,18 +35,18 @@
     </summary>
     
     
-      <category term="computational geometry" scheme="http://yoursite.com/tags/computational-geometry/"/>
+      <category term="computational geometry" scheme="https://isaacguan.github.io/tags/computational-geometry/"/>
     
-      <category term="voronoi diagram" scheme="http://yoursite.com/tags/voronoi-diagram/"/>
+      <category term="voronoi diagram" scheme="https://isaacguan.github.io/tags/voronoi-diagram/"/>
     
-      <category term="delaunay triangulation" scheme="http://yoursite.com/tags/delaunay-triangulation/"/>
+      <category term="delaunay triangulation" scheme="https://isaacguan.github.io/tags/delaunay-triangulation/"/>
     
   </entry>
   
   <entry>
     <title>Width of a Set in the Plane</title>
-    <link href="http://yoursite.com/width-of-a-set-in-the-plane/"/>
-    <id>http://yoursite.com/width-of-a-set-in-the-plane/</id>
+    <link href="https://isaacguan.github.io/width-of-a-set-in-the-plane/"/>
+    <id>https://isaacguan.github.io/width-of-a-set-in-the-plane/</id>
     <published>2017-11-19T05:00:00.000Z</published>
     <updated>2017-11-19T18:20:21.706Z</updated>
     
@@ -62,16 +62,16 @@
     </summary>
     
     
-      <category term="computational geometry" scheme="http://yoursite.com/tags/computational-geometry/"/>
+      <category term="computational geometry" scheme="https://isaacguan.github.io/tags/computational-geometry/"/>
     
-      <category term="convex hull" scheme="http://yoursite.com/tags/convex-hull/"/>
+      <category term="convex hull" scheme="https://isaacguan.github.io/tags/convex-hull/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/hello-world/"/>
-    <id>http://yoursite.com/hello-world/</id>
+    <link href="https://isaacguan.github.io/hello-world/"/>
+    <id>https://isaacguan.github.io/hello-world/</id>
     <published>2017-11-01T04:00:00.000Z</published>
     <updated>2017-11-02T03:12:25.642Z</updated>
     
@@ -90,7 +90,7 @@
     </summary>
     
     
-      <category term="hello world" scheme="http://yoursite.com/tags/hello-world/"/>
+      <category term="hello world" scheme="https://isaacguan.github.io/tags/hello-world/"/>
     
   </entry>
   
