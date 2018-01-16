@@ -27,7 +27,23 @@ class ModifiedMeshSmoothing {
 				let z = 0;
 				let weight = 0;
 				for (let nv of v.adjacentVertices()) {
-					let weightv = 0
+					let weightv = 0;
+					for (let nf of v.adjacentFaces()) {
+						for (let nfnv of nv.adjacentFaces()) {
+							if (nf === nfnv) {
+								weightv = weightv + this.area(nf);
+							}
+						}
+					}
+					let pn = this.geometry.positions[nv];
+					x = x + pn.x * weightv;
+					y = y + pn.y * weightv;
+					z = z + pn.z * weightv;
+					weight = weight + weightv;
+				}
+				/*
+				for (let nv of v.adjacentVertices()) {
+					let weightv = 0;
 					for (let nf of nv.adjacentFaces()) {
 						weightv = weightv + this.area(nf);
 					}
@@ -37,6 +53,7 @@ class ModifiedMeshSmoothing {
 					z = z + pn.z * weightv;
 					weight = weight + weightv;
 				}
+				*/
 				p.x = x / weight;
 				p.y = y / weight;
 				p.z = z / weight;
