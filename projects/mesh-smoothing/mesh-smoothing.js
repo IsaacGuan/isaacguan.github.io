@@ -6,25 +6,27 @@ class MeshSmoothing {
 	}
 
 	apply(steps) {
-		let vertices = this.geometry.mesh.vertices;
 		for (let i=0; i<steps; i++) {
-			for (let v of vertices) {
-				let p = this.geometry.positions[v];
-				let x = 0;
-				let y = 0;
-				let z = 0;
-				let l = 0;
-				for (let n of v.adjacentVertices()) {
-					let pn = this.geometry.positions[n];
-					x = x + pn.x;
-					y = y + pn.y;
-					z = z + pn.z;
-					l = l + 1
+			let positions = {};
+			for (let v of this.geometry.mesh.vertices) {
+				let position = new Vector(0, 0, 0);
+				for (let nv of v.adjacentVertices()) {
+					position = position.plus(this.geometry.positions[nv]);
 				}
-				p.x = x / l;
-				p.y = y / l;
-				p.z = z / l;
+				position = position.over(v.degree());
+				let flag = false;
+				for (let ne of v.adjacentEdges()) {
+					if (ne.onBoundary()) {
+						flag = true;
+					}
+				}
+				if (!flag) {
+					positions[v] = position;
+				} else {
+					positions[v] = this.geometry.positions[v];
+				}
 			}
+			this.geometry.positions = positions;
 		}
 	}
 }

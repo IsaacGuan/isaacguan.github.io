@@ -5,59 +5,38 @@ class ModifiedMeshSmoothing {
 		this.geometry = geometry;
 	}
 
-	area(face) {
-		let p = [];
-		let area = 0;
-		let i = 0;
-		for (let v of face.adjacentVertices()) {
-			p[i] = this.geometry.positions[v];
-			i++;
-		}
-		area = Math.sqrt(Math.pow((p[1].x*p[2].y-p[2].x*p[1].y),2)+Math.pow((p[2].x*p[0].y-p[0].x*p[2].y),2)+Math.pow((p[0].x*p[1].y-p[1].x*p[0].y),2));
-		return area;
-	}
-
 	apply(steps) {
-		let vertices = this.geometry.mesh.vertices;
 		for (let i=0; i<steps; i++) {
-			for (let v of vertices) {
-				let p = this.geometry.positions[v];
-				let x = 0;
-				let y = 0;
-				let z = 0;
+			let positions = {};
+			for (let v of this.geometry.mesh.vertices) {
+				let position = new Vector(0, 0, 0);
 				let weight = 0;
 				for (let nv of v.adjacentVertices()) {
 					let weightv = 0;
 					for (let nf of v.adjacentFaces()) {
 						for (let nfnv of nv.adjacentFaces()) {
 							if (nf === nfnv) {
-								weightv = weightv + this.area(nf);
+								weightv = weightv + this.geometry.area(nf);
 							}
 						}
 					}
-					let pn = this.geometry.positions[nv];
-					x = x + pn.x * weightv;
-					y = y + pn.y * weightv;
-					z = z + pn.z * weightv;
+					position = position.plus(this.geometry.positions[nv].times(weightv));
 					weight = weight + weightv;
 				}
-				/*
-				for (let nv of v.adjacentVertices()) {
-					let weightv = 0;
-					for (let nf of nv.adjacentFaces()) {
-						weightv = weightv + this.area(nf);
+				position = position.over(weight);
+				let flag = false;
+				for (let ne of v.adjacentEdges()) {
+					if (ne.onBoundary()) {
+						flag = true;
 					}
-					let pn = this.geometry.positions[nv];
-					x = x + pn.x * weightv;
-					y = y + pn.y * weightv;
-					z = z + pn.z * weightv;
-					weight = weight + weightv;
 				}
-				*/
-				p.x = x / weight;
-				p.y = y / weight;
-				p.z = z / weight;
+				if (!flag) {
+					positions[v] = position;
+				} else {
+					positions[v] = this.geometry.positions[v];
+				}
 			}
+			this.geometry.positions = positions;
 		}
 	}
 }
