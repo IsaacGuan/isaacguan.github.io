@@ -28,7 +28,7 @@
 	<script src="../../geometry-processing-js/core/corner.js"></script>
 	<script src="../../geometry-processing-js/core/mesh.js"></script>
 	<script src="../../geometry-processing-js/core/geometry.js"></script>
-	<script src="../../geometry-processing-js/input/bunny.js"></script>
+	<script src="../../geometry-processing-js/input/noisy_bunny.js"></script>
 	<script src="../../geometry-processing-js/utils/meshio.js"></script>
 	<script src="../../geometry-processing-js/utils/colormap.js"></script>
 	<script src="mesh-smoothing.js"></script>
@@ -43,7 +43,7 @@
 		let useBasicMaterial = false;
 		let showWireframe = false;
 		let scene = undefined;
-		let originalObject = bunny;
+		let originalObject = noisy_bunny;
 		let threeMesh = undefined;
 		let threeGeometry = undefined;
 		let wireframe = undefined;
@@ -67,7 +67,7 @@
 		let modifiedMeshSmoothing = undefined;
 		let steps = 1;
 
-		let filename = "bunny.obj";
+		let filename = "noisy_bunny.obj";
 
 		const ORANGE = new Vector(1.0, 0.5, 0.0);
 		let guiFields = {
