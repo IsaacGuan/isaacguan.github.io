@@ -5,6 +5,15 @@ class MeshSmoothing {
 		this.geometry = geometry;
 	}
 
+	onEdge(v) {
+		for (let ne of v.adjacentEdges()) {
+			if (ne.onBoundary()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	apply(steps) {
 		for (let i=0; i<steps; i++) {
 			let positions = {};
@@ -14,13 +23,7 @@ class MeshSmoothing {
 					position = position.plus(this.geometry.positions[nv]);
 				}
 				position = position.over(v.degree());
-				let flag = false;
-				for (let ne of v.adjacentEdges()) {
-					if (ne.onBoundary()) {
-						flag = true;
-					}
-				}
-				if (!flag) {
+				if (this.onEdge(v)) {
 					positions[v] = position;
 				} else {
 					positions[v] = this.geometry.positions[v];
