@@ -134,7 +134,7 @@
 			io.open();
 
 			gui.add(guiFields, "Scheme", ["MS", "Modified MS"]).listen();
-			gui.add(guiFields, "Smoothing Steps", 1, 10).step(1).onChange(updateSmoothingSteps).listen();
+			gui.add(guiFields, "Smoothing Steps", 1, 100).step(1).onChange(updateSmoothingSteps).listen();
 			gui.add(guiFields, "Apply");
 			gui.add(guiFields, "Reset");
 			gui.add(guiFields, "Show Wireframe").onChange(toggleWireframe).listen();
