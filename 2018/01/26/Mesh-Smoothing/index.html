@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        Width of a Set in the Plane · Isaac&#39;s Blog
+        Mesh Smoothing · Isaac&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -82,7 +82,7 @@
                 <a href="/" >Isaac&#39;s Blog</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">Width of a Set in the Plane</a>
+                <a href="#" class="post-name">Mesh Smoothing</a>
             </div>
     </div>
     
@@ -103,7 +103,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            Width of a Set in the Plane
+            Mesh Smoothing
             <!-- 404 -->
             
         </h1>
@@ -121,15 +121,15 @@
             
                 <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-href = computational geometry>computational geometry</a>
+        <a class="post-tag" href="javascript:void(0);" data-href = geometry processing>geometry processing</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-href = convex hull>convex hull</a>
+        <a class="post-tag" href="javascript:void(0);" data-href = mesh smoothing>mesh smoothing</a>
     
 </div>
             
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2017/11/19</span>
+                <span class="post-intro-time">2018/01/26</span>
             </div>
         
     </div>
@@ -200,50 +200,81 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>The book <a href="http://reports-archive.adm.cs.cmu.edu/anon/anon/usr/ftp/scan/CMU-CS-80-101.pdf" target="_blank" rel="external"><em>Geometric Transforms for Fast Geometric Algorithms</em></a> introduces an interesting algorithm from page 84 of computing the diameter of a set of points in two dimensions. Inspired by this, I come up with a solution of computing the width of a set using geometric transformation.</p>
-<h1 id="Definition-of-the-Width-of-a-Set"><a href="#Definition-of-the-Width-of-a-Set" class="headerlink" title="Definition of the Width of a Set"></a>Definition of the Width of a Set</h1><p>Let $S$ be a set of $n$ points in $\mathbb{R}^2$. If $l$ and $l’$ are two parallel lines, then the region between them is called a slab. The width of $S$ is defined to be the minimum distance between the bounding lines of any slab that contains all points of $S$.</p>
-<h1 id="Characterization-of-the-Width"><a href="#Characterization-of-the-Width" class="headerlink" title="Characterization of the Width"></a>Characterization of the Width</h1><p>Before presenting the width-finding algorithm, I’d like first to characterize the width of a set of points, introduce some terminology and prove several theorems.</p>
-<p>When we say that $A$ is contained in $B$, it means that every point of $A$ also lies in $B$. The bounding lines of a slab could contain a vertex or an edge of the convex hull $CH(S)$ of the set of points $S$.</p>
-<p><strong>Theorem 1:</strong> Let $l$ and $l’$ be two parallel lines that define the width of $S$, both $l$ and $l’$ contain a vertex of the convex hull $CH(S)$ of $S$.</p>
-<p><strong>Proof.</strong> Assume otherwise. The width is determined by parallel lines $l$ and $l’$, and $l$ contains a vertex of $CH(S)$, $l’$ does not, as shown in <strong>Figure 1</strong>. Then there must exists a line $l’’$ closer to the set of points $S$ and produces a smaller distance. Q.E.D.</p>
-<p><img src="/img/width-of-a-set-in-the-plane_1.jpg" alt="width of a set in the plane figure 1"></p>
-<center><b>Figure 1</b></center>
-
-<p><strong>Theorem 2:</strong> Let $l$ and $l’$ be two parallel lines that define the width of $S$, at least one of $l$ and $l’$ contain an edge of the convex hull $CH(S)$ of $S$.</p>
-<p><strong>Proof.</strong> Assume otherwise. The width is determined by parallel lines $l$ and $l’$ which both pass a vertex but neither of them passes an edge. We can rotate the parallel lines in preferred direction of rotation which means we rotate $l$ and $l’$ about the two vertices they pass to form new parallel lines $l_1$ and $l_1’$ and the distance between $l_1$ and $l_1’$ is smaller. This contradicts the assumption. Q.E.D.</p>
-<h1 id="Computing-the-Width"><a href="#Computing-the-Width" class="headerlink" title="Computing the Width"></a>Computing the Width</h1><p>We can divide the convex hull into 2 parts: the upper hull and the lower hull, so that when one of the parallel lines of support of $S$ meets the convex hull on the upper hull, the other is on the lower hull.</p>
-<p>According to the <a href="https://en.wikipedia.org/wiki/Linear_programming#Duality" target="_blank" rel="external">duality transformation</a>, a non-vertical line $y=kx+b$ can be transformed into the point $(k,b)$ which is formed by the slope and intercept of the line. And a point $(a,b)$ can be transformed into the line $y=k(x-a)+b$ which means the set of lines that pass through it.</p>
-<p>Hence, we define the transform of an edge of the convex hull $CH(S)$ of $S$ as the slope of the line containing that edge and the transform of a vertex of $CH(S)$ as the set of slopes of lines that pass through it. I.e., the line containing an edge: $y=kx+b$ can be mapped to the one dimensional point $(k)$ and the vertex that lies between two edges: $y=k_1x+b_1$ and $y=k_2x+b_2$ can be mapped to the closed interval $[k_1,k_2]$. As shown in <strong>Figure 2</strong>, the convex hull is transformed into a line which consists of a upper part and a lower part.</p>
-<p><img src="/img/width-of-a-set-in-the-plane_2.jpg" alt="width of a set in the plane figure 2"></p>
-<center><b>Figure 2:</b> The transform.</center>
-
-<p>As the slopes of the edges of the convex hull are already sorted, when we transform the convex hull to a line, the upper and lower sets of points and intervals on the line are in sorted order.</p>
-<p>As is known from <strong>Theorem 1</strong>, the parallel lines of support pass through an edge and a vertex of the convex hull $CH(S)$, which means the corresponding point and interval pair contained in the parallel lines must intersect on the upper and lower lines, e.g., $P_5$ and $l_8$, $P_6$ and $l_2$ in <strong>Figure 2</strong>.</p>
-<p>Thus, finding the width of a set of points $S$ can be reduced to scanning the intersections of point and interval pairs on the upper and lower hulls of its convex hull $CH(S)$.</p>
-<p>To summarize, the width of a set of points $S$ can be computed in the following manner.</p>
+        <p>Mesh smoothing, also known as mesh denoising, is an important and widely discussed topic in terms of geometry processing. Basically, a mesh smoothing method takes 3 steps: loading a mesh from a file; smoothing that mesh; outputting the mesh to a file.</p>
+<h1 id="Selection-of-Mesh-Library"><a href="#Selection-of-Mesh-Library" class="headerlink" title="Selection of Mesh Library"></a>Selection of Mesh Library</h1><p>There are a lot of mesh libraries that give us a data structure so that we can use to build a mesh for an object file. What I am using in this assignment is the <a href="https://github.com/GeometryCollective/geometry-processing-js" target="_blank" rel="external">geometry-processing-js</a> library. It is a library written in JavaScript which constructs a mesh based on half edge. It also gives plenty of predefined functions regarding the components of a mesh e.g. half edge, vertex, edge, face, etc. Besides, it also includes a linear algebra library which makes it handy for users to do matrix-vector operations.</p>
+<h1 id="Mesh-Smoothing-Algorithms"><a href="#Mesh-Smoothing-Algorithms" class="headerlink" title="Mesh Smoothing Algorithms"></a>Mesh Smoothing Algorithms</h1><p>I implemented two algorithms for Mesh Smoothing, a mean filtering algorithm, and a weighted mean filtering algorithm.</p>
+<h2 id="Mean-Filtering-Algorithm"><a href="#Mean-Filtering-Algorithm" class="headerlink" title="Mean Filtering Algorithm"></a>Mean Filtering Algorithm</h2><p>A most naïve mean filtering algorithm goes as follows:</p>
 <p><strong><em>Begin</em></strong></p>
-<p><em>Step 1:</em> Construct the convex hull $CH(S)$ of $S$.</p>
-<p><em>Step 2:</em> Apply the transform to obtain two ordered sets of points and intervals.</p>
-<p><em>Step 3:</em> Scan the sets for intersections between the intervals of one set and the points of the other, generating the corresponding vertex and edge pair. For each such pair, compute the distance between the vertex and the extended edge, and note the smallest such distance. When the scan is complete, that distance is the width.</p>
+<p><em>Step 1:</em> Create a Hash Map $positions$ mapping each index of vertex with its position to be updated;</p>
+<p><em>Step 2:</em> For each vertex $v$ in the mesh, calculate $positions[v]$ by the average position of the neighbor vertices in the one-ring of $v$;</p>
+<p><em>Step 3:</em> After the whole iteration, update the positions of vertices in the mesh by the Hash Map $positions$.</p>
 <p><strong><em>End</em></strong></p>
-<h1 id="Time-Complexity"><a href="#Time-Complexity" class="headerlink" title="Time Complexity"></a>Time Complexity</h1><p>According to the <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm" target="_blank" rel="external">gift wrapping algorithm</a> and the <a href="https://en.wikipedia.org/wiki/Graham_scan" target="_blank" rel="external">Graham scan algorithm</a>, the running time of finding the convex hull of a set of points can be minimized to $O(nlogh)$, where $h$ is the number of points on the convex hull. And obtaining the two ordered sets and scanning the sets both takes $O(h)$ time. Therefore, finding the width of a set of points $S$ in $\mathbb{R}^2$ takes $O(nlogh)$ time.</p>
+<p>However, if the object has some holes on it, this algorithm could cause the holes to enlarge after times of iteration, which is shown in <strong>Figure 1</strong>.</p>
+<p><img src="/img/mesh-smoothing_1.jpg" alt="Mesh Smoothing figure 1"></p>
+<center><b>Figure 1</b> Holes enlarge on the object, steps = 5.</center>
+
+<p>Sometimes, we don’t like such distortion, so it is necessary to preserve the boundary of holes on the mesh. We can add a step to the algorithm to constrain the vertices of boundary edges:</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step1:</em> Create a Hash Map $positions$ mapping each index of vertex with its position to be updated;</p>
+<p><em>Step2:</em> For each vertex $v$ in the mesh, calculate $positions[v]$ by the average position of the neighbor vertices in the one-ring of $v$;</p>
+<p><em>Step3:</em> To preserve the boundary of holes on the mesh, if vertex $v$ is on boundary, update $positions[v]$ to the original position of vertex $v$ in the mesh;</p>
+<p><em>Step4:</em> After the whole iteration, update the positions of vertices in the mesh by the Hash Map $positions$.</p>
+<p><strong><em>End</em></strong></p>
+<h2 id="Weighted-Mean-Filtering-Algorithm"><a href="#Weighted-Mean-Filtering-Algorithm" class="headerlink" title="Weighted Mean Filtering Algorithm"></a>Weighted Mean Filtering Algorithm</h2><p>The weighting method simply weights each neighboring vertex by the area of the two faces incident to it. The weighted mean filtering algorithm goes like this:</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step1:</em>  Create a Hash Map $positions$ that maps each index of vertex to its position to be updated;</p>
+<p><em>Step2:</em> For each vertex $v$ in the mesh, traverse its neighborhood vertices. And for each neighbor vertex $nv$ calculate the weight value on each neighborhood vertex $weightnv$ by adding area of the two incident faces together;</p>
+<p><em>Step3:</em> After the traversal of neighborhood vertices, calculate the total weight weight on the vertex $v$ by accumulating every $weightnv$, and calculate $positions[v]=\frac{\sum_{} weightnv\,∙\,position\,of\,nv}{weight}$;</p>
+<p><em>Step4:</em> To preserve the boundary of holes on the mesh, if vertex $v$ is on boundary, update $positions[v]$ to the original position of vertex $v$ in the mesh;</p>
+<p><em>Step5:</em> After the whole iteration, update the positions of vertices in the mesh by the Hash Map $positions$.</p>
+<p><strong><em>End</em></strong></p>
+<p>However, in the implementation, I found this could cause the faces of the mesh overlapping one another after several times of iterations, because the position of vertex could fall outside its one-ring neighborhood. As shown in <strong>Figure 2</strong>, overlapping occurs after 5 times of iteration.</p>
+<p><img src="/img/mesh-smoothing_2.jpg" alt="Mesh Smoothing figure 2"></p>
+<center><b>Figure 2</b> Overlapping of faces, steps = 5.</center>
+
+<p>In order to prevent such thing from happening, I tried to find those vertices which could fall outside its neighborhood during an iteration. The one-ring neighborhood of one vertex is actually a star-shaped polygon so that we can use the left-turn/right-turn check to decide whether the vertex is inside it or not.</p>
+<p>To find out the star-shaped neighborhood of a certain vertex $v$, we should first project all the neighbors onto the plane which is defined by vertex $v$ and its normal vector $n$. We can find the projection $q=(x’,y’,z’)$ of vertex $p=(x,y,z)$ on the plane that defined by the normal $n=(a,b,c)$ and vertex $v=(x_0,y_0,z_0)$ in the way below.</p>
+<p>There are following implicit geometric relationships between $p$, $q$, $n$ and $v$: $pq \parallel n$ and $vq \perp n$.</p>
+<p>The following equation can be derived from $pq \parallel n$:</p>
+<script type="math/tex; mode=display">\begin{equation}
+\frac{x'-x}{a}=\frac{y'-y}{b}=\frac{z'-z}{c}=t \tag{1} \label{eq:1}
+\end{equation}</script><p>And from $vq \perp n$, we can derive:</p>
+<script type="math/tex; mode=display">\begin{equation}
+a(x'-x_0)+b(y'-y_0)+c(z'-z_0)=0 \tag{2} \label{eq:2}
+\end{equation}</script><p>Combining $\eqref{eq:1}$ and $\eqref{eq:2}$, we can solve for $t$:</p>
+<script type="math/tex; mode=display">\begin{equation}
+t=\frac{ax_0+by_0+cz_0-(ax+by+cz)}{a^2+b^2+c^2} \tag{3} \label{eq:3}
+\end{equation}</script><p>Then we can solve for the projection $q=(x’,y’,z’)$ by combining $\eqref{eq:1}$ and $\eqref{eq:3}$.</p>
+<p>As the data structure of mesh is based on half edge, and all the faces are defined by half edges in counter-clock-wise order. Thus, for each vertex $v$, we can simply get the boundary edges of a star-shaped neighborhood in counter-clock-wise order, project them along with the position to be updated $positions[v]$ onto the plane that is defined by vertex $v$ and its normal vector $n$. Then we can do the left-turn/right-turn check on that plane to see whether the new position for vertex $v$ $positions[v]$ is outside its neighborhood polygon or not.</p>
+<p>So the modified algorithm goes as follows:</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step1:</em> Create a Hash Map $positions$ that maps each index of vertex to its position to be updated;</p>
+<p><em>Step2:</em> For each vertex $v$ in the mesh, traverse its neighborhood vertices. And for each neighbor vertex $nv$ calculate the weight value on each neighborhood vertex $weightnv$ by adding area of the two incident faces together;</p>
+<p><em>Step3:</em> After the traversal of neighborhood vertices, calculate the total weight weight on the vertex $v$ by accumulating every $weightnv$, and calculate $positions[v]=\frac{\sum_{} weightnv\,∙\,position\,of\,nv}{weight}$;</p>
+<p><em>Step4:</em> Check whether $positions[v]$ falls outside its one-ring neighborhood, if so, use the mean filtering algorithm to update the new position;</p>
+<p><em>Step5:</em> To preserve the boundary of holes on the mesh, if vertex $v$ is on boundary, update $positions[v]$ to the original position of vertex $v$ in the mesh;</p>
+<p><em>Step6:</em> After the whole iteration, update the positions of vertices in the mesh by the Hash Map $positions$.</p>
+<p><strong><em>End</em></strong></p>
+<h1 id="Results-and-Conclusions"><a href="#Results-and-Conclusions" class="headerlink" title="Results and Conclusions"></a>Results and Conclusions</h1><p>As for the mean filtering algorithm, <strong>Figure 3</strong> shows the results for after applying it on different objects with different step numbers.</p>
+<p><img src="/img/mesh-smoothing_3.jpg" alt="Mesh Smoothing figure 3"></p>
+<center><b>Figure 3</b> Results of mean filtering algorithm.</center>
+
+<p>As for the weighted mean filtering algorithm, <strong>Figure 4</strong> shows the results for after applying it on different objects with different step numbers.</p>
+<p><img src="/img/mesh-smoothing_4.jpg" alt="Mesh Smoothing figure 4"></p>
+<center><b>Figure 4</b> Results of weighted mean filtering algorithm.</center>
+
+<p>We can conclude that the results of both algorithms basically look alike, and both of them could cause the volume of object to shrink if we apply too many times.</p>
+<p>I have also uploaded the project to this blog: <a href="https://isaacguan.github.io/projects/mesh-smoothing">/projects/mesh-smoothing</a>, we can go there to see how exactly the algorithms work.</p>
 
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
         
-            <li class="next">
-                <a href= "/2017/12/22/Implementation-of-Voronoi-Diagram-and-Delaunay-Triangulation/" title= Implementation of Voronoi Diagram and Delaunay Triangulation >
-                    <span>Next Post</span>
-                    <span>Implementation of Voronoi Diagram and Delaunay Triangulation</span>
-                </a>
-            </li>
-        
         
             <li class="previous">
-                <a href= "/2017/11/01/Hello-World/" title= Hello World >
+                <a href= "/2017/12/22/Implementation-of-Voronoi-Diagram-and-Delaunay-Triangulation/" title= Implementation of Voronoi Diagram and Delaunay Triangulation >
                     <span>Previous Post</span>
-                    <span>Hello World</span>
+                    <span>Implementation of Voronoi Diagram and Delaunay Triangulation</span>
                 </a>
             </li>
         
@@ -260,8 +291,8 @@
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
         
         var disqus_config = function () {
-        this.page.url = "https://isaacguan.github.io/2017/11/19/Width-of-a-Set-in-the-Plane/";  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = "Width of a Set in the Plane"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = "https://isaacguan.github.io/2018/01/26/Mesh-Smoothing/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "Mesh Smoothing"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
         
         (function () { // DON'T EDIT BELOW THIS LINE
@@ -349,7 +380,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Definition-of-the-Width-of-a-Set"><span class="toc-number">1.</span> <span class="toc-text">Definition of the Width of a Set</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Characterization-of-the-Width"><span class="toc-number">2.</span> <span class="toc-text">Characterization of the Width</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Computing-the-Width"><span class="toc-number">3.</span> <span class="toc-text">Computing the Width</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Time-Complexity"><span class="toc-number">4.</span> <span class="toc-text">Time Complexity</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Selection-of-Mesh-Library"><span class="toc-number">1.</span> <span class="toc-text">Selection of Mesh Library</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Mesh-Smoothing-Algorithms"><span class="toc-number">2.</span> <span class="toc-text">Mesh Smoothing Algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Mean-Filtering-Algorithm"><span class="toc-number">2.1.</span> <span class="toc-text">Mean Filtering Algorithm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Weighted-Mean-Filtering-Algorithm"><span class="toc-number">2.2.</span> <span class="toc-text">Weighted Mean Filtering Algorithm</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Results-and-Conclusions"><span class="toc-number">3.</span> <span class="toc-text">Results and Conclusions</span></a></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
