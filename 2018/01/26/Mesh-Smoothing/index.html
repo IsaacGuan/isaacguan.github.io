@@ -200,7 +200,7 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>Mesh smoothing, also known as mesh denoising, is an important and widely discussed topic in terms of geometry processing. Basically, a mesh smoothing method takes 3 steps: loading a mesh from a file; smoothing that mesh; outputting the mesh to a file.</p>
+        <p>Mesh smoothing, also known as mesh denoising, is an important and widely discussed topic in terms of geometry processing. Basically, a mesh smoothing method takes 3 steps: loading a mesh from a file; smoothing that mesh; outputting the mesh to a file. I recently implemented a few basic algorithms regarding mesh smoothing.</p>
 <h1 id="Selection-of-Mesh-Library"><a href="#Selection-of-Mesh-Library" class="headerlink" title="Selection of Mesh Library"></a>Selection of Mesh Library</h1><p>There are a lot of mesh libraries that give us a data structure so that we can use to build a mesh for an object file. What I am using in this assignment is the <a href="https://github.com/GeometryCollective/geometry-processing-js" target="_blank" rel="external">geometry-processing-js</a> library. It is a library written in JavaScript which constructs a mesh based on half edge. It also gives plenty of predefined functions regarding the components of a mesh e.g. half edge, vertex, edge, face, etc. Besides, it also includes a linear algebra library which makes it handy for users to do matrix-vector operations.</p>
 <h1 id="Mesh-Smoothing-Algorithms"><a href="#Mesh-Smoothing-Algorithms" class="headerlink" title="Mesh Smoothing Algorithms"></a>Mesh Smoothing Algorithms</h1><p>I implemented two algorithms for Mesh Smoothing, a mean filtering algorithm, and a weighted mean filtering algorithm.</p>
 <h2 id="Mean-Filtering-Algorithm"><a href="#Mean-Filtering-Algorithm" class="headerlink" title="Mean Filtering Algorithm"></a>Mean Filtering Algorithm</h2><p>A most naïve mean filtering algorithm goes as follows:</p>
@@ -426,6 +426,10 @@ t=\frac{ax_0+by_0+cz_0-(ax+by+cz)}{a^2+b^2+c^2} \tag{3} \label{eq:3}
     
     
     
+    
+    
+    
+    
     <div class="total-archive"> Total : 4 </div>
     
     <div class="post-archive">
@@ -470,19 +474,19 @@ t=\frac{ax_0+by_0+cz_0-(ax+by+cz)}{a^2+b^2+c^2} \tag{3} \label{eq:3}
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name"><a href= "#">geometry processing</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">mesh smoothing</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">hello world</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">computational geometry</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">voronoi diagram</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">delaunay triangulation</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">geometry processing</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">mesh smoothing</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">convex hull</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">hello world</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
