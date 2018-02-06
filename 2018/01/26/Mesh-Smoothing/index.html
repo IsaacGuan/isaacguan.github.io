@@ -224,7 +224,7 @@
 <p><strong><em>Begin</em></strong></p>
 <p><em>Step1:</em>  Create a Hash Map $positions$ that maps each index of vertex to its position to be updated;</p>
 <p><em>Step2:</em> For each vertex $v$ in the mesh, traverse its neighborhood vertices. And for each neighbor vertex $nv$ calculate the weight value on each neighborhood vertex $weightnv$ by adding area of the two incident faces together;</p>
-<p><em>Step3:</em> After the traversal of neighborhood vertices, calculate the total weight weight on the vertex $v$ by accumulating every $weightnv$, and calculate $positions[v]=\frac{\sum_{} weightnv\,∙\,position\,of\,nv}{weight}$;</p>
+<p><em>Step3:</em> After the traversal of neighborhood vertices, calculate the total weight $weight$ on the vertex $v$ by accumulating every $weightnv$, and calculate $positions[v]=\frac{\sum_{} weightnv\,∙\,position\,of\,nv}{weight}$;</p>
 <p><em>Step4:</em> To preserve the boundary of holes on the mesh, if vertex $v$ is on boundary, update $positions[v]$ to the original position of vertex $v$ in the mesh;</p>
 <p><em>Step5:</em> After the whole iteration, update the positions of vertices in the mesh by the Hash Map $positions$.</p>
 <p><strong><em>End</em></strong></p>
@@ -250,7 +250,7 @@ t=\frac{ax_0+by_0+cz_0-(ax+by+cz)}{a^2+b^2+c^2} \tag{3} \label{eq:3}
 <p><strong><em>Begin</em></strong></p>
 <p><em>Step1:</em> Create a Hash Map $positions$ that maps each index of vertex to its position to be updated;</p>
 <p><em>Step2:</em> For each vertex $v$ in the mesh, traverse its neighborhood vertices. And for each neighbor vertex $nv$ calculate the weight value on each neighborhood vertex $weightnv$ by adding area of the two incident faces together;</p>
-<p><em>Step3:</em> After the traversal of neighborhood vertices, calculate the total weight weight on the vertex $v$ by accumulating every $weightnv$, and calculate $positions[v]=\frac{\sum_{} weightnv\,∙\,position\,of\,nv}{weight}$;</p>
+<p><em>Step3:</em> After the traversal of neighborhood vertices, calculate the total weight $weight$ on the vertex $v$ by accumulating every $weightnv$, and calculate $positions[v]=\frac{\sum_{} weightnv\,∙\,position\,of\,nv}{weight}$;</p>
 <p><em>Step4:</em> Check whether $positions[v]$ falls outside its one-ring neighborhood, if so, use the mean filtering algorithm to update the new position;</p>
 <p><em>Step5:</em> To preserve the boundary of holes on the mesh, if vertex $v$ is on boundary, update $positions[v]$ to the original position of vertex $v$ in the mesh;</p>
 <p><em>Step6:</em> After the whole iteration, update the positions of vertices in the mesh by the Hash Map $positions$.</p>
