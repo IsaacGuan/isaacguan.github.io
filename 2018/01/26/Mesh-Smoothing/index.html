@@ -210,7 +210,7 @@
 <p><em>Step 3:</em> After the whole iteration, update the positions of vertices in the mesh by the Hash Map $positions$.</p>
 <p><strong><em>End</em></strong></p>
 <p>However, if the object has some holes on it, this algorithm could cause the holes to enlarge after times of iteration, which is shown in <strong>Figure 1</strong>.</p>
-<p><img src="/img/mesh-smoothing_1.jpg" alt="Mesh Smoothing figure 1"></p>
+<p><img src="/img/mesh_smoothing_1.jpg" alt="Mesh Smoothing figure 1"></p>
 <center><b>Figure 1:</b> Holes enlarge on the object, steps = 5.</center>
 
 <p>Sometimes, we don’t like such distortion, so it is necessary to preserve the boundary of holes on the mesh. We can add a step to the algorithm to constrain the vertices of boundary edges:</p>
@@ -229,7 +229,7 @@
 <p><em>Step5:</em> After the whole iteration, update the positions of vertices in the mesh by the Hash Map $positions$.</p>
 <p><strong><em>End</em></strong></p>
 <p>However, in the implementation, I found this could cause the faces of the mesh overlapping one another after several times of iterations, because the position of vertex could fall outside its one-ring neighborhood. As shown in <strong>Figure 2</strong>, overlapping occurs after 5 times of iteration.</p>
-<p><img src="/img/mesh-smoothing_2.jpg" alt="Mesh Smoothing figure 2"></p>
+<p><img src="/img/mesh_smoothing_2.jpg" alt="Mesh Smoothing figure 2"></p>
 <center><b>Figure 2:</b> Overlapping of faces, steps = 5.</center>
 
 <p>In order to prevent such thing from happening, I tried to find those vertices which could fall outside its neighborhood during an iteration. The one-ring neighborhood of one vertex is actually a star-shaped polygon so that we can use the left-turn/right-turn check to decide whether the vertex is inside it or not.</p>
@@ -256,11 +256,11 @@ t=\frac{ax_0+by_0+cz_0-(ax+by+cz)}{a^2+b^2+c^2} \tag{3} \label{eq:3}
 <p><em>Step6:</em> After the whole iteration, update the positions of vertices in the mesh by the Hash Map $positions$.</p>
 <p><strong><em>End</em></strong></p>
 <h1 id="Results-and-Conclusions"><a href="#Results-and-Conclusions" class="headerlink" title="Results and Conclusions"></a>Results and Conclusions</h1><p>As for the mean filtering algorithm, <strong>Figure 3</strong> shows the results for after applying it on different objects with different step numbers.</p>
-<p><img src="/img/mesh-smoothing_3.jpg" alt="Mesh Smoothing figure 3"></p>
+<p><img src="/img/mesh_smoothing_3.jpg" alt="Mesh Smoothing figure 3"></p>
 <center><b>Figure 3:</b> Results of mean filtering algorithm.</center>
 
 <p>As for the weighted mean filtering algorithm, <strong>Figure 4</strong> shows the results for after applying it on different objects with different step numbers.</p>
-<p><img src="/img/mesh-smoothing_4.jpg" alt="Mesh Smoothing figure 4"></p>
+<p><img src="/img/mesh_smoothing_4.jpg" alt="Mesh Smoothing figure 4"></p>
 <center><b>Figure 4:</b> Results of weighted mean filtering algorithm.</center>
 
 <p>We can conclude that the results of both algorithms basically look alike, and both of them could cause the volume of object to shrink if we apply too many times.</p>
