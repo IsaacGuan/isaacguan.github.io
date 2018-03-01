@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        Hello World · Isaac&#39;s Blog
+        Hough Transform for Plane Detection · Isaac&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -82,7 +82,7 @@
                 <a href="/" >Isaac&#39;s Blog</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">Hello World</a>
+                <a href="#" class="post-name">Hough Transform for Plane Detection</a>
             </div>
     </div>
     
@@ -103,7 +103,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            Hello World
+            Hough Transform for Plane Detection
             <!-- 404 -->
             
         </h1>
@@ -121,13 +121,17 @@
             
                 <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-href = hello world>hello world</a>
+        <a class="post-tag" href="javascript:void(0);" data-href = geometry processing>geometry processing</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = hough transformation>hough transformation</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = plane detection>plane detection</a>
     
 </div>
             
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2017/11/01</span>
+                <span class="post-intro-time">2018/02/28</span>
             </div>
         
     </div>
@@ -198,33 +202,21 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <blockquote>
-<p>Existence precedes essence.</p>
-</blockquote>
-<p>During the high school years, I once kept a diary, sort of artsy lifestyle possessed by the petty bourgeoisie. And this experience told me the truth that writing is really time consuming, especially when you are making ‘sentimental twaddle’ on trivial things in daily life.</p>
-<p>Time flies. I haven’t been keeping that habit for a long time and I will be 23 this month. As every young man in his 20s, I feel at a loss from time to time. Looking back on the past few years, seemingly I have gone through a lot of things and met up with a lot of people, but future still remains uncertain.</p>
-<p>Some people of this era are distressed and tend to explore the meaning of their existence. That is why I am quoting the words of <a href="https://en.wikipedia.org/wiki/Jean-Paul_Sartre" target="_blank" rel="external">Jean-Paul Sartre</a> at the beginning of this post. It tells that life could be meaningless according to my understanding, unless you create yourself a meaning.</p>
-<p>But I cannot say that I am an existentialist. Existentialist should be fearless, like <a href="https://en.wikipedia.org/wiki/Friedrich_Nietzsche" target="_blank" rel="external">Nietzsche</a>, who asserted that ‘God is dead’. I am just following the guidance of these great philosophers to add something that I believe is meaningful to my life.</p>
-<p>Thus, I decided to build this place and record something of myself, which generally includes:</p>
-<ul>
-<li>Something about my study (algorithms, programming, projects I am doing, etc.)</li>
-<li>Something about my hobby (traveling, cycling, reading, photographing, etc.)</li>
-<li>And more possibilities…</li>
-</ul>
-<p>It is lucky for me to live in this digital age, such that I can easily build up this small website on my own using <a href="https://pages.github.com/" target="_blank" rel="external">Github Pages</a> as blogging platform and <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a> as framework. I also would like to express my thanks to <a href="https://github.com/fi3ework" target="_blank" rel="external">fi3ework</a> who designed this beautiful theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank" rel="external">archer</a> that I am using.</p>
-<p>Anyhow, this is the very first post of my blog. Wish myself happy blogging :)</p>
+        <p>The <a href="https://en.wikipedia.org/wiki/Hough_transform" target="_blank" rel="external">Hough transform</a> is a method for detecting parameterized objects, typically used for lines and circles in 2D space. Nowadays, with proliferation of acquisitive devices, deriving a massive point cloud is an easy task. As we can also parameterize objects in 3D, Hough transform can be applied to detect planes in 3D point clouds as well.</p>
+<h1 id="Parameterization-of-a-Plane"><a href="#Parameterization-of-a-Plane" class="headerlink" title="Parameterization of a Plane"></a>Parameterization of a Plane</h1><p>Similar to a line in 2D space, a plane in 3D can be described using a <a href="https://en.wikipedia.org/wiki/Linear_equation#Slope%E2%80%93intercept_form" target="_blank" rel="external">slope–intercept equation</a>: $z=k_xx+k_yy+b$, where $k_x$ is the slope in x-direction, $k_y$ is the slope in y-direction and $b$ is the intercept on z-axis. With this equation we can simply parameterize a plane as $(k_x,k_y,b)$.</p>
+<p>However, values of $k_x$, $k_y$, and $b$ are unbounded, which would pose a problem when we try to parameterize a vertical plane. Thus, for computational reasons, we can write the plane equation in the <a href="https://en.wikipedia.org/wiki/Hesse_normal_form" target="_blank" rel="external">Hesse normal form</a>: $x\cos\theta\sin\phi+y\sin\phi\sin\theta+z\cos\phi=\rho$, where $\theta$ is the angle between the normal vector of this plane and the x-axis, $\phi$ is the angle between the normal vector and z-axis and $\rho$ is the distance from the plane to the origin. So the plane can be parameterized as $(\theta,\phi,\rho)$.</p>
 
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
         
-            <li class="next">
-                <a href= "/2017/11/19/Width-of-a-Set-in-the-Plane/" title= Width of a Set in the Plane >
-                    <span>Next Post</span>
-                    <span>Width of a Set in the Plane</span>
+        
+            <li class="previous">
+                <a href= "/2018/01/26/Mesh-Smoothing/" title= Mesh Smoothing >
+                    <span>Previous Post</span>
+                    <span>Mesh Smoothing</span>
                 </a>
             </li>
-        
         
     </ul>
     <!-- 评论插件 -->
@@ -239,8 +231,8 @@
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
         
         var disqus_config = function () {
-        this.page.url = "https://isaacguan.github.io/2017/11/01/Hello-World/";  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = "Hello World"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = "https://isaacguan.github.io/2018/02/28/Hough-Transform-for-Plane-Detection/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "Hough Transform for Plane Detection"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
         };
         
         (function () { // DON'T EDIT BELOW THIS LINE
@@ -328,7 +320,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Parameterization-of-a-Plane"><span class="toc-number">1.</span> <span class="toc-text">Parameterization of a Plane</span></a></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
