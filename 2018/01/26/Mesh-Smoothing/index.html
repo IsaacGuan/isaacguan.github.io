@@ -233,15 +233,15 @@
 <center><b>Figure 2:</b> Overlapping of faces, steps = 5.</center>
 
 <p>In order to prevent such thing from happening, I tried to find those vertices which could fall outside its neighborhood during an iteration. The one-ring neighborhood of one vertex is actually a star-shaped polygon so that we can use the left-turn/right-turn check to decide whether the vertex is inside it or not.</p>
-<p>To find out the star-shaped neighborhood of a certain vertex $v$, we should first project all the neighbors onto the plane which is defined by vertex $v$ and its normal vector $n$. We can find the projection $q=(x’,y’,z’)$ of vertex $p=(x,y,z)$ on the plane that defined by the normal $n=(a,b,c)$ and vertex $v=(x_0,y_0,z_0)$ in the way below.</p>
+<p>To find out the star-shaped neighborhood of a certain vertex $v$, we should first project all the neighbors onto the plane which is defined by vertex $v$ and its normal vector $n$. We can find the projection $q=(x^\prime,y^\prime,z^\prime)$ of vertex $p=(x,y,z)$ on the plane that defined by the normal $n=(a,b,c)$ and vertex $v=(x_0,y_0,z_0)$ in the way below.</p>
 <p>There are following implicit geometric relationships between $p$, $q$, $n$ and $v$: $pq \parallel n$ and $vq \perp n$.</p>
 <p>The following equation can be derived from $pq \parallel n$:</p>
-<p>$$\begin{equation}<br>\frac{x’-x}{a}=\frac{y’-y}{b}=\frac{z’-z}{c}=t \tag{1} \label{eq:1}<br>\end{equation}$$</p>
+<p>$$\begin{equation}<br>\frac{x^\prime-x}{a}=\frac{y^\prime-y}{b}=\frac{z^\prime-z}{c}=t \tag{1} \label{eq:1}<br>\end{equation}$$</p>
 <p>And from $vq \perp n$, we can derive:</p>
-<p>$$\begin{equation}<br>a(x’-x_0)+b(y’-y_0)+c(z’-z_0)=0 \tag{2} \label{eq:2}<br>\end{equation}$$</p>
+<p>$$\begin{equation}<br>a(x^\prime-x_0)+b(y^\prime-y_0)+c(z^\prime-z_0)=0 \tag{2} \label{eq:2}<br>\end{equation}$$</p>
 <p>Combining $\eqref{eq:1}$ and $\eqref{eq:2}$, we can solve for $t$:</p>
 <p>$$\begin{equation}<br>t=\frac{ax_0+by_0+cz_0-(ax+by+cz)}{a^2+b^2+c^2} \tag{3} \label{eq:3}<br>\end{equation}$$</p>
-<p>Then we can solve for the projection $q=(x’,y’,z’)$ by combining $\eqref{eq:1}$ and $\eqref{eq:3}$.</p>
+<p>Then we can solve for the projection $q=(x^\prime,y^\prime,z^\prime)$ by combining $\eqref{eq:1}$ and $\eqref{eq:3}$.</p>
 <p>As the data structure of mesh is based on half edge, and all the faces are defined by half edges in counter-clock-wise order. Thus, for each vertex $v$, we can simply get the boundary edges of a star-shaped neighborhood in counter-clock-wise order, project them along with the position to be updated $positions[v]$ onto the plane that is defined by vertex $v$ and its normal vector $n$. Then we can do the left-turn/right-turn check on that plane to see whether the new position for vertex $v$ $positions[v]$ is outside its neighborhood polygon or not.</p>
 <p>So the modified algorithm goes as follows:</p>
 <p><strong><em>Begin</em></strong></p>
@@ -398,6 +398,8 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     

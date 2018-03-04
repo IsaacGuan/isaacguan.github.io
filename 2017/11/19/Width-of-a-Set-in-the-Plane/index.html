@@ -201,16 +201,16 @@
             <main class="main post-page">
     <article class="article-entry">
         <p>The book <a href="http://reports-archive.adm.cs.cmu.edu/anon/anon/usr/ftp/scan/CMU-CS-80-101.pdf" target="_blank" rel="external"><em>Geometric Transforms for Fast Geometric Algorithms</em></a> introduces an interesting algorithm from page 84 of computing the diameter of a set of points in two dimensions. Inspired by this, I come up with a solution of computing the width of a set using geometric transformation.</p>
-<h1 id="Definition-of-the-Width-of-a-Set"><a href="#Definition-of-the-Width-of-a-Set" class="headerlink" title="Definition of the Width of a Set"></a>Definition of the Width of a Set</h1><p>Let $S$ be a set of $n$ points in $\mathbb{R}^2$. If $l$ and $l’$ are two parallel lines, then the region between them is called a slab. The width of $S$ is defined to be the minimum distance between the bounding lines of any slab that contains all points of $S$.</p>
-<h1 id="Characterization-of-the-Width"><a href="#Characterization-of-the-Width" class="headerlink" title="Characterization of the Width"></a>Characterization of the Width</h1><p>Before presenting the width-finding algorithm, I’d like first to characterize the width of a set of points, introduce some terminology and prove several theorems.</p>
+<h1 id="Definition-of-the-Width-of-a-Set"><a href="#Definition-of-the-Width-of-a-Set" class="headerlink" title="Definition of the Width of a Set"></a>Definition of the Width of a Set</h1><p>Let $S$ be a set of $n$ points in $\mathbb{R}^2$. If $l$ and $l^\prime$ are two parallel lines, then the region between them is called a slab. The width of $S$ is defined to be the minimum distance between the bounding lines of any slab that contains all points of $S$.</p>
+<h1 id="Characterization-of-the-Width"><a href="#Characterization-of-the-Width" class="headerlink" title="Characterization of the Width"></a>Characterization of the Width</h1><p>Before presenting the width-finding algorithm, I^\primed like first to characterize the width of a set of points, introduce some terminology and prove several theorems.</p>
 <p>When we say that $A$ is contained in $B$, it means that every point of $A$ also lies in $B$. The bounding lines of a slab could contain a vertex or an edge of the convex hull $CH(S)$ of the set of points $S$.</p>
-<p><strong>Theorem 1:</strong> Let $l$ and $l’$ be two parallel lines that define the width of $S$, both $l$ and $l’$ contain a vertex of the convex hull $CH(S)$ of $S$.</p>
-<p><strong>Proof.</strong> Assume otherwise. The width is determined by parallel lines $l$ and $l’$, and $l$ contains a vertex of $CH(S)$, $l’$ does not, as shown in <strong>Figure 1</strong>. Then there must exists a line $l’’$ closer to the set of points $S$ and produces a smaller distance. Q.E.D.</p>
+<p><strong>Theorem 1:</strong> Let $l$ and $l^\prime$ be two parallel lines that define the width of $S$, both $l$ and $l^\prime$ contain a vertex of the convex hull $CH(S)$ of $S$.</p>
+<p><strong>Proof.</strong> Assume otherwise. The width is determined by parallel lines $l$ and $l^\prime$, and $l$ contains a vertex of $CH(S)$, $l^\prime$ does not, as shown in <strong>Figure 1</strong>. Then there must exists a line $l^{\prime\prime}$ closer to the set of points $S$ and produces a smaller distance. Q.E.D.</p>
 <p><img src="/img/width_of_a_set_in_the_plane_1.jpg" alt="width of a set in the plane figure 1"></p>
 <center><b>Figure 1</b></center>
 
-<p><strong>Theorem 2:</strong> Let $l$ and $l’$ be two parallel lines that define the width of $S$, at least one of $l$ and $l’$ contain an edge of the convex hull $CH(S)$ of $S$.</p>
-<p><strong>Proof.</strong> Assume otherwise. The width is determined by parallel lines $l$ and $l’$ which both pass a vertex but neither of them passes an edge. We can rotate the parallel lines in preferred direction of rotation which means we rotate $l$ and $l’$ about the two vertices they pass to form new parallel lines $l_1$ and $l_1’$ and the distance between $l_1$ and $l_1’$ is smaller. This contradicts the assumption. Q.E.D.</p>
+<p><strong>Theorem 2:</strong> Let $l$ and $l^\prime$ be two parallel lines that define the width of $S$, at least one of $l$ and $l^\prime$ contain an edge of the convex hull $CH(S)$ of $S$.</p>
+<p><strong>Proof.</strong> Assume otherwise. The width is determined by parallel lines $l$ and $l^\prime$ which both pass a vertex but neither of them passes an edge. We can rotate the parallel lines in preferred direction of rotation which means we rotate $l$ and $l^\prime$ about the two vertices they pass to form new parallel lines $l_1$ and $l^\prime_1$ and the distance between $l_1$ and $l^\prime_1$ is smaller. This contradicts the assumption. Q.E.D.</p>
 <h1 id="Computing-the-Width"><a href="#Computing-the-Width" class="headerlink" title="Computing the Width"></a>Computing the Width</h1><p>We can divide the convex hull into 2 parts: the upper hull and the lower hull, so that when one of the parallel lines of support of $S$ meets the convex hull on the upper hull, the other is on the lower hull.</p>
 <p>According to the <a href="https://en.wikipedia.org/wiki/Linear_programming#Duality" target="_blank" rel="external">duality transformation</a>, a non-vertical line $y=kx+b$ can be transformed into the point $(k,b)$ which is formed by the slope and intercept of the line. And a point $(a,b)$ can be transformed into the line $y=k(x-a)+b$ which means the set of lines that pass through it.</p>
 <p>Hence, we define the transform of an edge of the convex hull $CH(S)$ of $S$ as the slope of the line containing that edge and the transform of a vertex of $CH(S)$ as the set of slopes of lines that pass through it. I.e., the line containing an edge: $y=kx+b$ can be mapped to the one dimensional point $(k)$ and the vertex that lies between two edges: $y=k_1x+b_1$ and $y=k_2x+b_2$ can be mapped to the closed interval $[k_1,k_2]$. As shown in <strong>Figure 2</strong>, the convex hull is transformed into a line which consists of a upper part and a lower part.</p>
@@ -363,6 +363,8 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
