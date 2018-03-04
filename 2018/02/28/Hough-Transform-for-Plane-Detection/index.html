@@ -213,6 +213,62 @@
 <center><b>Figure 2:</b> Transformation of three points from original space to Hough Space.</center>
 
 <h1 id="Hough-Methods"><a href="#Hough-Methods" class="headerlink" title="Hough Methods"></a>Hough Methods</h1><p>Basically, the algorithm for doing Hough Transform can be described as a voting method, where we discretize the Hough Space with a bunch of $(\theta,\phi,\rho)$ cells. A data structure called accumulator then is needed to store all these cells with a score parameter for every cell. Incrementing a cell means increasing the score of it by +1. Each point votes for all cells of $(\theta,\phi,\rho)$ that define a plane on which it may lie.</p>
+<h2 id="Standard-Hough-Transform"><a href="#Standard-Hough-Transform" class="headerlink" title="Standard Hough Transform"></a>Standard Hough Transform</h2><p>A most basic and naïve Hough Transform algorithm for plane detection is outlined as follows:</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step 1:</em> Traverse all the points in the point cloud $P$;</p>
+<p><em>Step 2:</em> For each point $p_i$ in $P$, vote for all the $A(\theta,\phi,\rho)$ cells in the accumulator $A$ defined by this point;</p>
+<p><em>Step 3:</em> After the whole iteration, search for the most prominent cells in the accumulator $A$, that define the detected planes in $P$.</p>
+<p><strong><em>End</em></strong></p>
+<p>The Standard Hough Transform is performed in two stages: incrementing the cells, which needs $O(\lvert P \rvert \cdot N_\phi \cdot N_\theta)$ operations, and searching for the most prominent cells, which takes $O(N_\rho \cdot N_\phi \cdot N_\theta)$ time, where $\lvert P \rvert$ is the size of the point cloud, $N_\phi$ is the number of cells in direction of $\phi$, $N_\theta$ in direction of $\theta$ and $N_\rho$ in direction of $\rho$.</p>
+<h2 id="Probabilistic-Hough-Transform"><a href="#Probabilistic-Hough-Transform" class="headerlink" title="Probabilistic Hough Transform"></a>Probabilistic Hough Transform</h2><p>In the Standard Hough Transform, the size of the point cloud $\lvert P \rvert$ is usually much larger than the number $N_\rho \cdot N_\phi \cdot N_\theta$ of cells in the accumulator array. We can simply reduce the number of points to improve the computational expenses. Thus, the Standard Hough Transform can be adapted to the Probabilistic Hough Transform, which is shown as follows:</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step 1:</em> Determine the size value $m$ and the threshold value $t$;</p>
+<p><em>Step 2:</em> randomly select $m$ points to create $P^m \subset P$;</p>
+<p><em>Step 3:</em> Do the Standard Hough Transform on the point set $P^m$;</p>
+<p><em>Step 4:</em> Delete the cells from the accumulator $A$ with a value that does not reach $t$, and search for the most prominent cells in $A$, that define the detected planes in $P$.</p>
+<p><strong><em>End</em></strong></p>
+<p>The $m$ points $(m&lt;\lvert P \rvert)$ are randomly selected from the point cloud $P$, so the dominant part of the runtime is proportional to $O(m \cdot N_\phi \cdot N_\theta)$. However, the optimal choice of $m$ and the threshold $t$ depends on the actual problem, e.g., the number of planes, or the noise in the point cloud.</p>
+<h3 id="Adaptive-Probabilistic-Hough-Transform"><a href="#Adaptive-Probabilistic-Hough-Transform" class="headerlink" title="Adaptive Probabilistic Hough Transform"></a>Adaptive Probabilistic Hough Transform</h3><p>In order to find the optimal subsample of the point cloud, we can use an adaptive method to determine the reasonable number of selected points. The Adaptive Probabilistic Hough Transform monitors the accumulator. The structure of the accumulator changes dynamically during the voting phase. As soon as stable structures emerge and turn into significant peaks, voting is terminated.</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step 1:</em> Check the stability order $m_k$ of the list of $k$ peaks $S_k$ in the accumulator, if it reaches the threshold value $t_k$ then finish;</p>
+<p><em>Step 2:</em> Randomly select a small subset $P^m \subset P$;</p>
+<p><em>Step 3:</em> Do the Standard Hough Transform on the point set $P^m$;</p>
+<p><em>Step 4:</em> Merge the active list of peaks $S_k$ with the previous one, determine the stability order $m_k$, goto <em>Step 1</em>;</p>
+<p><strong><em>End</em></strong></p>
+<p>In this algorithm, The stability is described by a set $S_k$ of $k$ peaks in the list, if the set contains all largest peaks before and after one update phase. The number $m_k$ of consecutive lists in which $S_k$ is stable is called the stability order of $S_k$.</p>
+<h3 id="Progressive-Probabilistic-Hough-Transform"><a href="#Progressive-Probabilistic-Hough-Transform" class="headerlink" title="Progressive Probabilistic Hough Transform"></a>Progressive Probabilistic Hough Transform</h3><p>The Progressive Probabilistic Hough Transform calculates stopping time for random selection of points. The algorithm stops whenever a cell count exceeds a threshold.</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step 1:</em> Check the input point cloud $P$, if it is empty then finish;</p>
+<p><em>Step 2:</em> Update the accumulator with a single point $p_i$ randomly selected from $P$;</p>
+<p><em>Step 3:</em> Remove $p_i$ from $P$ and add it to $P_{voted}$;</p>
+<p><em>Step 4:</em> Check if the highest peak in the accumulator that was modified by the new point is higher than threshold $t$, if not then goto <em>Step 1</em>;</p>
+<p><em>Step 5:</em> Select all points from $P$ and $P_{voted}$ that are close to the plane defined by the highest peak and add them to $P_{plane}$;</p>
+<p><em>Step 6:</em> Search for the largest connected region $P_{region}$ in $P_{plane}$ and remove from $P$ all points in $P_{region}$;</p>
+<p><em>Step 7:</em> Reset the accumulator by unvoting all the points in $P_{region}$;</p>
+<p><em>Step 8:</em> If the area covered by $P_{region}$ is larger than a threshold, add it to the output list, goto <em>Step 1</em>;</p>
+<p><strong><em>End</em></strong></p>
+<p>In this algorithm, $P_{voted}$ is the point set of all the voted points before a plane is detected, $P_{plane}$ is the set of points in the detected planes, and $P_{region}$ denotes the largest connected region in $P_{plane}$. For determining the stopping time, threshold $t$ is predicted on the percentage of votes for one cell from all points that have voted.</p>
+<h2 id="Randomized-Hough-Transform"><a href="#Randomized-Hough-Transform" class="headerlink" title="Randomized Hough Transform"></a>Randomized Hough Transform</h2><p>As we know the fact that a plane is defined by three points. For detecting planes, three points from the input space are mapped onto one point in the Hough Space. When a plane is represented by a large number of points, it is more likely that three points from this plane are randomly selected. Eventually the cells corresponding to actual planes receive more votes and are distinguishable from the other cells. Inspired by this idea, we can come up with an algorithm described as follows:</p>
+<p><strong><em>Begin</em></strong></p>
+<p><em>Step 1:</em> Check the input point cloud $P$, if it is empty then finish;</p>
+<p><em>Step 2:</em> Randomly pick three points $p_1$, $p_2$ and $p_3$ from $P$;</p>
+<p><em>Step 3:</em> If $p_1$, $p_2$ and $p_3$ fulfill the distance criterion, calculate plane $(\theta,\phi,\rho)$ spanned by $p_1$, $p_2$ and $p_3$ and increment cell $A(\theta,\phi,\rho)$ in the accumulator space;</p>
+<p><em>Step 4:</em> If the count of $\lvert A(\theta,\phi,\rho) \rvert$ reaches threshold $t$, $(\theta,\phi,\rho)$ parameterize the detected plane, delete all points close to $(\theta,\phi,\rho)$ from $P$, and reset the accumulator $A$;</p>
+<p><em>Step 5:</em> Goto <em>Step 1</em>;</p>
+<p><strong><em>End</em></strong></p>
+<p>This algorithm simply decreases the number of cells touched by exploiting the fact that a curve with $n$ parameters is defined by $n$ points. And also note that, if points are very far apart, they most likely do not belong to one plane. To take care of this and to diminish errors from sensor noise a distance criterion is introduced: $dist(p_1,p_2,p_3)≤dist_{max}$, i.e., the maximum point-to-point distance between $p_1$, $p_2$ and $p_3$ is below a fixed threshold.</p>
+<h1 id="Accumulator"><a href="#Accumulator" class="headerlink" title="Accumulator"></a>Accumulator</h1><p>An inappropriate accumulator may lead to detection failures of some specific planes and difficulties in finding local maxima, displays low accuracy, large storage space, and low speed. A tradeoff has to be found between a coarse discretization that accurately detects planes and a small number of cells in the accumulator to decrease the time needed for the Hough Transform.</p>
+<h2 id="Accumulator-Array"><a href="#Accumulator-Array" class="headerlink" title="Accumulator Array"></a>Accumulator Array</h2><p>For the standard implementation of the 2D Hough Transform, the Hough Space is divided into $N_\rho \times N_\theta$ rectangular cells. The size of the cells is variable and is chosen problem dependent. Using the same subdivision for the 3D Hough Space by dividing it into cuboid cells results in the patches seen in <strong>Figure 3</strong>. The cells closer to the poles are smaller and comprise less normal vectors. This means voting favors the larger equatorial cells.</p>
+<p><img src="/img/hough_transform_for_plane_detection_3.jpg" alt="Hough Transform for Plane Detection figure 3"></p>
+<center><b>Figure 3:</b> Accumulator array.</center>
+
+<h2 id="Accumulator-Cube"><a href="#Accumulator-Cube" class="headerlink" title="Accumulator Cube"></a>Accumulator Cube</h2><p>We can also project the unit sphere $S^2$ onto the smallest cube that contains the sphere using the diffeomorphism: $\phi: S^2 \rightarrow cube, s \mapsto \Arrowvert s \Arrowvert_\infty$. Each face of the cube is divided into a regular grid, which is shown in <strong>Figure 4</strong>. With this design of accumulator, the difference of size between the patches on the unit sphere is negligible.</p>
+<p><img src="/img/hough_transform_for_plane_detection_4.jpg" alt="Hough Transform for Plane Detection figure 4"></p>
+<center><b>Figure 4:</b> Accumulator cube.</center>
+
+<h2 id="Accumulator-Ball"><a href="#Accumulator-Ball" class="headerlink" title="Accumulator Ball"></a>Accumulator Ball</h2><p>The commonly used design, accumulator array, which is shown in <strong>Figure 3</strong>, causes the irregularity between the patches on the unit sphere. To solve this issue, we can simply customize the the resolution in terms of polar coordinates depending on the position of the sphere. The resolution of the longitude $\phi$ is kept as for the accumulator array, which is defined as $\phi^\prime$. In $\theta$ direction, the largest latitude circle is the equator located at $\phi=0$. For the unit sphere it has the $max_l = 2\pi$. The length of the latitude circle in the middle of the segment located above $\phi_i$ is given by $length_i=2\pi(\phi+\phi^\prime)$. The step width in $\theta$ direction for each slice is now computed as $\theta_{\phi_i}=\frac{360^\circ \cdot max_l}{length_i \cdot N_\theta}$, where $N_\theta$ is a constant that can be customized. The resulting design is illustrated in <strong>Figure 5</strong>.</p>
+<p><img src="/img/hough_transform_for_plane_detection_5.jpg" alt="Hough Transform for Plane Detection figure 5"></p>
+<center><b>Figure 5:</b> Accumulator ball.</center>
 
     </article>
     <!-- 前后页  -->
@@ -328,7 +384,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Parameterization-of-a-Plane"><span class="toc-number">1.</span> <span class="toc-text">Parameterization of a Plane</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hough-Methods"><span class="toc-number">2.</span> <span class="toc-text">Hough Methods</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Parameterization-of-a-Plane"><span class="toc-number">1.</span> <span class="toc-text">Parameterization of a Plane</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hough-Methods"><span class="toc-number">2.</span> <span class="toc-text">Hough Methods</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Standard-Hough-Transform"><span class="toc-number">2.1.</span> <span class="toc-text">Standard Hough Transform</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Probabilistic-Hough-Transform"><span class="toc-number">2.2.</span> <span class="toc-text">Probabilistic Hough Transform</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Adaptive-Probabilistic-Hough-Transform"><span class="toc-number">2.2.1.</span> <span class="toc-text">Adaptive Probabilistic Hough Transform</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Progressive-Probabilistic-Hough-Transform"><span class="toc-number">2.2.2.</span> <span class="toc-text">Progressive Probabilistic Hough Transform</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Randomized-Hough-Transform"><span class="toc-number">2.3.</span> <span class="toc-text">Randomized Hough Transform</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Accumulator"><span class="toc-number">3.</span> <span class="toc-text">Accumulator</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Accumulator-Array"><span class="toc-number">3.1.</span> <span class="toc-text">Accumulator Array</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Accumulator-Cube"><span class="toc-number">3.2.</span> <span class="toc-text">Accumulator Cube</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Accumulator-Ball"><span class="toc-number">3.3.</span> <span class="toc-text">Accumulator Ball</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -342,12 +398,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
-    
-    
     
     
     
