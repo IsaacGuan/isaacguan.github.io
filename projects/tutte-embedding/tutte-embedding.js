@@ -36,7 +36,7 @@ class TutteEmbedding {
 		this.boundaryTotalLength = 0;
 
 		for (let bhe of this.boundary.adjacentHalfedges()) {
-			this.boundaryEdgeLength[bhe.vertex] = this.geometry.length(bhe.edge) * 100;
+			this.boundaryEdgeLength[bhe.vertex] = this.geometry.length(bhe.edge);
 			this.boundaryTotalLength = this.boundaryTotalLength + this.boundaryEdgeLength[bhe.vertex];
 		}
 	}
@@ -45,7 +45,7 @@ class TutteEmbedding {
 		this.ubar = DenseMatrix.zeros(this.vertexNumber);
 		this.vbar = DenseMatrix.zeros(this.vertexNumber);
 		
-		let radius = 1;
+		let radius = this.boundaryTotalLength / (2 * Math.PI);
 		let l = 0;
 
 		let u0 = 0;
@@ -83,6 +83,38 @@ class TutteEmbedding {
 		let T = new Triplet(this.vertexNumber, this.vertexNumber);
 		switch (weightset) {
 			case "Uniform Laplacian": default:
+				for (let v of this.geometry.mesh.vertices) {
+					let i = v.index;
+					if (this.ubar.get(i) != 0 || this.vbar.get(i) != 0) {
+						T.addEntry(1, i, i);
+					} else {
+						let n = 0;
+						for (let nv of v.adjacentVertices()) {
+							let j = nv.index;
+							T.addEntry(1, i, j);
+							n++;
+						}
+						T.addEntry(-n, i, i);
+					}
+				}
+				break;
+			case "Laplace-Beltrami":
+				for (let v of this.geometry.mesh.vertices) {
+					let i = v.index;
+					if (this.ubar.get(i) != 0 || this.vbar.get(i) != 0) {
+						T.addEntry(1, i, i);
+					} else {
+						let n = 0;
+						for (let nv of v.adjacentVertices()) {
+							let j = nv.index;
+							T.addEntry(1, i, j);
+							n++;
+						}
+						T.addEntry(-n, i, i);
+					}
+				}
+				break;
+			case "Mean Value":
 				for (let v of this.geometry.mesh.vertices) {
 					let i = v.index;
 					if (this.ubar.get(i) != 0 || this.vbar.get(i) != 0) {
