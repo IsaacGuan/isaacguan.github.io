@@ -94,9 +94,10 @@
 					"f": indices
 				}));
 			},
+			"Boundary": "Even",
 			"Weight": "Uniform Laplacian",
 			"Apply": function() {
-				apply(this.Weight);
+				apply(this.Boundary, this.Weight);
 
 				if (parameterization) {
 					// cleanup
@@ -148,6 +149,7 @@
 			io.add(guiFields, "Export Mesh");
 			io.close();
 
+			gui.add(guiFields, "Boundary", ["Even", "By Scale"]).listen();
 			gui.add(guiFields, "Weight", ["Uniform Laplacian", "Laplace-Beltrami", "Mean Value"]).listen();
 			gui.add(guiFields, "Apply");
 			gui.add(guiFields, "Show Wireframe").onChange(toggleWireframe).listen();
@@ -189,12 +191,12 @@
 			document.body.removeChild(element);
 		}
 
-		function apply(weightset) {
+		function apply(boundaryscheme, weightset) {
 			if (mesh.boundaries.length === 0) {
 				alert("Mesh must have at least one boundary loop");
 				tutteEmbedding = undefined;
 			} else {
-				tutteEmbedding = new TutteEmbedding(geometry, weightset);
+				tutteEmbedding = new TutteEmbedding(geometry, boundaryscheme, weightset);
 				parameterization = tutteEmbedding.apply();
 			}			
 		}
