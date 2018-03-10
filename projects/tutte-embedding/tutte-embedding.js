@@ -91,8 +91,9 @@ class TutteEmbedding {
 						let n = 0;
 						for (let nv of v.adjacentVertices()) {
 							let j = nv.index;
-							T.addEntry(1, i, j);
-							n++;
+							let weight = 1;
+							T.addEntry(weight, i, j);
+							n = n + weight;
 						}
 						T.addEntry(-n, i, i);
 					}
@@ -105,10 +106,12 @@ class TutteEmbedding {
 						T.addEntry(1, i, i);
 					} else {
 						let n = 0;
-						for (let nv of v.adjacentVertices()) {
-							let j = nv.index;
-							T.addEntry(1, i, j);
-							n++;
+						let area = this.geometry.circumcentricDualArea(v);
+						for (let nhe of v.adjacentHalfedges()) {
+							let j = nhe.next.vertex.index;
+							let weight = (this.geometry.cotan(nhe) + this.geometry.cotan(nhe.twin)) / (2 * area);
+							T.addEntry(weight, i, j);
+							n = n + weight;
 						}
 						T.addEntry(-n, i, i);
 					}
