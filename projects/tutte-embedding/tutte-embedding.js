@@ -124,10 +124,14 @@ class TutteEmbedding {
 						T.addEntry(1, i, i);
 					} else {
 						let n = 0;
-						for (let nv of v.adjacentVertices()) {
-							let j = nv.index;
-							T.addEntry(1, i, j);
-							n++;
+						for (let nhe of v.adjacentHalfedges()) {
+							let delta = nhe.next.corner;
+							let gamma = nhe.twin.prev.corner;
+							let distance = this.geometry.length(nhe.edge);
+							let j = nhe.next.vertex.index;
+							let weight = (Math.tan(this.geometry.angle(delta) / 2) + Math.tan(this.geometry.angle(gamma) / 2)) / distance;
+							T.addEntry(weight, i, j);
+							n = n + weight;
 						}
 						T.addEntry(-n, i, i);
 					}
