@@ -153,6 +153,8 @@ class TutteEmbedding {
 		for (let v of this.geometry.mesh.vertices) {
 			parameterization[v] = new Vector(this.u.get(v.index), this.v.get(v.index));
 		}
+
+		normalize(parameterization, this.geometry.mesh.vertices);
 		
 		return parameterization;
 	}
