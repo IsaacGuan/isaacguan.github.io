@@ -94,7 +94,7 @@
 					"f": indices
 				}));
 			},
-			"Boundary": "Even",
+			"Boundary": "By Scale",
 			"Weight": "Uniform Laplacian",
 			"Apply": function() {
 				apply(this.Boundary, this.Weight);
@@ -149,7 +149,7 @@
 			io.add(guiFields, "Export Mesh");
 			io.close();
 
-			gui.add(guiFields, "Boundary", ["Even", "By Scale"]).listen();
+			gui.add(guiFields, "Boundary", ["By Scale", "Even"]).listen();
 			gui.add(guiFields, "Weight", ["Uniform Laplacian", "Laplace-Beltrami", "Mean Value"]).listen();
 			gui.add(guiFields, "Apply");
 			gui.add(guiFields, "Show Wireframe").onChange(toggleWireframe).listen();
