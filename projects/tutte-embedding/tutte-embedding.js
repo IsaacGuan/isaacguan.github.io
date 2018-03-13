@@ -45,7 +45,8 @@ class TutteEmbedding {
 		this.ubar = DenseMatrix.zeros(this.vertexNumber);
 		this.vbar = DenseMatrix.zeros(this.vertexNumber);
 		
-		let radius = this.boundaryTotalLength / (2 * Math.PI);
+		let radius = 1;
+		//let radius = this.boundaryTotalLength / (2 * Math.PI);
 		let l = 0;
 
 		let u0 = 0;
@@ -156,7 +157,7 @@ class TutteEmbedding {
 			parameterization[v] = new Vector(this.u.get(v.index), this.v.get(v.index));
 		}
 
-		normalize(parameterization, this.geometry.mesh.vertices);
+		//normalize(parameterization, this.geometry.mesh.vertices);
 		
 		return parameterization;
 	}
