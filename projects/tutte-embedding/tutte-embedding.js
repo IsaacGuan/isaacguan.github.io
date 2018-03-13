@@ -125,11 +125,13 @@ class TutteEmbedding {
 					} else {
 						let n = 0;
 						for (let nhe of v.adjacentHalfedges()) {
+							let j = nhe.next.vertex.index;
+							let distance = this.geometry.length(nhe.edge);
 							let delta = nhe.next.corner;
 							let gamma = nhe.twin.prev.corner;
-							let distance = this.geometry.length(nhe.edge);
-							let j = nhe.next.vertex.index;
-							let weight = (Math.tan(this.geometry.angle(delta) / 2) + Math.tan(this.geometry.angle(gamma) / 2)) / distance;
+							let tdelta = delta ? Math.tan(this.geometry.angle(delta) / 2) : 0;
+							let tgamma = gamma ? Math.tan(this.geometry.angle(gamma) / 2) : 0;
+							let weight = (tdelta + tgamma) / distance;
 							T.addEntry(weight, i, j);
 							n = n + weight;
 						}
