@@ -32,7 +32,7 @@
 	<script src="../../geometry-processing-js/core/corner.js"></script>
 	<script src="../../geometry-processing-js/core/mesh.js"></script>
 	<script src="../../geometry-processing-js/core/geometry.js"></script>
-	<script src="../../geometry-processing-js/input/crater.js"></script>
+	<script src="../../geometry-processing-js/input/face.js"></script>
 	<script src="../../geometry-processing-js/utils/meshio.js"></script>
 	<script src="../../geometry-processing-js/utils/colormap.js"></script>
 	<script src="../../geometry-processing-js/utils/distortion.js"></script>
@@ -79,7 +79,7 @@
 		let parameterization = undefined;
 		let tutteEmbedding = undefined;
 
-		let filename = "crater.obj";
+		let filename = "face.obj";
 
 		const ORANGE = new Vector(1.0, 0.5, 0.0);
 		let guiFields = {
@@ -126,7 +126,7 @@
 			initCamera();
 			initScene();
 			initLights();
-			initMesh(crater);
+			initMesh(face);
 			initControls();
 			addEventListeners();
 		}
