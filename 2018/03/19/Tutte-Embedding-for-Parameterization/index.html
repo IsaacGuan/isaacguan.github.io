@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        Isaac&#39;s Blog
+        Tutte Embedding for Parameterization · Isaac&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -64,16 +64,27 @@
         })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         ga('create', 'UA-109312212-1', 'auto');
         ga('send', 'pageview');
-    </script>
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
     
 </head>
     
+        <body class="post-body">
     
-<header class="header">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Isaac&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Tutte Embedding for Parameterization</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>Isaac's Blog</a>
 </header>
@@ -81,21 +92,47 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            Tutte Embedding for Parameterization
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = geometry processing>geometry processing</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = parameterization>parameterization</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = tutte embedding>tutte embedding</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/03/19</span>
+            </div>
         
     </div>
 </div>
@@ -163,40 +200,62 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>In terms of geometry processing, <a href="https://en.wikipedia.org/wiki/Tutte_embedding" target="_blank" rel="external">Tutte embedding</a>, also known as barycentric embedding, can be used for <a href="https://en.wikipedia.org/wiki/Mesh_parameterization" target="_blank" rel="external">mesh parameterization</a> by fixing the boundary vertices of the mesh on a certain convex polygon, and building a <a href="https://en.wikipedia.org/wiki/Tutte_embedding" target="_blank" rel="external">crossing-free straight-line embedding</a> with the interior vertices inside the convex boundary.</p>
+<h1 id="Implementation-of-Tutte-Embedding"><a href="#Implementation-of-Tutte-Embedding" class="headerlink" title="Implementation of Tutte Embedding"></a>Implementation of Tutte Embedding</h1><p>In order to implement a Tutte Embedding, we have to use two vectors $u$ and $v$ to store the parameterized coordinates, and another two vectors $\bar u$ and $\bar v$ to store the boundary vertices. For the interior vertex $i$, we can directly applying the following equation on it to build the barycentric mapping, $j$ denotes the adjacent vertices of $i$.</p>
+<p>$$\begin{equation}<br>\sum_{}a_{i,j}<br>\begin{pmatrix}<br>    u_i \\<br>    v_j<br>\end{pmatrix}<br>-a_{i,i}<br>\begin{pmatrix}<br>    u_i \\<br>    v_i<br>\end{pmatrix}<br>=0<br>\end{equation}$$</p>
+<p>For those vertices on the boundary, we use the equation below and set $a_{i,i}=1$, to have them fixed on a convex shape:</p>
+<p>$$\begin{equation}<br>\sum_{} a_{i,i}<br>\begin{pmatrix}<br>    u_i \\<br>    v_i<br>\end{pmatrix}<br>=<br>\begin{pmatrix}<br>    \bar u_i \\<br>    \bar v_i<br>\end{pmatrix}<br>\end{equation}$$</p>
+<p>Thus, we can build the two linear systems in below, where $A=\{a_{i,j}\}$ is a sparse matrix storing all the weights $a_{i,j}$, and find the parameterized coordinates by solving for them.</p>
+<p>$$\begin{equation}<br>\begin{cases}<br>Au=\bar u \\<br>Av=\bar v<br>\end{cases}<br>\end{equation}$$</p>
+<p>I used a disk as the convex shape for fixing the boundary vertices.</p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2018/02/28/Hough-Transform-for-Plane-Detection/" title= Hough Transform for Plane Detection >
+                    <span>Previous Post</span>
+                    <span>Hough Transform for Plane Detection</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://isaacguan.github.io/2018/03/19/Tutte-Embedding-for-Parameterization/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "Tutte Embedding for Parameterization"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://isaacguan.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
     
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/19/Width-of-a-Set-in-the-Plane/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Width of a Set in the Plane</span>
-                    </h2>
-                <div class="abstract-content">
-                    The book Geometric Transforms for Fast Geometric Algorithms introduces an interesting algorithm from page 84 of computing the diameter of a set of points in two dimensions. Inspired by this, I come up with a solution of computing the width of a set using geometric transformation.
-Definition of th...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = computational geometry>computational geometry</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = convex hull>convex hull</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/19</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+    <!--PC版-->
+
+    <!--PC版-->
+
+
     
 </main>
             <!-- profile -->
@@ -261,6 +320,13 @@ Definition of th...
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Implementation-of-Tutte-Embedding"><span class="toc-number">1.</span> <span class="toc-text">Implementation of Tutte Embedding</span></a></li></ol>
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
@@ -462,7 +528,7 @@ jsonContent:
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>
 

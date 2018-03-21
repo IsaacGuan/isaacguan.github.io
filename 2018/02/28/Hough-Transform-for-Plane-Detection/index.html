@@ -125,6 +125,8 @@
     
         <a class="post-tag" href="javascript:void(0);" data-href = hough transform>hough transform</a>
     
+        <a class="post-tag" href="javascript:void(0);" data-href = parameterization>parameterization</a>
+    
         <a class="post-tag" href="javascript:void(0);" data-href = plane detection>plane detection</a>
     
 </div>
@@ -203,8 +205,12 @@
             <main class="main post-page">
     <article class="article-entry">
         <p>The <a href="https://en.wikipedia.org/wiki/Hough_transform" target="_blank" rel="external">Hough Transform</a> is a method for detecting parameterized objects, typically used for lines and circles in 2D space. Nowadays, with proliferation of acquisitive devices, deriving a massive point cloud is an easy task. As we can also parameterize objects in 3D, Hough Transform can be applied to detect planes in 3D point clouds as well.</p>
-<h1 id="Parameterization-of-a-Plane"><a href="#Parameterization-of-a-Plane" class="headerlink" title="Parameterization of a Plane"></a>Parameterization of a Plane</h1><p>Similar to a line in 2D space, a plane in 3D can be described using a <a href="https://en.wikipedia.org/wiki/Linear_equation#Slope%E2%80%93intercept_form" target="_blank" rel="external">slope–intercept equation</a>: $z=k_xx+k_yy+b$, where $k_x$ is the slope in x-direction, $k_y$ is the slope in y-direction and $b$ is the intercept on z-axis. With this equation we can simply parameterize a plane as $(k_x,k_y,b)$.</p>
-<p>However, values of $k_x$, $k_y$, and $b$ are unbounded, which would pose a problem when we try to parameterize a vertical plane. Thus, for computational reasons, we can write the plane equation in the <a href="https://en.wikipedia.org/wiki/Hesse_normal_form" target="_blank" rel="external">Hesse normal form</a>: $x\cos\theta\sin\phi+y\sin\phi\sin\theta+z\cos\phi=\rho$, where $\theta$ is the angle between the normal vector of this plane and the x-axis, $\phi$ is the angle between the normal vector and z-axis and $\rho$ is the distance from the plane to the origin, as is shown in <strong>Figure 1</strong>. The plane can be parameterized as $(\theta,\phi,\rho)$.</p>
+<h1 id="Parameterization-of-a-Plane"><a href="#Parameterization-of-a-Plane" class="headerlink" title="Parameterization of a Plane"></a>Parameterization of a Plane</h1><p>Similar to a line in 2D space, a plane in 3D can be described using a <a href="https://en.wikipedia.org/wiki/Linear_equation#Slope%E2%80%93intercept_form" target="_blank" rel="external">slope–intercept equation</a>, where $k_x$ is the slope in x-direction, $k_y$ is the slope in y-direction and $b$ is the intercept on z-axis:</p>
+<p>$$\begin{equation}<br>z=k_xx+k_yy+b<br>\end{equation}$$</p>
+<p>With this equation we can simply parameterize a plane as $(k_x,k_y,b)$.</p>
+<p>However, values of $k_x$, $k_y$, and $b$ are unbounded, which would pose a problem when we try to parameterize a vertical plane. Thus, for computational reasons, we can write the plane equation in the <a href="https://en.wikipedia.org/wiki/Hesse_normal_form" target="_blank" rel="external">Hesse normal form</a>, where $\theta$ is the angle between the normal vector of this plane and the x-axis, $\phi$ is the angle between the normal vector and z-axis and $\rho$ is the distance from the plane to the origin:</p>
+<p>$$\begin{equation}<br>x\cos\theta\sin\phi+y\sin\phi\sin\theta+z\cos\phi=\rho<br>\end{equation}$$</p>
+<p>As is shown in <strong>Figure 1</strong>. The plane can be parameterized as $(\theta,\phi,\rho)$.</p>
 <p><img src="/img/hough_transform_for_plane_detection_1.jpg" alt="Hough Transform for Plane Detection figure 1"></p>
 <center><b>Figure 1:</b> Parameterization of a plane.</center>
 
@@ -273,6 +279,13 @@
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
+        
+            <li class="next">
+                <a href= "/2018/03/19/Tutte-Embedding-for-Parameterization/" title= Tutte Embedding for Parameterization >
+                    <span>Next Post</span>
+                    <span>Tutte Embedding for Parameterization</span>
+                </a>
+            </li>
         
         
             <li class="previous">
@@ -443,7 +456,18 @@
     
     
     
-    <div class="total-archive"> Total : 5 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 6 </div>
     
     <div class="post-archive">
     
@@ -452,6 +476,11 @@
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/19</span><a class="archive-post-title" href= "/2018/03/19/Tutte-Embedding-for-Parameterization/" >Tutte Embedding for Parameterization</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -494,7 +523,11 @@
     
         <span class="sidebar-tag-name"><a href= "#">geometry processing</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">tutte embedding</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">hough transform</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">parameterization</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">plane detection</a></span>
     
