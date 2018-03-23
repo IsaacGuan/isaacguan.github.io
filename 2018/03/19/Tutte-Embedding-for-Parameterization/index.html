@@ -206,10 +206,36 @@
 <h1 id="Implementation-of-Tutte-Embedding"><a href="#Implementation-of-Tutte-Embedding" class="headerlink" title="Implementation of Tutte Embedding"></a>Implementation of Tutte Embedding</h1><p>In order to implement a Tutte Embedding, we have to use two vectors $u$ and $v$ to store the parameterized coordinates, and another two vectors $\bar u$ and $\bar v$ to store the boundary vertices. For the interior vertex $i$, we can directly applying the following equation on it to build the barycentric mapping, $j$ denotes the adjacent vertices of $i$.</p>
 <p>$$\begin{equation}<br>\sum_{}a_{i,j}<br>\begin{pmatrix}<br>    u_i \\<br>    v_j<br>\end{pmatrix}<br>-a_{i,i}<br>\begin{pmatrix}<br>    u_i \\<br>    v_i<br>\end{pmatrix}<br>=0<br>\end{equation}$$</p>
 <p>For those vertices on the boundary, we use the equation below and set $a_{i,i}=1$, to have them fixed on a convex shape:</p>
-<p>$$\begin{equation}<br>\sum_{} a_{i,i}<br>\begin{pmatrix}<br>    u_i \\<br>    v_i<br>\end{pmatrix}<br>=<br>\begin{pmatrix}<br>    \bar u_i \\<br>    \bar v_i<br>\end{pmatrix}<br>\end{equation}$$</p>
+<p>$$\begin{equation}<br>\sum_{}a_{i,i}<br>\begin{pmatrix}<br>    u_i \\<br>    v_i<br>\end{pmatrix}<br>=<br>\begin{pmatrix}<br>    \bar u_i \\<br>    \bar v_i<br>\end{pmatrix}<br>\end{equation}$$</p>
 <p>Thus, we can build the two linear systems in below, where $A=\{a_{i,j}\}$ is a sparse matrix storing all the weights $a_{i,j}$, and find the parameterized coordinates by solving for them.</p>
 <p>$$\begin{equation}<br>\begin{cases}<br>Au=\bar u \\<br>Av=\bar v<br>\end{cases}<br>\end{equation}$$</p>
-<p>I used a disk as the convex shape for fixing the boundary vertices.</p>
+<p>I chose a disk as the convex shape for fixing the boundary vertices. And I am still using <a href="https://github.com/GeometryCollective/geometry-processing-js" target="_blank" rel="external">geometry-processing-js</a> as mesh library, which is the same library I used in <a href="https://isaacguan.github.io/2018/01/26/Mesh-Smoothing/">Mesh Smoothing</a>.</p>
+<h1 id="Weighting-Schemes"><a href="#Weighting-Schemes" class="headerlink" title="Weighting Schemes"></a>Weighting Schemes</h1><p>I tried three different weight sets, namely uniform Laplacian weights, Laplace-Beltrami weights, and mean value weights.</p>
+<h2 id="Uniform-Laplacian-Weights"><a href="#Uniform-Laplacian-Weights" class="headerlink" title="Uniform Laplacian Weights"></a>Uniform Laplacian Weights</h2><p>The uniform Laplacian weight set is easiest to build, but it does not take the geometric feature of the mesh into consideration. We can simply set the entries of the weight matrix in the following manner:</p>
+<p>$$\begin{equation}<br>\begin{cases}<br>a_{i,j}=1 \\<br>a_{i,i}=-\sum_{}a_{i,j}=-degree_i<br>\end{cases}<br>\end{equation}$$</p>
+<h2 id="Laplace-Beltrami-Weights"><a href="#Laplace-Beltrami-Weights" class="headerlink" title="Laplace-Beltrami Weights"></a>Laplace-Beltrami Weights</h2><p>We can also derive weights from the Laplace-Beltrami operator:</p>
+<p>$$\begin{equation}<br>\begin{cases}<br>a_{i,j}=\frac{1}{2A_i}(\cot\alpha_{i,j}+\cot\beta_{i,j}) \\<br>a_{i,i}=-\sum_{}a_{i,j}<br>\end{cases}<br>\end{equation}$$</p>
+<p>In the equations above, $A_i$ denotes the area of the Voronoi region of the vertex $i$, $\alpha_{i,j}$ and $\beta_{i,j}$ denote respectively the two corners opposite to the edge $(i,j)$, as is shown in <strong>Figure 1</strong>.</p>
+<p><img src="/img/tutte_embedding_for_parameterization_1.jpg" alt="Tutte Embedding for Parameterization figure 1"></p>
+<center><b>Figure 1:</b> Voronoi region of one vertex.</center>
+
+<p>For calculating the value of $A_i$, we can use this formula, where $\Arrowvert x_i-x_j \Arrowvert$ is the length of edge $(i,j)$.</p>
+<p>$$\begin{equation}<br>A_i=\frac{1}{8}\sum_{}(\cot\alpha_{i,j}+\cot\beta_{i,j})\Arrowvert x_i-x_j \Arrowvert^2<br>\end{equation}$$</p>
+<p>As far as one triangle from the one-ring of a vertex is concerned, which is shown in <strong>Figure 2</strong>, the Voronoi region inside that triangle can be calculated as:</p>
+<p>$$\begin{equation}<br>W=\frac{1}{8}\sum_{}(\Arrowvert x_i-x_j \Arrowvert^2\cot\alpha+\Arrowvert x_i-x_j \Arrowvert^2\cot\beta)<br>\end{equation}$$</p>
+<p><img src="/img/tutte_embedding_for_parameterization_2.jpg" alt="Tutte Embedding for Parameterization figure 2"></p>
+<center><b>Figure 2:</b> Voronoi region of one triangle of one-ring.</center>
+
+<p>As the data structure of mesh is based on half edge, we can simply find the neighbor of a certain half edge by retrieving its previous half edge, e.g., in <strong>Figure 2</strong>, half edge $(j_2,i)$ is previous to half edge $(i,j_1)$. Thus, by traversing outgoing half edges associated on a vertex, we can easily calculate the Voronoi region of it using the following code snippet:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> area = <span class="number">0.0</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> h <span class="keyword">of</span> v.adjacentHalfedges()) &#123;</div><div class="line">    <span class="keyword">let</span> u2 = <span class="keyword">this</span>.vector(h.prev).norm2();</div><div class="line">    <span class="keyword">let</span> v2 = <span class="keyword">this</span>.vector(h).norm2();</div><div class="line">    <span class="keyword">let</span> cotAlpha = <span class="keyword">this</span>.cotan(h.prev);</div><div class="line">    <span class="keyword">let</span> cotBeta = <span class="keyword">this</span>.cotan(h);</div><div class="line">    area += (u2 * cotAlpha + v2 * cotBeta) / <span class="number">8</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Mean-Value-Weights"><a href="#Mean-Value-Weights" class="headerlink" title="Mean Value Weights"></a>Mean Value Weights</h2><p>The Laplace-Beltrami weight takes the geometry of a mesh into account, but it could be negative with obtuse triangles. Based on the mean value theorem, we can the mean value weights, which are always positive and generate one-to-one mappings.</p>
+<p>$$\begin{equation}<br>\begin{cases}<br>a_{i,j}=\frac{1}{\Arrowvert x_i-x_j \Arrowvert}(\tan(\frac{\delta_{i,j}}{2})+\tan(\frac{\gamma_{i,j}}{2})) \\<br>a_{i,i}=-\sum_{}a_{i,j}<br>\end{cases}<br>\end{equation}$$</p>
+<p>In the equations above, $\Arrowvert x_i-x_j \Arrowvert$ is the length of edge $(i,j)$, $\delta_{i,j}$ and $\gamma_{i,j}$ are two neighboring corners on both sides of edge $(i,j)$, as is shown in <strong>Figure 3</strong>.</p>
+<p><img src="/img/tutte_embedding_for_parameterization_3.jpg" alt="Tutte Embedding for Parameterization figure 3"></p>
+<center><b>Figure 3</b></center>
+
+<p>In the real implementation, like what we did in calculating the Voronoi region, we can still take advantage of the sequence of half edges to find the corresponding corners:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> delta = h.next.corner;</div><div class="line"><span class="keyword">let</span> gamma = h.twin.prev.corner;</div></pre></td></tr></table></figure>
 
     </article>
     <!-- 前后页  -->
@@ -325,7 +351,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Implementation-of-Tutte-Embedding"><span class="toc-number">1.</span> <span class="toc-text">Implementation of Tutte Embedding</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Implementation-of-Tutte-Embedding"><span class="toc-number">1.</span> <span class="toc-text">Implementation of Tutte Embedding</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Weighting-Schemes"><span class="toc-number">2.</span> <span class="toc-text">Weighting Schemes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Uniform-Laplacian-Weights"><span class="toc-number">2.1.</span> <span class="toc-text">Uniform Laplacian Weights</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Laplace-Beltrami-Weights"><span class="toc-number">2.2.</span> <span class="toc-text">Laplace-Beltrami Weights</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mean-Value-Weights"><span class="toc-number">2.3.</span> <span class="toc-text">Mean Value Weights</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -339,6 +365,12 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
     
     
     
