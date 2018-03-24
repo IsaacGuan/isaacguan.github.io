@@ -253,7 +253,7 @@
 <p><em>Step 5:</em> Connect the point $p_i$ to all the vertices of this star-shaped polygon, and add the newly formed triangles to the open list and the triangle list stored with $p_i$.</p>
 <p><em>Step 6:</em> After all the points are inserted, merge the open list and the closed list into the Delaunay triangle list, obtain the Delaunay edge list from the Delaunay triangle list, and delete the edges from the Delaunay edge list that contain a vertex of the original ‘super’ triangle.</p>
 <p><strong><em>End</em></strong></p>
-<h1 id="Time-Complexity-of-the-Algorithm"><a href="#Time-Complexity-of-the-Algorithm" class="headerlink" title="Time Complexity of the Algorithm"></a>Time Complexity of the Algorithm</h1><p>The optimized algorithm for Delaunay triangulation takes $O(nlogn)$ time. As Delaunay triangulation is a planar graph, the number of triangles incident on one point is constant, so the procedure of finding adjacent triangles takes constant time and the time of generating Voronoi diagram is $O(n)$. Therefore, the total running time of this algorithm is $O(nlogn)$.</p>
+<h1 id="Time-Complexity-of-the-Algorithm"><a href="#Time-Complexity-of-the-Algorithm" class="headerlink" title="Time Complexity of the Algorithm"></a>Time Complexity of the Algorithm</h1><p>The optimized algorithm for Delaunay triangulation takes $O(n\log n)$ time. As Delaunay triangulation is a planar graph, the number of triangles incident on one point is constant, so the procedure of finding adjacent triangles takes constant time and the time of generating Voronoi diagram is $O(n)$. Therefore, the total running time of this algorithm is $O(n\log n)$.</p>
 <h1 id="Implementation-of-the-Algorithm"><a href="#Implementation-of-the-Algorithm" class="headerlink" title="Implementation of the Algorithm"></a>Implementation of the Algorithm</h1><p>This algorithm is implemented in C#. <strong>Figure 3</strong> shows the result of the implementation of this algorithm, it is capable of handling massive input of 10000 points.</p>
 <p><img src="/img/implementation_of_voronoi_diagram_and_delaunay_triangulation_3.jpg" alt="Implementation of Voronoi Diagram and Delaunay Triangulation figure 3"></p>
 <center><b>Figure 3:</b> Voronoi diagram and Delaunay triangulation for 10000 points.</center>
@@ -395,10 +395,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
     
     
     

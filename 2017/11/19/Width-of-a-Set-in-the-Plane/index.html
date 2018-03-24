@@ -226,7 +226,7 @@
 <p><em>Step 2:</em> Apply the transform to obtain two ordered sets of points and intervals.</p>
 <p><em>Step 3:</em> Scan the sets for intersections between the intervals of one set and the points of the other, generating the corresponding vertex and edge pair. For each such pair, compute the distance between the vertex and the extended edge, and note the smallest such distance. When the scan is complete, that distance is the width.</p>
 <p><strong><em>End</em></strong></p>
-<h1 id="Time-Complexity"><a href="#Time-Complexity" class="headerlink" title="Time Complexity"></a>Time Complexity</h1><p>According to the <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm" target="_blank" rel="external">gift wrapping algorithm</a> and the <a href="https://en.wikipedia.org/wiki/Graham_scan" target="_blank" rel="external">Graham scan algorithm</a>, the running time of finding the convex hull of a set of points can be minimized to $O(nlogh)$, where $h$ is the number of points on the convex hull. And obtaining the two ordered sets and scanning the sets both takes $O(h)$ time. Therefore, finding the width of a set of points $S$ in $\mathbb{R}^2$ takes $O(nlogh)$ time.</p>
+<h1 id="Time-Complexity"><a href="#Time-Complexity" class="headerlink" title="Time Complexity"></a>Time Complexity</h1><p>According to the <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm" target="_blank" rel="external">gift wrapping algorithm</a> and the <a href="https://en.wikipedia.org/wiki/Graham_scan" target="_blank" rel="external">Graham scan algorithm</a>, the running time of finding the convex hull of a set of points can be minimized to $O(n\log h)$, where $h$ is the number of points on the convex hull. And obtaining the two ordered sets and scanning the sets both takes $O(h)$ time. Therefore, finding the width of a set of points $S$ in $\mathbb{R}^2$ takes $O(n\log h)$ time.</p>
 
     </article>
     <!-- 前后页  -->
@@ -363,10 +363,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
     
     
     
