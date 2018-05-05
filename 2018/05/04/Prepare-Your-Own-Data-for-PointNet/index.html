@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        Isaac&#39;s Blog
+        Prepare Your Own Data for PointNet · Isaac&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -64,16 +64,27 @@
         })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         ga('create', 'UA-109312212-1', 'auto');
         ga('send', 'pageview');
-    </script>
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
     
 </head>
     
+        <body class="post-body">
     
-<header class="header">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Isaac&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Prepare Your Own Data for PointNet</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>Isaac's Blog</a>
 </header>
@@ -81,21 +92,45 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            Prepare Your Own Data for PointNet
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = data-preprocessing>data-preprocessing</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = pointnet>pointnet</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/05/04</span>
+            </div>
         
     </div>
 </div>
@@ -163,40 +198,65 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>Being a novel deep net architecture invariant towards input order, <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="external">PointNet</a> is able to consume unordered point clouds directly and thus has a promising prospect in the field of geometry processing. At present, the most popular implementation of PointNet is based on <a href="https://www.tensorflow.org/" target="_blank" rel="external">TensorFlow</a> which takes <a href="https://support.hdfgroup.org/HDF5/" target="_blank" rel="external">HDF5</a> as standard input format. It could be a bit confusing for people converting point clouds to HDF5 files and this article is about to tell you how to collect HDF5 datasets for PointNet learning.</p>
+<h1 id="PTS-Data"><a href="#PTS-Data" class="headerlink" title="PTS Data"></a>PTS Data</h1><p>We can download raw data from a certain 3D data repositories, for instance, the <a href="http://web.stanford.edu/~ericyi/project_page/part_annotation/index.html" target="_blank" rel="external">ShapeNetPart</a> dataset. The data directly derived from those repositories is basically in the <a href="http://filext.com/file-extension/PTS" target="_blank" rel="external">PTS</a> file format, which is a set of unordered point coordinates with no headers or trailers. This actually makes things easier, as we can directly read the PTS file line by line and store the point cloud into an array <code>lines</code>. For example, before generating HDF5 datasets, we want that each point cloud has the same length. Thus, a simple subsampler can be applied on the PTS files. The following code snippet shows a random sampler subsampling the point cloud to 2048 points.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">f = open(file, <span class="string">'r+'</span>)</div><div class="line">lines = [line.rstrip() <span class="keyword">for</span> line <span class="keyword">in</span> f]</div><div class="line">slice = random.sample(lines, <span class="number">2048</span>)</div></pre></td></tr></table></figure>
+<h1 id="PLY-Data"><a href="#PLY-Data" class="headerlink" title="PLY Data"></a>PLY Data</h1><p><a href="http://paulbourke.net/dataformats/ply/" target="_blank" rel="external">PLY</a> is a very famous file format that stores 3D data. It has headers to specify the variation and elements of the PLY file. Thus it could be a bit more complicated to deal with such data than PTS data. Luckily, we can find some ready made tools to read PLY files, e.g., the <a href="https://github.com/dranjan/python-plyfile" target="_blank" rel="external">plyfile</a>, which is able to read the numerical data from the PLY file as a <a href="http://www.numpy.org/" target="_blank" rel="external">NumPy</a> structured array. The installation of this tool is pretty easy, we can get it directly via <a href="https://pypi.org/project/pip/" target="_blank" rel="external">pip</a>.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install plyfile</div></pre></td></tr></table></figure>
+<p>For sure, prior to this, we should also have the NumPy installed.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install numpy</div></pre></td></tr></table></figure>
+<p>The deserialization and serialization of PLY file data is done through <code>PlyData</code> and <code>PlyElement</code> instances, so we have to first import them.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> plyfile <span class="keyword">import</span> PlyData, PlyElement</div></pre></td></tr></table></figure>
+<p>Then we can start to read a PLY file. Concretely, it looks like this.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">plydata = PlyData.read(filename + <span class="string">'.ply'</span>)</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, plydata.elements[<span class="number">0</span>].count):</div><div class="line">	data[i] = [plydata[<span class="string">'vertex'</span>][<span class="string">'x'</span>][i], plydata[<span class="string">'vertex'</span>][<span class="string">'y'</span>][i], plydata[<span class="string">'vertex'</span>][<span class="string">'z'</span>][i]]</div></pre></td></tr></table></figure>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2018/04/29/RAPter-on-Ubuntu/" title= RAPter on Ubuntu >
+                    <span>Previous Post</span>
+                    <span>RAPter on Ubuntu</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://isaacguan.github.io/2018/05/04/Prepare-Your-Own-Data-for-PointNet/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "Prepare Your Own Data for PointNet"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://isaacguan.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
     
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/19/Width-of-a-Set-in-the-Plane/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Width of a Set in the Plane</span>
-                    </h2>
-                <div class="abstract-content">
-                    The book Geometric Transforms for Fast Geometric Algorithms introduces an interesting algorithm from page 84 of computing the diameter of a set of points in two dimensions. Inspired by this, I come up with a solution of computing the width of a set using geometric transformation.
-Definition of th...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = computational-geometry>computational-geometry</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = convex-hull>convex-hull</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/19</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+    <!--PC版-->
+
+    <!--PC版-->
+
+
     
 </main>
             <!-- profile -->
@@ -261,6 +321,13 @@ Definition of th...
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PTS-Data"><span class="toc-number">1.</span> <span class="toc-text">PTS Data</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PLY-Data"><span class="toc-number">2.</span> <span class="toc-text">PLY Data</span></a></li></ol>
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
@@ -516,7 +583,7 @@ jsonContent:
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>
 
