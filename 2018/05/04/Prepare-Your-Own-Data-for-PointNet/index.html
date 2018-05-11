@@ -207,10 +207,21 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install plyfile</div></pre></td></tr></table></figure>
 <p>For sure, prior to this, we should also have the NumPy installed.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install numpy</div></pre></td></tr></table></figure>
-<p>The deserialization and serialization of PLY file data is done through <code>PlyData</code> and <code>PlyElement</code> instances, so we have to first import them.</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> plyfile <span class="keyword">import</span> PlyData, PlyElement</div></pre></td></tr></table></figure>
+<p>The deserialization and serialization of PLY file data is done through <code>PlyData</code> and <code>PlyElement</code> instances, so we have to first import them. Besides, the NumPy module is also need to be loaded.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> plyfile <span class="keyword">import</span> PlyData, PlyElement</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div></pre></td></tr></table></figure>
 <p>Then we can start to read a PLY file. Concretely, it looks like this.</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">plydata = PlyData.read(filename + <span class="string">'.ply'</span>)</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, plydata.elements[<span class="number">0</span>].count):</div><div class="line">	data[i] = [plydata[<span class="string">'vertex'</span>][<span class="string">'x'</span>][i], plydata[<span class="string">'vertex'</span>][<span class="string">'y'</span>][i], plydata[<span class="string">'vertex'</span>][<span class="string">'z'</span>][i]]</div></pre></td></tr></table></figure>
+<h1 id="Write-HDF5-File"><a href="#Write-HDF5-File" class="headerlink" title="Write HDF5 File"></a>Write HDF5 File</h1><p>We use the <a href="https://github.com/h5py/h5py" target="_blank" rel="external">h5py</a> package as the interface to the HDF5 data format.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libhdf5-dev</div><div class="line">pip install h5py</div></pre></td></tr></table></figure>
+<p>We first import this package.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> h5py</div></pre></td></tr></table></figure>
+<p>For creating a HDF5 file, we use the <code>h5py.File</code> function to initialize it, which takes two arguments. The first argument provides the filename and location, the second the mode. We’re writing the file, so we provide a <code>w</code> for write access.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f = h5py.File(<span class="string">'data.h5'</span>, <span class="string">'w'</span>)</div></pre></td></tr></table></figure>
+<p>Then we need to define the shape and type of the data to write to the HDF5 file.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">data = np.zeros((<span class="number">128</span>, <span class="number">2048</span>, <span class="number">3</span>), dtype = np.uint8)</div></pre></td></tr></table></figure>
+<p>After filling <code>data</code> with the point clouds information read from the PTS or PLY files, we can write it to the HDF5 file <code>f</code>, using the <code>create_dataset</code> function associated to it, where we provide a name for the dataset, and the NumPy array.</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f.create_dataset(<span class="string">"data"</span>, data = data)</div></pre></td></tr></table></figure>
+<p>I have a very concrete example of providing data for PointNet in my GitHub repository <a href="https://github.com/IsaacGuan/PointNet-Plane-Detection" target="_blank" rel="external">IsaacGuan/PointNet-Plane-Detection</a>. We can take the script <a href="https://github.com/IsaacGuan/PointNet-Plane-Detection/blob/master/data/write_hdf5.py" target="_blank" rel="external">write_hdf5.py</a> as a reference.</p>
 
     </article>
     <!-- 前后页  -->
@@ -326,7 +337,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PTS-Data"><span class="toc-number">1.</span> <span class="toc-text">PTS Data</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PLY-Data"><span class="toc-number">2.</span> <span class="toc-text">PLY Data</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PTS-Data"><span class="toc-number">1.</span> <span class="toc-text">PTS Data</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PLY-Data"><span class="toc-number">2.</span> <span class="toc-text">PLY Data</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Write-HDF5-File"><span class="toc-number">3.</span> <span class="toc-text">Write HDF5 File</span></a></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -340,10 +351,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
     
     
     
@@ -498,6 +505,12 @@
     
         <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">geometry-processing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
@@ -506,25 +519,19 @@
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
