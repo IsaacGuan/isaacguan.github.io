@@ -220,7 +220,7 @@
 <p>Then we need to define the shape and type of the data to write to the HDF5 file.</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">data = np.zeros((<span class="number">128</span>, <span class="number">2048</span>, <span class="number">3</span>), dtype = np.uint8)</div></pre></td></tr></table></figure>
 <p>After filling <code>data</code> with the point clouds information read from the PTS or PLY files, we can write it to the HDF5 file <code>f</code>, using the <code>create_dataset</code> function associated to it, where we provide a name for the dataset, and the NumPy array.</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f.create_dataset(<span class="string">"data"</span>, data = data)</div></pre></td></tr></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">f.create_dataset(<span class="string">'data'</span>, data = data)</div></pre></td></tr></table></figure>
 <p>I have a very concrete example of providing data for PointNet in my GitHub repository <a href="https://github.com/IsaacGuan/PointNet-Plane-Detection" target="_blank" rel="external">IsaacGuan/PointNet-Plane-Detection</a>. We can take the script <a href="https://github.com/IsaacGuan/PointNet-Plane-Detection/blob/master/data/write_hdf5.py" target="_blank" rel="external">write_hdf5.py</a> as a reference.</p>
 
     </article>
@@ -305,7 +305,7 @@
     
         
             
-                <a href="//www.linkedin.com/in/yanran-guan-75a837162" class="iconfont-archer linkedin" target="_blank" title="linkedin"></a>
+                <a href="//www.linkedin.com/in/yanran-guan" class="iconfont-archer linkedin" target="_blank" title="linkedin"></a>
             
         
     
@@ -351,8 +351,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
     
     
     
@@ -505,11 +503,19 @@
     
         <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">geometry-processing</a></span>
     
@@ -519,19 +525,11 @@
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
+        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
+        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
