@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://isaacguan.github.io/"/>
-  <updated>2018-05-15T02:02:04.124Z</updated>
+  <updated>2018-06-01T15:53:30.638Z</updated>
   <id>https://isaacguan.github.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Plane Detection Using Machine Learning Approach</title>
+    <link href="https://isaacguan.github.io/2018/06/01/Plane-Detection-Using-Machine-Learning-Approach/"/>
+    <id>https://isaacguan.github.io/2018/06/01/Plane-Detection-Using-Machine-Learning-Approach/</id>
+    <published>2018-06-01T15:09:59.000Z</published>
+    <updated>2018-06-01T15:53:30.638Z</updated>
+    
+    <content type="html"><![CDATA[<p>Plane detection is a widely used technique that can be applied in many applications. For example, augmented reality, where we have to first detect a plane to generate AR models, and 3D scene reconstruction, especially for man-made scenes, which consist of many plane objects. Nowadays, with proliferation of acquisitive devices, deriving a massive point cloud is not a difficult task, which shows a great promise in doing plane detection in 3D point cloud.</p><h1 id="Related-Works"><a href="#Related-Works" class="headerlink" title="Related Works"></a>Related Works</h1><p>There are some existing plane detection and point cloud machine learning approaches proposed by recent researches.</p><h2 id="Plane-Detection-in-3D-Data"><a href="#Plane-Detection-in-3D-Data" class="headerlink" title="Plane Detection in 3D Data"></a>Plane Detection in 3D Data</h2><p>The <a href="https://pdfs.semanticscholar.org/c52b/a582769375469d688e2a3b2d4d7e3f088472.pdf" target="_blank" rel="external">3D Hough transformation</a> is one possible approach for doing plane detection. As well as line detection in 2D space, planes can be parameterized into a 3D Hough space. The <a href="https://github.com/amonszpart/RAPter" target="_blank" rel="external">RAPter</a> is another method that can be used for plane detection. It finds out the planes in a scene according to the predefined inter-plane relations, so RAPter is efficient for man-made scenes with significant inter-plane relations, but not adequate for some more general cases.</p><h2 id="Deep-Learning-for-3D-Data-and-Point-Cloud"><a href="#Deep-Learning-for-3D-Data-and-Point-Cloud" class="headerlink" title="Deep Learning for 3D Data and Point Cloud"></a>Deep Learning for 3D Data and Point Cloud</h2><p>People have designed many machine learning approaches on different representations of 3D data. For instance, the <a href="https://github.com/dimatura/voxnet" target="_blank" rel="external">Volumetric CNN</a> consumes volumetric data as input, and apply 3D convolutional neural networks on voxelized shapes. The <a href="https://github.com/suhangpro/mvcnn" target="_blank" rel="external">Multiview CNN</a> projects the 3D shape into 2D images and then apply 2D convolutional neural networks to classify them. The <a href="https://www.cv-foundation.org/openaccess/content_cvpr_2015/app/2A_011.pdf" target="_blank" rel="external">Feature-based DNN</a> focuses on generating a shape vector of the object according to its traditional shape features and then use a fully connected net to classify the shape. The <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="external">PointNet</a> proposed a new design of neural network based on symmetric functions that can take unordered input of point clouds.</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Plane detection is a widely used technique that can be applied in many applications. For example, augmented reality, where we have to fir
+      
+    
+    </summary>
+    
+    
+      <category term="geometry-processing" scheme="https://isaacguan.github.io/tags/geometry-processing/"/>
+    
+      <category term="plane-detection" scheme="https://isaacguan.github.io/tags/plane-detection/"/>
+    
+      <category term="machine-learning" scheme="https://isaacguan.github.io/tags/machine-learning/"/>
+    
+      <category term="pointnet" scheme="https://isaacguan.github.io/tags/pointnet/"/>
+    
+  </entry>
   
   <entry>
     <title>Prepare Your Own Data for PointNet</title>
@@ -35,9 +64,9 @@
     </summary>
     
     
-      <category term="data-preprocessing" scheme="https://isaacguan.github.io/tags/data-preprocessing/"/>
-    
       <category term="pointnet" scheme="https://isaacguan.github.io/tags/pointnet/"/>
+    
+      <category term="data-preprocessing" scheme="https://isaacguan.github.io/tags/data-preprocessing/"/>
     
   </entry>
   
