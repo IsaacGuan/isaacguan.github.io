@@ -205,7 +205,7 @@
         <p><a href="https://en.wikipedia.org/wiki/Voronoi_diagram" target="_blank" rel="external">Voronoi diagram</a> and <a href="https://en.wikipedia.org/wiki/Delaunay_triangulation" target="_blank" rel="external">Delaunay triangulation</a> are dual representations of a set of points to each other. Due to their wide application in science and technology, Voronoi diagram and Delaunay triangulation play important roles in the field of Computational Geometry. In this post, I am going to introduce an implementation of an algorithm to derive both Voronoi Diagram and Delaunay Triangulation of a set of points in the plane.</p>
 <h1 id="Voronoi-Diagram-and-Delaunay-Triangulation"><a href="#Voronoi-Diagram-and-Delaunay-Triangulation" class="headerlink" title="Voronoi Diagram and Delaunay Triangulation"></a>Voronoi Diagram and Delaunay Triangulation</h1><p>The Voronoi diagram of a set of points, also known as Thiessen polygons, is a partitioning of a plane into regions by a set of continuous polygons consisting of perpendicular bisectors of the connecting lines of two adjacent points. These regions are called Voronoi cells. And for each point in the set, there is a corresponding Voronoi cell consists of all points closer to that point than to any other.</p>
 <p>The Delaunay triangulation of a set of points is dual to its Voronoi diagram. It is a collection of connected but non-overlapping triangles, and the outer circumcircle of these triangles does not contain any other points in this set.</p>
-<h1 id="Design-of-the-Algorithm"><a href="#Design-of-the-Algorithm" class="headerlink" title="Design of the Algorithm"></a>Design of the Algorithm</h1><p>There are a lot of ways to generate a Voronoi diagram from a set of points in the plane. In this implementation, I obtained the Voronoi diagram from generating its dual, the Delaunay triangulation. Generally speaking, for the set of $n$ points $P=\{p_1, p_2, …, p_n\}$ in $\mathbb{R}^2$, the algorithm goes in this way: the Delaunay triangulation of the set of points is firstly generated, then we calculate the center of the circumcircle of each triangle and finally we connect these centers with straight lines and form the polygon mesh generated from the vertices of the triangles.</p>
+<h1 id="Design-of-the-Algorithm"><a href="#Design-of-the-Algorithm" class="headerlink" title="Design of the Algorithm"></a>Design of the Algorithm</h1><p>There are a lot of ways to generate a Voronoi diagram from a set of points in the plane. In this implementation, I obtained the Voronoi diagram from generating its dual, the Delaunay triangulation. Generally speaking, for the set of $n$ points $P=\{p_1,p_2,\ldots,p_n\}$ in $\mathbb{R}^2$, the algorithm goes in this way: the Delaunay triangulation of the set of points is firstly generated, then we calculate the center of the circumcircle of each triangle and finally we connect these centers with straight lines and form the polygon mesh generated from the vertices of the triangles.</p>
 <h2 id="Design-of-the-Data-Structure"><a href="#Design-of-the-Data-Structure" class="headerlink" title="Design of the Data Structure"></a>Design of the Data Structure</h2><p>I implemented this algorithm in object oriented language, so the design of data structure is in the form of class.</p>
 <p>Point:</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="title">Point</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">double</span> x, y, z;</div><div class="line">    <span class="keyword">public</span> List&lt;<span class="keyword">int</span>&gt; adjoinTriangles;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Point</span>(<span class="params"><span class="keyword">double</span> x, <span class="keyword">double</span> y, <span class="keyword">double</span> z</span>)</span></div><div class="line"><span class="function">    </span>&#123;</div><div class="line">        <span class="keyword">this</span>.x = x;</div><div class="line">        <span class="keyword">this</span>.y = y;</div><div class="line">        <span class="keyword">this</span>.z = z;</div><div class="line">        adjoinTriangles = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -228,7 +228,7 @@
 <h2 id="Conduct-the-Delaunay-Triangulation"><a href="#Conduct-the-Delaunay-Triangulation" class="headerlink" title="Conduct the Delaunay Triangulation"></a>Conduct the Delaunay Triangulation</h2><p>I planned to apply the <a href="https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm" target="_blank" rel="external">Bowyer–Watson algorithm</a> for computing the Delaunay triangulation. A most naïve Bowyer–Watson algorithm goes like this:</p>
 <p><strong><em>Begin</em></strong></p>
 <p><em>Step 1:</em> Construct a ‘super’ triangle that covers all the points from the point set, add it to the Delaunay triangle list. </p>
-<p><em>Step 2:</em> Insert points from the point set $P={p_1, p_2, …, p_n}$ to the ‘super’ triangle one by one.</p>
+<p><em>Step 2:</em> Insert points from the point set $P=\{p_1,p_2,\ldots,p_n\}$ to the ‘super’ triangle one by one.</p>
 <p><em>Step 3:</em> For each point $p_i$ inserted, traverse the Delaunay triangle list to find all the triangles whose circumcircles cover this point $p_i$ as invalid triangles, delete these triangles from the Delaunay triangle list and delete all the common edges of these triangles, and leave a star-shaped polygonal hole.</p>
 <p><em>Step 4:</em> Connect the point $p_i$ to all the vertices of this star-shaped polygon, and add the newly formed triangles to the Delaunay triangle list.</p>
 <p><em>Step 5:</em> After all the points are inserted, obtain the Delaunay edge list from the Delaunay triangle list, and delete the edges from the Delaunay edge list that contain a vertex of the original ‘super’ triangle.</p>
@@ -246,7 +246,7 @@
 <p>Besides, in order to derive the Voronoi diagram, when a new point is inserted, all the newly formed triangles that are incident on the point are put into the triangle list that is stored with the point.</p>
 <p>Thus, the optimized algorithm goes as follows:</p>
 <p><strong><em>Begin</em></strong></p>
-<p><em>Step 1:</em> Sort the points in the point set $P={p_1, p_2, …, p_n}$ by x-coordinate.</p>
+<p><em>Step 1:</em> Sort the points in the point set $P=\{p_1,p_2,\ldots,p_n\}$ by x-coordinate.</p>
 <p><em>Step 2:</em> Construct a ‘super’ triangle that covers all the points from the point set, add it to the open list. </p>
 <p><em>Step 3:</em> Insert points from $P$ to the ‘super’ triangle one by one in ascending order of x-coordinates.</p>
 <p><em>Step 4:</em> For each point $p_i$ inserted, traverse the open list to: 1) find all the triangles with circumcircles lying to the left of the point $p_i$, delete these triangles from the open list and add them to the closed list; 2) find all the triangles with circumcircles covering this point $p_i$ as invalid triangles, delete these triangles from the open list and the triangle list stored with $p_i$, delete all the common edges of these triangles, leaving a star-shaped polygonal hole.</p>
@@ -494,14 +494,6 @@
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -579,29 +571,29 @@
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
+        <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
