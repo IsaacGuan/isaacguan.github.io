@@ -225,19 +225,19 @@
 <p><em>Step 2:</em> For each point $p_i$ in $P$, vote for all the $A(\theta,\phi,\rho)$ cells in the accumulator $A$ defined by this point;</p>
 <p><em>Step 3:</em> After the whole iteration, search for the most prominent cells in the accumulator $A$, that define the detected planes in $P$.</p>
 <p><strong><em>End</em></strong></p>
-<p>The Standard Hough Transform is performed in two stages: incrementing the cells, which needs $O(\lvert P \rvert \cdot N_\phi \cdot N_\theta)$ operations, and searching for the most prominent cells, which takes $O(N_\rho \cdot N_\phi \cdot N_\theta)$ time, where $\lvert P \rvert$ is the size of the point cloud, $N_\phi$ is the number of cells in direction of $\phi$, $N_\theta$ in direction of $\theta$ and $N_\rho$ in direction of $\rho$.</p>
-<h2 id="Probabilistic-Hough-Transform"><a href="#Probabilistic-Hough-Transform" class="headerlink" title="Probabilistic Hough Transform"></a>Probabilistic Hough Transform</h2><p>In the Standard Hough Transform, the size of the point cloud $\lvert P \rvert$ is usually much larger than the number $N_\rho \cdot N_\phi \cdot N_\theta$ of cells in the accumulator array. We can simply reduce the number of points to improve the computational expenses. Thus, the Standard Hough Transform can be adapted to the Probabilistic Hough Transform, which is shown as follows:</p>
+<p>The Standard Hough Transform is performed in two stages: incrementing the cells, which needs $O(\lvert P\rvert\cdot N_\phi\cdot N_\theta)$ operations, and searching for the most prominent cells, which takes $O(N_\rho\cdot N_\phi\cdot N_\theta)$ time, where $\lvert P\rvert$ is the size of the point cloud, $N_\phi$ is the number of cells in direction of $\phi$, $N_\theta$ in direction of $\theta$ and $N_\rho$ in direction of $\rho$.</p>
+<h2 id="Probabilistic-Hough-Transform"><a href="#Probabilistic-Hough-Transform" class="headerlink" title="Probabilistic Hough Transform"></a>Probabilistic Hough Transform</h2><p>In the Standard Hough Transform, the size of the point cloud $\lvert P\rvert$ is usually much larger than the number $N_\rho \cdot N_\phi \cdot N_\theta$ of cells in the accumulator array. We can simply reduce the number of points to improve the computational expenses. Thus, the Standard Hough Transform can be adapted to the Probabilistic Hough Transform, which is shown as follows:</p>
 <p><strong><em>Begin</em></strong></p>
 <p><em>Step 1:</em> Determine the size value $m$ and the threshold value $t$;</p>
-<p><em>Step 2:</em> randomly select $m$ points to create $P^m \subset P$;</p>
+<p><em>Step 2:</em> randomly select $m$ points to create $P^m\subset P$;</p>
 <p><em>Step 3:</em> Do the Standard Hough Transform on the point set $P^m$;</p>
 <p><em>Step 4:</em> Delete the cells from the accumulator $A$ with a value that does not reach $t$, and search for the most prominent cells in $A$, that define the detected planes in $P$.</p>
 <p><strong><em>End</em></strong></p>
-<p>The $m$ points $(m&lt;\lvert P \rvert)$ are randomly selected from the point cloud $P$, so the dominant part of the runtime is proportional to $O(m \cdot N_\phi \cdot N_\theta)$. However, the optimal choice of $m$ and the threshold $t$ depends on the actual problem, e.g., the number of planes, or the noise in the point cloud.</p>
+<p>The $m$ points $(m&lt;\lvert P\rvert)$ are randomly selected from the point cloud $P$, so the dominant part of the runtime is proportional to $O(m\cdot N_\phi\cdot N_\theta)$. However, the optimal choice of $m$ and the threshold $t$ depends on the actual problem, e.g., the number of planes, or the noise in the point cloud.</p>
 <h3 id="Adaptive-Probabilistic-Hough-Transform"><a href="#Adaptive-Probabilistic-Hough-Transform" class="headerlink" title="Adaptive Probabilistic Hough Transform"></a>Adaptive Probabilistic Hough Transform</h3><p>In order to find the optimal subsample of the point cloud, we can use an adaptive method to determine the reasonable number of selected points. The Adaptive Probabilistic Hough Transform monitors the accumulator. The structure of the accumulator changes dynamically during the voting phase. As soon as stable structures emerge and turn into significant peaks, voting is terminated.</p>
 <p><strong><em>Begin</em></strong></p>
 <p><em>Step 1:</em> Check the stability order $m_k$ of the list of $k$ peaks $S_k$ in the accumulator, if it reaches the threshold value $t_k$ then finish;</p>
-<p><em>Step 2:</em> Randomly select a small subset $P^m \subset P$;</p>
+<p><em>Step 2:</em> Randomly select a small subset $P^m\subset P$;</p>
 <p><em>Step 3:</em> Do the Standard Hough Transform on the point set $P^m$;</p>
 <p><em>Step 4:</em> Merge the active list of peaks $S_k$ with the previous one, determine the stability order $m_k$, goto <em>Step 1</em>;</p>
 <p><strong><em>End</em></strong></p>
@@ -259,22 +259,22 @@
 <p><em>Step 1:</em> Check the input point cloud $P$, if it is empty then finish;</p>
 <p><em>Step 2:</em> Randomly pick three points $p_1$, $p_2$ and $p_3$ from $P$;</p>
 <p><em>Step 3:</em> If $p_1$, $p_2$ and $p_3$ fulfill the distance criterion, calculate plane $(\theta,\phi,\rho)$ spanned by $p_1$, $p_2$ and $p_3$ and increment cell $A(\theta,\phi,\rho)$ in the accumulator space;</p>
-<p><em>Step 4:</em> If the count of $\lvert A(\theta,\phi,\rho) \rvert$ reaches threshold $t$, $(\theta,\phi,\rho)$ parameterize the detected plane, delete all points close to $(\theta,\phi,\rho)$ from $P$, and reset the accumulator $A$;</p>
+<p><em>Step 4:</em> If the count of $\lvert A(\theta,\phi,\rho)\rvert$ reaches threshold $t$, $(\theta,\phi,\rho)$ parameterize the detected plane, delete all points close to $(\theta,\phi,\rho)$ from $P$, and reset the accumulator $A$;</p>
 <p><em>Step 5:</em> Goto <em>Step 1</em>;</p>
 <p><strong><em>End</em></strong></p>
 <p>This algorithm simply decreases the number of cells touched by exploiting the fact that a curve with $n$ parameters is defined by $n$ points. And also note that, if points are very far apart, they most likely do not belong to one plane. To take care of this and to diminish errors from sensor noise a distance criterion is introduced: $dist(p_1,p_2,p_3)≤dist_{max}$, i.e., the maximum point-to-point distance between $p_1$, $p_2$ and $p_3$ is below a fixed threshold.</p>
 <h1 id="Accumulator"><a href="#Accumulator" class="headerlink" title="Accumulator"></a>Accumulator</h1><p>An inappropriate accumulator may lead to detection failures of some specific planes and difficulties in finding local maxima, displays low accuracy, large storage space, and low speed. A tradeoff has to be found between a coarse discretization that accurately detects planes and a small number of cells in the accumulator to decrease the time needed for the Hough Transform.</p>
-<h2 id="Accumulator-Array"><a href="#Accumulator-Array" class="headerlink" title="Accumulator Array"></a>Accumulator Array</h2><p>For the standard implementation of the 2D Hough Transform, the Hough Space is divided into $N_\rho \times N_\theta$ rectangular cells. The size of the cells is variable and is chosen problem dependent. Using the same subdivision for the 3D Hough Space by dividing it into cuboid cells results in the patches seen in <strong>Figure 3</strong>. The cells closer to the poles are smaller and comprise less normal vectors. This means voting favors the larger equatorial cells.</p>
+<h2 id="Accumulator-Array"><a href="#Accumulator-Array" class="headerlink" title="Accumulator Array"></a>Accumulator Array</h2><p>For the standard implementation of the 2D Hough Transform, the Hough Space is divided into $N_\rho\times N_\theta$ rectangular cells. The size of the cells is variable and is chosen problem dependent. Using the same subdivision for the 3D Hough Space by dividing it into cuboid cells results in the patches seen in <strong>Figure 3</strong>. The cells closer to the poles are smaller and comprise less normal vectors. This means voting favors the larger equatorial cells.</p>
 <p><img src="/img/hough_transform_for_plane_detection_3.jpg" alt="Hough Transform for Plane Detection figure 3"></p>
 <center><b>Figure 3:</b> Accumulator array.</center>
 
 <h2 id="Accumulator-Cube"><a href="#Accumulator-Cube" class="headerlink" title="Accumulator Cube"></a>Accumulator Cube</h2><p>We can also project the unit sphere $S^2$ onto the smallest cube that contains the sphere using the diffeomorphism:</p>
-<p>$$\begin{equation}<br>\phi: S^2 \rightarrow cube, s \mapsto \Arrowvert s \Arrowvert_\infty<br>\end{equation}$$</p>
+<p>$$\begin{equation}<br>\phi:S^2\to cube,s\mapsto\Arrowvert s\Arrowvert_\infty<br>\end{equation}$$</p>
 <p>Each face of the cube is divided into a regular grid, which is shown in <strong>Figure 4</strong>. With this design of accumulator, the difference of size between the patches on the unit sphere is negligible.</p>
 <p><img src="/img/hough_transform_for_plane_detection_4.jpg" alt="Hough Transform for Plane Detection figure 4"></p>
 <center><b>Figure 4:</b> Accumulator cube.</center>
 
-<h2 id="Accumulator-Ball"><a href="#Accumulator-Ball" class="headerlink" title="Accumulator Ball"></a>Accumulator Ball</h2><p>The commonly used design, accumulator array, which is shown in <strong>Figure 3</strong>, causes the irregularity between the patches on the unit sphere. To solve this issue, we can simply customize the the resolution in terms of polar coordinates depending on the position of the sphere. The resolution of the longitude $\phi$ is kept as for the accumulator array, which is defined as $\phi^\prime$. In $\theta$ direction, the largest latitude circle is the equator located at $\phi=0$. For the unit sphere it has the $max_l = 2\pi$. The length of the latitude circle in the middle of the segment located above $\phi_i$ is given by $length_i=2\pi(\phi+\phi^\prime)$. The step width in $\theta$ direction for each slice is now computed as $\theta_{\phi_i}=\frac{360^\circ \cdot max_l}{length_i \cdot N_\theta}$, where $N_\theta$ is a constant that can be customized. The resulting design is illustrated in <strong>Figure 5</strong>.</p>
+<h2 id="Accumulator-Ball"><a href="#Accumulator-Ball" class="headerlink" title="Accumulator Ball"></a>Accumulator Ball</h2><p>The commonly used design, accumulator array, which is shown in <strong>Figure 3</strong>, causes the irregularity between the patches on the unit sphere. To solve this issue, we can simply customize the the resolution in terms of polar coordinates depending on the position of the sphere. The resolution of the longitude $\phi$ is kept as for the accumulator array, which is defined as $\phi^\prime$. In $\theta$ direction, the largest latitude circle is the equator located at $\phi=0$. For the unit sphere it has the $max_l=2\pi$. The length of the latitude circle in the middle of the segment located above $\phi_i$ is given by $length_i=2\pi(\phi+\phi^\prime)$. The step width in $\theta$ direction for each slice is now computed as $\theta_{\phi_i}=\frac{360^\circ\cdot max_l}{length_i\cdot N_\theta}$, where $N_\theta$ is a constant that can be customized. The resulting design is illustrated in <strong>Figure 5</strong>.</p>
 <p><img src="/img/hough_transform_for_plane_detection_5.jpg" alt="Hough Transform for Plane Detection figure 5"></p>
 <center><b>Figure 5:</b> Accumulator ball.</center>
 
@@ -510,8 +510,6 @@
     
     
     
-    
-    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -589,11 +587,7 @@
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
+        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
     
@@ -603,15 +597,19 @@
     
         <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">

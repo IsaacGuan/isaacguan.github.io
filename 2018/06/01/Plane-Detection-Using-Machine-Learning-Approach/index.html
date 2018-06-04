@@ -211,8 +211,46 @@
 <h1 id="Design-of-Neural-Network"><a href="#Design-of-Neural-Network" class="headerlink" title="Design of Neural Network"></a>Design of Neural Network</h1><p>PointNet uses symmetric functions that can effectively capture the global features of a point cloud. Inspired by this, this experiment uses a symmetric network that concatenates global features and local features. Besides, for comparison, I also used a traditional network that simply generates a high dimensional local feature space by multilayer perceptions.</p>
 <h2 id="Symmetric-Network"><a href="#Symmetric-Network" class="headerlink" title="Symmetric Network"></a>Symmetric Network</h2><p>According to the universal approximation of symmetric function proposed by PointNet, a symmetric function $f$ can be arbitrarily approximated by a composition of a set of single variable functions and a max pooling function, as is described in <strong>Theorem 1</strong>.</p>
 <p><strong>Theorem 1:</strong> Suppose $f\colon\chi\to\mathbb{R}$ a continuous set function w.r.t Hausdorff distance $d_H.\forall \epsilon&gt;0$, $\exists$ a continuous function $h$ and a symmetric function $g(x_1,x_2,\ldots,x_n)=\gamma\circ\max$, such that for any $S\in\chi$,</p>
-<p>$$\begin{equation}<br>|f(S)-\gamma(\max_{x_i\in S}\{h(x_i)\})|&lt;\epsilon<br>\end{equation}$$</p>
-<p>where $x_1,x_2,\ldots,x_n$ is the full list of elements in $S$ ordered arbitrarily, $\gamma$ is a continuous function, and $\max$ is a vector max operator that takes n vectors as input and returns a new vector of the element-wise maximum.</p>
+<p>$$\begin{equation}<br>\lvert f(S)-\gamma(\max_{x_i\in S}\{h(x_i)\})\rvert&lt;\epsilon<br>\end{equation}$$</p>
+<p>where $x_1,x_2,\ldots,x_n$ is the full list of elements in $S$ ordered arbitrarily, $\gamma$ is a continuous function, and $\max$ is a vector max operator that takes $n$ vectors as input and returns a new vector of the element-wise maximum.</p>
+<p>Thus, according to <strong>Theorem 1</strong>, the symmetric network can be designed as a multi-layer perceptron network connected with a max pooling function, which is shown in <strong>Figure 1</strong>.</p>
+<p><img src="/img/plane_detection_using_machine_learning_approach_1.jpg" alt="Plane Detection Using Machine Learning Approach figure 1"></p>
+<center><b>Figure 1:</b> Architecture of symmetric network.</center>
+
+<p>For invariance towards geometric transformation, an input alignment ($T_1$ in <strong>Figure 1</strong>) and a feature alignment ($T_2$ in <strong>Figure 1</strong>) are respectively applied on the input space and feature space. The points are first mapped to a 64 dimensional feature space point and then mapped to a 1024 dimensional feature space. A max pooling function is applied on the 1024 dimensional feature space to generate a 1024 length global feature vector. The global vector is then concatenated to the 64 dimensional feature space which generates a 1088 dimensional space. Lastly, a 2 dimensional vector for each point, which represents the score for planar part and non-planar part, is updated from the 1088 dimensional space.</p>
+<h2 id="Non-symmetric-Network"><a href="#Non-symmetric-Network" class="headerlink" title="Non-symmetric Network"></a>Non-symmetric Network</h2><p>For doing comparison, a traditional non-symmetric network is also introduced in this experiment. It is basically modified from the symmetric network by detaching the max pooling function from the multi-layer perceptron network. The architecture of the non-symmetric network is shown in <strong>Figure 2</strong>.</p>
+<p><img src="/img/plane_detection_using_machine_learning_approach_2.jpg" alt="Plane Detection Using Machine Learning Approach figure 2"></p>
+<center><b>Figure 2:</b> Architecture of non-symmetric network.</center>
+
+<p>Instead of concatenating the global feature vector to the 64 dimensional feature space, the non-symmetric network simply concatenate the 64 dimensional feature space and the 1024 dimensional feature space, and generates the 2 dimensional scores from that.</p>
+<h1 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h1><p>The experiment is conducted in the following pattern: firstly, prepare the data for training and testing; then feed the training data respectively to the symmetric network and non-symmetric network and find the optimal training model according to the minimum total loss; lastly, compare the plane detection results of symmetric network and non-symmetric network.</p>
+<h2 id="Experimental-Data-and-Data-Preprocessing"><a href="#Experimental-Data-and-Data-Preprocessing" class="headerlink" title="Experimental Data and Data Preprocessing"></a>Experimental Data and Data Preprocessing</h2><p>This experiment uses data from <a href="http://web.stanford.edu/~ericyi/project_page/part_annotation/index.html" target="_blank" rel="external">ShapeNetPart</a> dataset. I chose 64 tables, which have a significant planar surface, from the table repository for training, and 8 for testing and evaluation.</p>
+<p>Each the point cloud was previously subsampled to a size of 2048 points, using a random sampler. The point clouds for training were written into an HDF5 file, which contains 2 views, <code>points</code> and <code>pid</code>, respectively recording the point coordinate and the planar information associated with each point.</p>
+<p>The planar part were marked out manually on the original data. <strong>Figure 3</strong> shows a few examples of table objects for training.</p>
+<p><img src="/img/plane_detection_using_machine_learning_approach_3.jpg" alt="Plane Detection Using Machine Learning Approach figure 3"></p>
+<center><b>Figure 3:</b> A part of the training data.</center>
+
+<h2 id="Optimal-Training-Models"><a href="#Optimal-Training-Models" class="headerlink" title="Optimal Training Models"></a>Optimal Training Models</h2><p>Basically, a point cloud contains more points in non-planar part than points in planar part. In order to handle this unbalanced data, I used a weighted cross entropy function to calculate the mean loss for each epoch. The planar part is assigned with a weight of 0.7 and the non-planar part is assigned with a weight of 0.3.</p>
+<p>Both networks are trained for 150 epochs. The plot of mean loss for training the symmetric network is shown in <strong>Figure 4</strong>.</p>
+<p><img src="/img/plane_detection_using_machine_learning_approach_4.jpg" alt="Plane Detection Using Machine Learning Approach figure 4"></p>
+<center><b>Figure 4:</b> Total mean loss per epoch for the training of symmetric network.</center>
+
+<p>According to <strong>Figure 4</strong>, total mean loss is stuck at a very low value after 100th epoch, so I chose trained model from 130th epoch for testing.</p>
+<p>Besides, <strong>Figure 5</strong> is the plot of mean loss for training the non-symmetric network.</p>
+<p><img src="/img/plane_detection_using_machine_learning_approach_5.jpg" alt="Plane Detection Using Machine Learning Approach figure 5"></p>
+<center><b>Figure 5:</b> Total mean loss per epoch for the training of non-symmetric network.</center>
+
+<p>The loss value stays low after 100th epoch, and there is a fluctuation around 130th epoch. Such fluctuation may be caused by overfitting, so I chose the trained model from 110th epoch for doing testing.</p>
+<h2 id="Experiment-Results"><a href="#Experiment-Results" class="headerlink" title="Experiment Results"></a>Experiment Results</h2><p>The testing set has a size of 8 objects. The testing result on the model of symmetric network shows an accuracy of 83.4534% and an Intersection-over-Union (IoU) of 71.1421%. <strong>Figure 6</strong> illustrates the plane detection result on the testing set using the model generated by symmetric network.</p>
+<p><img src="/img/plane_detection_using_machine_learning_approach_6.jpg" alt="Plane Detection Using Machine Learning Approach figure 6"></p>
+<center><b>Figure 6:</b> Testing results of the symmetric network.</center>
+
+<p>The result shows a fairly good performance for neural network classifiers doing the plane detection work on objects of single category. The accuracy could even rise if larger training set is prepared. The classifier seems to favor a table object with a more normal shape, i.e., a table with a square tabletop and four straight legs. For tables without a regular shape, the classification accuracy is relatively lower, and the classifier tends to misclassify the points in the middle of the table top.</p>
+<p>The non-symmetric network shows a similar testing result, which comes out with an accuracy of 85.7117% and an IoU of 75.0279%. The plane detection results of the non-symmetric network is shown in the <strong>Figure 7</strong> below.</p>
+<p><img src="/img/plane_detection_using_machine_learning_approach_7.jpg" alt="Plane Detection Using Machine Learning Approach figure 7"></p>
+<center><b>Figure 7:</b> Testing results of the symmetric network.</center>
+
+<p>Similar to the results of the symmetric network, the classifier based on the non-symmetric network shows a good performance on objects with a more regular shape. It may also fail to classify the points in the middle of the tabletop. Furthermore, the non-symmetric network could also misclassify a few points on the legs of a table, which is shown in the 1st, 2nd and 8th objects, and such pattern is not observed in the results of symmetric network.</p>
 
     </article>
     <!-- 前后页  -->
@@ -328,7 +366,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Related-Works"><span class="toc-number">1.</span> <span class="toc-text">Related Works</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Plane-Detection-in-3D-Data"><span class="toc-number">1.1.</span> <span class="toc-text">Plane Detection in 3D Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deep-Learning-for-3D-Data-and-Point-Cloud"><span class="toc-number">1.2.</span> <span class="toc-text">Deep Learning for 3D Data and Point Cloud</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Design-of-Neural-Network"><span class="toc-number">2.</span> <span class="toc-text">Design of Neural Network</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Symmetric-Network"><span class="toc-number">2.1.</span> <span class="toc-text">Symmetric Network</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Related-Works"><span class="toc-number">1.</span> <span class="toc-text">Related Works</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Plane-Detection-in-3D-Data"><span class="toc-number">1.1.</span> <span class="toc-text">Plane Detection in 3D Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deep-Learning-for-3D-Data-and-Point-Cloud"><span class="toc-number">1.2.</span> <span class="toc-text">Deep Learning for 3D Data and Point Cloud</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Design-of-Neural-Network"><span class="toc-number">2.</span> <span class="toc-text">Design of Neural Network</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Symmetric-Network"><span class="toc-number">2.1.</span> <span class="toc-text">Symmetric Network</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Non-symmetric-Network"><span class="toc-number">2.2.</span> <span class="toc-text">Non-symmetric Network</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Experiment"><span class="toc-number">3.</span> <span class="toc-text">Experiment</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Experimental-Data-and-Data-Preprocessing"><span class="toc-number">3.1.</span> <span class="toc-text">Experimental Data and Data Preprocessing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optimal-Training-Models"><span class="toc-number">3.2.</span> <span class="toc-text">Optimal Training Models</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Experiment-Results"><span class="toc-number">3.3.</span> <span class="toc-text">Experiment Results</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -342,8 +380,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
     
     
     
@@ -518,11 +554,7 @@
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
+        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
     
@@ -532,15 +564,19 @@
     
         <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
