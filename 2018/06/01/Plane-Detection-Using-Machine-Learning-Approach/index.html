@@ -251,6 +251,9 @@
 <center><b>Figure 7:</b> Testing results of the symmetric network.</center>
 
 <p>Similar to the results of the symmetric network, the classifier based on the non-symmetric network shows a good performance on objects with a more regular shape. It may also fail to classify the points in the middle of the tabletop. Furthermore, the non-symmetric network could also misclassify a few points on the legs of a table, which is shown in the 1st, 2nd and 8th objects, and such pattern is not observed in the results of symmetric network.</p>
+<h1 id="Conclusions"><a href="#Conclusions" class="headerlink" title="Conclusions"></a>Conclusions</h1><p>In this experiment, although the non-symmetric network shows a slightly higher classification accuracy, we cannot conclude that non-symmetric network has a better performance for doing the plane detection work. Since only one category of object is included, the global vector generated in the symmetric function actually does not make an effort. In the further experiments, we can introduce more categories of objects and see how the networks will work on more complicated shapes.</p>
+<p>This experiment shows the potential of neural network classifiers for doing plane detection. According to the experiment results, misclassification is basically providing holes on the detected planes. This is a not a very severe problem for plane detection tasks, as we can apply a <a href="https://pdfs.semanticscholar.org/c52b/a582769375469d688e2a3b2d4d7e3f088472.pdf" target="_blank" rel="external">3D Hough transformation</a> afterwards, which is robust to missing and contaminated data, on the points of detected planar part to generate the plane information.</p>
+<p>All the code and data of this experiment can be found over my GitHub repository: <a href="https://github.com/IsaacGuan/PointNet-Plane-Detection" target="_blank" rel="external">IsaacGuan/PointNet-Plane-Detection</a>.</p>
 
     </article>
     <!-- 前后页  -->
@@ -366,7 +369,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Related-Works"><span class="toc-number">1.</span> <span class="toc-text">Related Works</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Plane-Detection-in-3D-Data"><span class="toc-number">1.1.</span> <span class="toc-text">Plane Detection in 3D Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deep-Learning-for-3D-Data-and-Point-Cloud"><span class="toc-number">1.2.</span> <span class="toc-text">Deep Learning for 3D Data and Point Cloud</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Design-of-Neural-Network"><span class="toc-number">2.</span> <span class="toc-text">Design of Neural Network</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Symmetric-Network"><span class="toc-number">2.1.</span> <span class="toc-text">Symmetric Network</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Non-symmetric-Network"><span class="toc-number">2.2.</span> <span class="toc-text">Non-symmetric Network</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Experiment"><span class="toc-number">3.</span> <span class="toc-text">Experiment</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Experimental-Data-and-Data-Preprocessing"><span class="toc-number">3.1.</span> <span class="toc-text">Experimental Data and Data Preprocessing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optimal-Training-Models"><span class="toc-number">3.2.</span> <span class="toc-text">Optimal Training Models</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Experiment-Results"><span class="toc-number">3.3.</span> <span class="toc-text">Experiment Results</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Related-Works"><span class="toc-number">1.</span> <span class="toc-text">Related Works</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Plane-Detection-in-3D-Data"><span class="toc-number">1.1.</span> <span class="toc-text">Plane Detection in 3D Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deep-Learning-for-3D-Data-and-Point-Cloud"><span class="toc-number">1.2.</span> <span class="toc-text">Deep Learning for 3D Data and Point Cloud</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Design-of-Neural-Network"><span class="toc-number">2.</span> <span class="toc-text">Design of Neural Network</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Symmetric-Network"><span class="toc-number">2.1.</span> <span class="toc-text">Symmetric Network</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Non-symmetric-Network"><span class="toc-number">2.2.</span> <span class="toc-text">Non-symmetric Network</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Experiment"><span class="toc-number">3.</span> <span class="toc-text">Experiment</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Experimental-Data-and-Data-Preprocessing"><span class="toc-number">3.1.</span> <span class="toc-text">Experimental Data and Data Preprocessing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optimal-Training-Models"><span class="toc-number">3.2.</span> <span class="toc-text">Optimal Training Models</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Experiment-Results"><span class="toc-number">3.3.</span> <span class="toc-text">Experiment Results</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Conclusions"><span class="toc-number">4.</span> <span class="toc-text">Conclusions</span></a></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -380,6 +383,12 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
     
     
     
@@ -546,23 +555,15 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">geometry-processing</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">parameterization</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
     
@@ -570,13 +571,21 @@
     
         <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
+        <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">parameterization</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
+        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
