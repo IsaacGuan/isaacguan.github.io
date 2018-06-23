@@ -216,14 +216,14 @@
 <h2 id="Laplace-Beltrami-Weights"><a href="#Laplace-Beltrami-Weights" class="headerlink" title="Laplace-Beltrami Weights"></a>Laplace-Beltrami Weights</h2><p>We can also derive weights from the <a href="https://en.wikipedia.org/wiki/Laplace%E2%80%93Beltrami_operator" target="_blank" rel="external">Laplace-Beltrami operator</a>:</p>
 <p>$$\begin{equation}<br>\begin{cases}<br>a_{i,j}=\frac{1}{2A_i}(\cot\alpha_{i,j}+\cot\beta_{i,j}) \\<br>a_{i,i}=-\sum_{}a_{i,j}<br>\end{cases}<br>\end{equation}$$</p>
 <p>In the equations above, $A_i$ denotes the area of the <a href="https://en.wikipedia.org/wiki/Voronoi_diagram" target="_blank" rel="external">Voronoi region</a> of the vertex $i$, $\alpha_{i,j}$ and $\beta_{i,j}$ denote respectively the two corners opposite to the edge $(i,j)$, as is shown in <strong>Figure 1</strong>.</p>
-<p><img src="/img/tutte_embedding_for_parameterization_1.jpg" alt="Tutte Embedding for Parameterization figure 1"></p>
+<p><img src="/img/tutte_embedding_for_parameterization/tutte_embedding_for_parameterization_1.jpg" alt="Tutte Embedding for Parameterization figure 1"></p>
 <center><b>Figure 1:</b> Voronoi region of one vertex.</center>
 
 <p>For calculating the value of $A_i$, we can use this formula, where $\Arrowvert x_i-x_j \Arrowvert$ is the length of edge $(i,j)$.</p>
 <p>$$\begin{equation}<br>A_i=\frac{1}{8}\sum_{}(\cot\alpha_{i,j}+\cot\beta_{i,j})\Arrowvert x_i-x_j \Arrowvert^2<br>\end{equation}$$</p>
 <p>As far as one triangle from the one-ring of a vertex is concerned, which is shown in <strong>Figure 2</strong>, the Voronoi region inside that triangle can be calculated as:</p>
 <p>$$\begin{equation}<br>W=\frac{1}{8}\sum_{}(\Arrowvert x_i-x_j \Arrowvert^2\cot\alpha+\Arrowvert x_i-x_j \Arrowvert^2\cot\beta)<br>\end{equation}$$</p>
-<p><img src="/img/tutte_embedding_for_parameterization_2.jpg" alt="Tutte Embedding for Parameterization figure 2"></p>
+<p><img src="/img/tutte_embedding_for_parameterization/tutte_embedding_for_parameterization_2.jpg" alt="Tutte Embedding for Parameterization figure 2"></p>
 <center><b>Figure 2:</b> Voronoi region of one triangle of one-ring.</center>
 
 <p>As the data structure of mesh is based on <a href="https://en.wikipedia.org/wiki/Doubly_connected_edge_list" target="_blank" rel="external">half-edge</a>, we can simply find the neighbor of a certain half-edge by retrieving its previous half-edge, e.g., in <strong>Figure 2</strong>, half-edge $(j_2,i)$ is previous to half-edge $(i,j_1)$. Thus, by traversing outgoing half-edges associated on a vertex, we can easily calculate the Voronoi region of it using the following code snippet:</p>
@@ -231,22 +231,22 @@
 <h2 id="Mean-Value-Weights"><a href="#Mean-Value-Weights" class="headerlink" title="Mean Value Weights"></a>Mean Value Weights</h2><p>The Laplace-Beltrami weight takes the geometry of a mesh into account, but it could be negative with obtuse triangles. Based on the mean value theorem, we can the mean value weights, which are always positive and generate one-to-one mappings.</p>
 <p>$$\begin{equation}<br>\begin{cases}<br>a_{i,j}=\frac{1}{\Arrowvert x_i-x_j \Arrowvert}(\tan(\frac{\delta_{i,j}}{2})+\tan(\frac{\gamma_{i,j}}{2})) \\<br>a_{i,i}=-\sum_{}a_{i,j}<br>\end{cases}<br>\end{equation}$$</p>
 <p>In the equations above, $\Arrowvert x_i-x_j \Arrowvert$ is the length of edge $(i,j)$, $\delta_{i,j}$ and $\gamma_{i,j}$ are two neighboring corners on both sides of edge $(i,j)$, as is shown in <strong>Figure 3</strong>.</p>
-<p><img src="/img/tutte_embedding_for_parameterization_3.jpg" alt="Tutte Embedding for Parameterization figure 3"></p>
+<p><img src="/img/tutte_embedding_for_parameterization/tutte_embedding_for_parameterization_3.jpg" alt="Tutte Embedding for Parameterization figure 3"></p>
 <center><b>Figure 3</b></center>
 
 <p>In the real implementation, like what we did in calculating the Voronoi region, we can still take advantage of the sequence of half-edges to find the corresponding corners:</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> delta = h.next.corner;</div><div class="line"><span class="keyword">let</span> gamma = h.twin.prev.corner;</div></pre></td></tr></table></figure>
 <h1 id="Results-and-Conclusions"><a href="#Results-and-Conclusions" class="headerlink" title="Results and Conclusions"></a>Results and Conclusions</h1><p>The results of Tutte embedding is shown in <strong>Figure 4</strong>, applied on different objects with different weight sets.</p>
-<p><img src="/img/tutte_embedding_for_parameterization_4.jpg" alt="Tutte Embedding for Parameterization figure 4"></p>
+<p><img src="/img/tutte_embedding_for_parameterization/tutte_embedding_for_parameterization_4.jpg" alt="Tutte Embedding for Parameterization figure 4"></p>
 <center><b>Figure 4:</b> Results of Tutte embedding.</center>
 
 <p>We can conclude from the results that the Laplace-Beltrami weight set and mean value weight set can better preserve the shape of triangles in the original mesh. This leads to the interior holes of a mesh to enlarge, which is clearly shown in beetle. For better illustrating this property, we can take a close look at the mesh (<strong>Figure 5</strong>).</p>
-<p><img src="/img/tutte_embedding_for_parameterization_5.jpg" alt="Tutte Embedding for Parameterization figure 5"></p>
+<p><img src="/img/tutte_embedding_for_parameterization/tutte_embedding_for_parameterization_5.jpg" alt="Tutte Embedding for Parameterization figure 5"></p>
 <center><b>Figure 5:</b> Parts of parameterizations of cow.</center>
 
 <p><strong>Figure 5</strong> takes the same 200×200 pixels parts from the screen shots of the parametrizations of cow object. It shows that uniform Laplacian weight can cause the triangles on the parameterization to become more regular, but the triangles on the parameterized mesh of Laplace-Beltrami weight and mean value weight are more similar to those on the original mesh.</p>
 <p>Besides, Laplace-Beltrami weight and mean value weight can even better preserve the patterns on the mesh. As is shown in <strong>Figure 6</strong>, the features on the face object (i.e. mouth and eyes) are more distinguishable if we use Laplace-Beltrami weight or mean value weight.</p>
-<p><img src="/img/tutte_embedding_for_parameterization_6.jpg" alt="Tutte Embedding for Parameterization figure 6"></p>
+<p><img src="/img/tutte_embedding_for_parameterization/tutte_embedding_for_parameterization_6.jpg" alt="Tutte Embedding for Parameterization figure 6"></p>
 <center><b>Figure 6:</b> Parameterizations of face.</center>
 
 <p>I have also uploaded the project to this blog: <a href="https://isaacguan.github.io/projects/tutte-embedding/">/projects/tutte-embedding</a>, we can go there to see how the algorithms work.</p>
@@ -487,8 +487,6 @@
     
     
     
-    
-    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -560,6 +558,12 @@
     
         <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">geometry-processing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
@@ -568,27 +572,21 @@
     
         <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">parameterization</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
+        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
+        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">

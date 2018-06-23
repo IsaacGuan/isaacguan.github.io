@@ -234,11 +234,11 @@
 <p><em>Step 5:</em> After all the points are inserted, obtain the Delaunay edge list from the Delaunay triangle list, and delete the edges from the Delaunay edge list that contain a vertex of the original ‘super’ triangle.</p>
 <p><strong><em>End</em></strong></p>
 <p>The following pictures can better illustrate the key steps of this algorithm. As shown in <strong>Figure 1</strong>, when a new point is inserted, all the triangles whose circumcircles contain this point will be found. The common edges of these triangles, which are highlighted in yellow, will be deleted, leaving the star-shaped boundary in red.</p>
-<p><img src="/img/implementation_of_voronoi_diagram_and_delaunay_triangulation_1.jpg" alt="Implementation of Voronoi Diagram and Delaunay Triangulation figure 1"></p>
+<p><img src="/img/implementation_of_voronoi_diagram_and_delaunay_triangulation/implementation_of_voronoi_diagram_and_delaunay_triangulation_1.jpg" alt="Implementation of Voronoi Diagram and Delaunay Triangulation figure 1"></p>
 <center><b>Figure 1</b></center>
 
 <p>And then, the inserted point will be connected to all the vertices of the star-shaped polygon, as shown in <strong>Figure 2</strong>, the new Delaunay triangles will be formed.</p>
-<p><img src="/img/implementation_of_voronoi_diagram_and_delaunay_triangulation_2.jpg" alt="Implementation of Voronoi Diagram and Delaunay Triangulation figure 2"></p>
+<p><img src="/img/implementation_of_voronoi_diagram_and_delaunay_triangulation/implementation_of_voronoi_diagram_and_delaunay_triangulation_2.jpg" alt="Implementation of Voronoi Diagram and Delaunay Triangulation figure 2"></p>
 <center><b>Figure 2</b></center>
 
 <p>However, the aforementioned naïve manner of Delaunay triangulation is clearly an $O(n^2)$ time algorithm that is incapable of handling a massive amount of points.</p>
@@ -255,7 +255,7 @@
 <p><strong><em>End</em></strong></p>
 <h1 id="Time-Complexity-of-the-Algorithm"><a href="#Time-Complexity-of-the-Algorithm" class="headerlink" title="Time Complexity of the Algorithm"></a>Time Complexity of the Algorithm</h1><p>The optimized algorithm for Delaunay triangulation takes $O(n\log n)$ time. As Delaunay triangulation is a planar graph, the number of triangles incident on one point is constant, so the procedure of finding adjacent triangles takes constant time and the time of generating Voronoi diagram is $O(n)$. Therefore, the total running time of this algorithm is $O(n\log n)$.</p>
 <h1 id="Implementation-of-the-Algorithm"><a href="#Implementation-of-the-Algorithm" class="headerlink" title="Implementation of the Algorithm"></a>Implementation of the Algorithm</h1><p>This algorithm is implemented in C#. <strong>Figure 3</strong> shows the result of the implementation of this algorithm, it is capable of handling massive input of 10000 points.</p>
-<p><img src="/img/implementation_of_voronoi_diagram_and_delaunay_triangulation_3.jpg" alt="Implementation of Voronoi Diagram and Delaunay Triangulation figure 3"></p>
+<p><img src="/img/implementation_of_voronoi_diagram_and_delaunay_triangulation/implementation_of_voronoi_diagram_and_delaunay_triangulation_3.jpg" alt="Implementation of Voronoi Diagram and Delaunay Triangulation figure 3"></p>
 <center><b>Figure 3:</b> Voronoi diagram and Delaunay triangulation for 10000 points.</center>
 
 <p>The GitHub repository of this implementation is <a href="https://github.com/IsaacGuan/Voronoi-Delaunay" target="_blank" rel="external">IsaacGuan/Voronoi-Delaunay</a>.</p>
@@ -496,8 +496,6 @@
     
     
     
-    
-    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -569,6 +567,12 @@
     
         <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">geometry-processing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
@@ -577,27 +581,21 @@
     
         <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">parameterization</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
+        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
+        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">

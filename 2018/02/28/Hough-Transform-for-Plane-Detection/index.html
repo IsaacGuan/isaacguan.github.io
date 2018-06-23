@@ -211,11 +211,11 @@
 <p>However, values of $k_x$, $k_y$, and $b$ are unbounded, which would pose a problem when we try to parameterize a vertical plane. Thus, for computational reasons, we can write the plane equation in the <a href="https://en.wikipedia.org/wiki/Hesse_normal_form" target="_blank" rel="external">Hesse normal form</a>, where $\theta$ is the angle between the normal vector of this plane and the x-axis, $\phi$ is the angle between the normal vector and z-axis and $\rho$ is the distance from the plane to the origin:</p>
 <p>$$\begin{equation}<br>x\cos\theta\sin\phi+y\sin\phi\sin\theta+z\cos\phi=\rho<br>\end{equation}$$</p>
 <p>As is shown in <strong>Figure 1</strong>. The plane can be parameterized as $(\theta,\phi,\rho)$.</p>
-<p><img src="/img/hough_transform_for_plane_detection_1.jpg" alt="Hough Transform for Plane Detection figure 1"></p>
+<p><img src="/img/hough_transform_for_plane_detection/hough_transform_for_plane_detection_1.jpg" alt="Hough Transform for Plane Detection figure 1"></p>
 <center><b>Figure 1:</b> Parameterization of a plane.</center>
 
 <p>To find planes in a 3D point cloud, we have to calculate the Hough Transform for each point, which is to say that we parameterize every possible plane that go through every point in the $(\theta,\phi,\rho)$ Hough Space. For instance, <strong>Figure 2</strong> shows the parameterization of three points $(0,0,1)$, $(0,1,0)$ and $(1,0,0)$. Each point is marked as a 3D sinusoid curve in Hough Space and the intersection which is marked in black denotes the plane defined by the three points.</p>
-<p><img src="/img/hough_transform_for_plane_detection_2.jpg" alt="Hough Transform for Plane Detection figure 2"></p>
+<p><img src="/img/hough_transform_for_plane_detection/hough_transform_for_plane_detection_2.jpg" alt="Hough Transform for Plane Detection figure 2"></p>
 <center><b>Figure 2:</b> Transformation of three points from original space to Hough Space.</center>
 
 <h1 id="Hough-Methods"><a href="#Hough-Methods" class="headerlink" title="Hough Methods"></a>Hough Methods</h1><p>Basically, the algorithm for doing Hough Transform can be described as a voting method, where we discretize the Hough Space with a bunch of $(\theta,\phi,\rho)$ cells. A data structure called accumulator then is needed to store all these cells with a score parameter for every cell. Incrementing a cell means increasing the score of it by +1. Each point votes for all cells of $(\theta,\phi,\rho)$ that define a plane on which it may lie.</p>
@@ -265,17 +265,17 @@
 <p>This algorithm simply decreases the number of cells touched by exploiting the fact that a curve with $n$ parameters is defined by $n$ points. And also note that, if points are very far apart, they most likely do not belong to one plane. To take care of this and to diminish errors from sensor noise a distance criterion is introduced: $dist(p_1,p_2,p_3)≤dist_{max}$, i.e., the maximum point-to-point distance between $p_1$, $p_2$ and $p_3$ is below a fixed threshold.</p>
 <h1 id="Accumulator"><a href="#Accumulator" class="headerlink" title="Accumulator"></a>Accumulator</h1><p>An inappropriate accumulator may lead to detection failures of some specific planes and difficulties in finding local maxima, displays low accuracy, large storage space, and low speed. A tradeoff has to be found between a coarse discretization that accurately detects planes and a small number of cells in the accumulator to decrease the time needed for the Hough Transform.</p>
 <h2 id="Accumulator-Array"><a href="#Accumulator-Array" class="headerlink" title="Accumulator Array"></a>Accumulator Array</h2><p>For the standard implementation of the 2D Hough Transform, the Hough Space is divided into $N_\rho\times N_\theta$ rectangular cells. The size of the cells is variable and is chosen problem dependent. Using the same subdivision for the 3D Hough Space by dividing it into cuboid cells results in the patches seen in <strong>Figure 3</strong>. The cells closer to the poles are smaller and comprise less normal vectors. This means voting favors the larger equatorial cells.</p>
-<p><img src="/img/hough_transform_for_plane_detection_3.jpg" alt="Hough Transform for Plane Detection figure 3"></p>
+<p><img src="/img/hough_transform_for_plane_detection/hough_transform_for_plane_detection_3.jpg" alt="Hough Transform for Plane Detection figure 3"></p>
 <center><b>Figure 3:</b> Accumulator array.</center>
 
 <h2 id="Accumulator-Cube"><a href="#Accumulator-Cube" class="headerlink" title="Accumulator Cube"></a>Accumulator Cube</h2><p>We can also project the unit sphere $S^2$ onto the smallest cube that contains the sphere using the diffeomorphism:</p>
 <p>$$\begin{equation}<br>\phi:S^2\to cube,s\mapsto\Arrowvert s\Arrowvert_\infty<br>\end{equation}$$</p>
 <p>Each face of the cube is divided into a regular grid, which is shown in <strong>Figure 4</strong>. With this design of accumulator, the difference of size between the patches on the unit sphere is negligible.</p>
-<p><img src="/img/hough_transform_for_plane_detection_4.jpg" alt="Hough Transform for Plane Detection figure 4"></p>
+<p><img src="/img/hough_transform_for_plane_detection/hough_transform_for_plane_detection_4.jpg" alt="Hough Transform for Plane Detection figure 4"></p>
 <center><b>Figure 4:</b> Accumulator cube.</center>
 
 <h2 id="Accumulator-Ball"><a href="#Accumulator-Ball" class="headerlink" title="Accumulator Ball"></a>Accumulator Ball</h2><p>The commonly used design, accumulator array, which is shown in <strong>Figure 3</strong>, causes the irregularity between the patches on the unit sphere. To solve this issue, we can simply customize the the resolution in terms of polar coordinates depending on the position of the sphere. The resolution of the longitude $\phi$ is kept as for the accumulator array, which is defined as $\phi^\prime$. In $\theta$ direction, the largest latitude circle is the equator located at $\phi=0$. For the unit sphere it has the $max_l=2\pi$. The length of the latitude circle in the middle of the segment located above $\phi_i$ is given by $length_i=2\pi(\phi+\phi^\prime)$. The step width in $\theta$ direction for each slice is now computed as $\theta_{\phi_i}=\frac{360^\circ\cdot max_l}{length_i\cdot N_\theta}$, where $N_\theta$ is a constant that can be customized. The resulting design is illustrated in <strong>Figure 5</strong>.</p>
-<p><img src="/img/hough_transform_for_plane_detection_5.jpg" alt="Hough Transform for Plane Detection figure 5"></p>
+<p><img src="/img/hough_transform_for_plane_detection/hough_transform_for_plane_detection_5.jpg" alt="Hough Transform for Plane Detection figure 5"></p>
 <center><b>Figure 5:</b> Accumulator ball.</center>
 
     </article>
@@ -514,8 +514,6 @@
     
     
     
-    
-    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -587,6 +585,12 @@
     
         <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
     
+        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">geometry-processing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
@@ -595,27 +599,21 @@
     
         <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">parameterization</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
+        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
+        <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
