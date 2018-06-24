@@ -204,7 +204,7 @@
     <article class="article-entry">
         <p>In terms of geometry processing, <a href="https://en.wikipedia.org/wiki/Tutte_embedding" target="_blank" rel="external">Tutte embedding</a>, also known as barycentric embedding, can be used for <a href="https://en.wikipedia.org/wiki/Mesh_parameterization" target="_blank" rel="external">mesh parameterization</a> by fixing the boundary vertices of the mesh on a certain convex polygon, and building a <a href="https://en.wikipedia.org/wiki/Tutte_embedding" target="_blank" rel="external">crossing-free straight-line embedding</a> with the interior vertices inside the convex boundary.</p>
 <h1 id="Implementation-of-Tutte-Embedding"><a href="#Implementation-of-Tutte-Embedding" class="headerlink" title="Implementation of Tutte Embedding"></a>Implementation of Tutte Embedding</h1><p>In order to implement a Tutte embedding, we have to use two vectors $u$ and $v$ to store the parameterized coordinates, and another two vectors $\bar u$ and $\bar v$ to store the boundary vertices. For the interior vertex $i$, we can directly applying the following equation on it to build the barycentric mapping, $j$ denotes the adjacent vertices of $i$.</p>
-<p>$$\begin{equation}<br>\sum_{}a_{i,j}<br>\begin{pmatrix}<br>    u_i \\<br>    v_j<br>\end{pmatrix}<br>-a_{i,i}<br>\begin{pmatrix}<br>    u_i \\<br>    v_i<br>\end{pmatrix}<br>=0<br>\end{equation}$$</p>
+<p>$$\begin{equation}<br>\sum_{}a_{i,j}<br>\begin{pmatrix}<br>    u_j \\<br>    v_j<br>\end{pmatrix}<br>-a_{i,i}<br>\begin{pmatrix}<br>    u_i \\<br>    v_i<br>\end{pmatrix}<br>=0<br>\end{equation}$$</p>
 <p>For those vertices on the boundary, we use the equation below and set $a_{i,i}=1$, to have them fixed on a convex shape:</p>
 <p>$$\begin{equation}<br>\sum_{}a_{i,i}<br>\begin{pmatrix}<br>    u_i \\<br>    v_i<br>\end{pmatrix}<br>=<br>\begin{pmatrix}<br>    \bar u_i \\<br>    \bar v_i<br>\end{pmatrix}<br>\end{equation}$$</p>
 <p>Thus, we can build the two linear systems in below, where $A=\{a_{i,j}\}$ is a sparse matrix storing all the weights $a_{i,j}$, and find the parameterized coordinates by solving for them.</p>
@@ -481,12 +481,6 @@
     
     
     
-    
-    
-    
-    
-    
-    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -556,15 +550,11 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">geometry-processing</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">parameterization</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
     
@@ -572,11 +562,15 @@
     
         <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">parameterization</a></span>
+        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
     
