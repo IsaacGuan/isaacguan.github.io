@@ -202,9 +202,9 @@
     <article class="article-entry">
         <p>The <a href="https://github.com/amonszpart/RAPter" target="_blank" rel="external">RAPter</a> gives us a very nice design and implementation for doing man-made scene reconstruction. According to the nature of its algorithm, it also shows a potential use in terms of 3D plane detection. However, the documentation related to it is pretty poor, so I decide to write here a summary of how to install it on <a href="http://releases.ubuntu.com/16.04/" target="_blank" rel="external">Ubuntu 16.04 LTS</a>.</p>
 <h1 id="Workspace"><a href="#Workspace" class="headerlink" title="Workspace"></a>Workspace</h1><p>The first thing is to create a <code>workspace</code> directory in user’s home directory and a <code>3rdparty</code> subdirectory under <code>workspace</code>. Thus we can define the workspace path <code>WORKSPACE_DIR</code> as <code>$ENV{HOME}/workspace</code> and the third party dependencies path <code>THIRD_PARTY_DIR</code> as <code>${WORKSPACE_DIR}/3rdparty</code>. In the following steps, we will store all the implementations of RAPter tools and experimental data in <code>workspace</code> and download all the dependencies in <code>3rdparty</code>.</p>
-<h1 id="Dependencies"><a href="#Dependencies" class="headerlink" title="Dependencies"></a>Dependencies</h1><p>RAPter requires several dependencies, including <a href="https://opencv.org/" target="_blank" rel="external">OpenCV</a>, <a href="http://pointclouds.org/" target="_blank" rel="external">PointCloudLibrary</a>, <a href="https://projects.coin-or.org/svn/Bonmin/" target="_blank" rel="external">CoinBonmin</a> and <a href="https://github.com/mkirchner/libfbi" target="_blank" rel="external">libfbi</a>. Prior to downloading and installing all these dependences, we need to first get prepared with a few tools, including <a href="https://git-scm.com/" target="_blank" rel="external">Git</a>, <a href="https://subversion.apache.org/" target="_blank" rel="external">SVN</a> and <a href="https://subversion.apache.org/" target="_blank" rel="external">CMake</a> via the following commands.</p>
+<h1 id="Dependencies"><a href="#Dependencies" class="headerlink" title="Dependencies"></a>Dependencies</h1><p>RAPter requires several dependencies, including <a href="https://opencv.org/" target="_blank" rel="external">OpenCV</a>, <a href="http://pointclouds.org/" target="_blank" rel="external">PointCloudLibrary</a>, <a href="https://projects.coin-or.org/svn/Bonmin/" target="_blank" rel="external">CoinBonmin</a>, and <a href="https://github.com/mkirchner/libfbi" target="_blank" rel="external">libfbi</a>. Prior to downloading and installing all these dependences, we need to first get prepared with a few tools, including <a href="https://git-scm.com/" target="_blank" rel="external">Git</a>, <a href="https://subversion.apache.org/" target="_blank" rel="external">SVN</a>, and <a href="https://subversion.apache.org/" target="_blank" rel="external">CMake</a> via the following commands.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install git</div><div class="line">sudo apt-get install subversion</div><div class="line">sudo apt-get install cmake</div></pre></td></tr></table></figure>
-<h2 id="OpenCV"><a href="#OpenCV" class="headerlink" title="OpenCV"></a>OpenCV</h2><p>To install the latest version of OpenCV, we can use the installation script <a href="https://github.com/milq/milq/blob/master/scripts/bash/install-opencv.sh" target="_blank" rel="external">install-opencv.sh</a>. We first download this script in the <code>3rdparty</code> directory and then execute:</p>
+<h2 id="OpenCV"><a href="#OpenCV" class="headerlink" title="OpenCV"></a>OpenCV</h2><p>To install the latest version of OpenCV, we can use the installation script <a href="https://github.com/milq/milq/blob/master/scripts/bash/install-opencv.sh" target="_blank" rel="external">install-opencv.sh</a>. We first download this script in the <code>3rdparty</code> directory, and then execute:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bash install-opencv.sh</div></pre></td></tr></table></figure>
 <p>Type the <code>sudo</code> password and OpenCV will be installed.</p>
 <h2 id="PointCloudLibrary"><a href="#PointCloudLibrary" class="headerlink" title="PointCloudLibrary"></a>PointCloudLibrary</h2><p>There is no ready-made script for PointCloudLibrary, so the installation of it could be a bit tedious.</p>
@@ -462,6 +462,16 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -531,6 +541,8 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">geometry-processing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
@@ -539,27 +551,25 @@
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     

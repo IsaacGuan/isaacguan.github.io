@@ -200,7 +200,7 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>Being a novel deep net architecture invariant towards input order, <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="external">PointNet</a> is able to consume unordered point clouds directly and thus has a promising prospect in the field of geometry processing. At present, the most popular implementation of PointNet is based on <a href="https://www.tensorflow.org/" target="_blank" rel="external">TensorFlow</a> which takes <a href="https://support.hdfgroup.org/HDF5/" target="_blank" rel="external">HDF5</a> as standard input format. It could be a bit confusing for people converting point clouds to HDF5 files and this article is about to tell you how to collect HDF5 datasets for PointNet learning.</p>
+        <p>Being a novel deep net architecture invariant towards input order, <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="external">PointNet</a> is able to consume unordered point clouds directly and thus has a promising prospect in the field of geometry processing. At present, the most popular implementation of PointNet is based on <a href="https://www.tensorflow.org/" target="_blank" rel="external">TensorFlow</a> and it takes <a href="https://support.hdfgroup.org/HDF5/" target="_blank" rel="external">HDF5</a> as standard input format. It could be a bit confusing for people converting point clouds to HDF5 files and this article is about to tell you how to collect HDF5 datasets for PointNet learning.</p>
 <h1 id="PTS-Data"><a href="#PTS-Data" class="headerlink" title="PTS Data"></a>PTS Data</h1><p>We can download raw data from a certain 3D data repositories, for instance, the <a href="http://web.stanford.edu/~ericyi/project_page/part_annotation/index.html" target="_blank" rel="external">ShapeNetPart</a> dataset. The data directly derived from those repositories is basically in the <a href="http://filext.com/file-extension/PTS" target="_blank" rel="external">PTS</a> file format, which is a set of unordered point coordinates with no headers or trailers. This actually makes things easier, as we can directly read the PTS file line by line and store the point cloud into an array <code>lines</code>. For example, before generating HDF5 datasets, we want that each point cloud has the same length. Thus, a simple subsampler can be applied on the PTS files. The following code snippet shows a random sampler subsampling the point cloud to 2048 points.</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">f = open(file, <span class="string">'r+'</span>)</div><div class="line">lines = [line.rstrip() <span class="keyword">for</span> line <span class="keyword">in</span> f]</div><div class="line">slice = random.sample(lines, <span class="number">2048</span>)</div></pre></td></tr></table></figure>
 <h1 id="PLY-Data"><a href="#PLY-Data" class="headerlink" title="PLY Data"></a>PLY Data</h1><p><a href="http://paulbourke.net/dataformats/ply/" target="_blank" rel="external">PLY</a> is a very famous file format that stores 3D data. It has headers to specify the variation and elements of the PLY file. Thus it could be a bit more complicated to deal with such data than PTS data. Luckily, we can find some ready made tools to read PLY files, e.g., the <a href="https://github.com/dranjan/python-plyfile" target="_blank" rel="external">plyfile</a>, which is able to read the numerical data from the PLY file as a <a href="http://www.numpy.org/" target="_blank" rel="external">NumPy</a> structured array. The installation of this tool is pretty easy, we can get it directly via <a href="https://pypi.org/project/pip/" target="_blank" rel="external">pip</a>.</p>
@@ -210,7 +210,7 @@
 <p>The deserialization and serialization of PLY file data is done through <code>PlyData</code> and <code>PlyElement</code> instances, so we have to first import them. Besides, the NumPy module is also need to be loaded.</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> plyfile <span class="keyword">import</span> PlyData, PlyElement</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div></pre></td></tr></table></figure>
 <p>Then we can start to read a PLY file. Concretely, it looks like this.</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">plydata = PlyData.read(filename + <span class="string">'.ply'</span>)</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, plydata.elements[<span class="number">0</span>].count):</div><div class="line">	data[i] = [plydata[<span class="string">'vertex'</span>][<span class="string">'x'</span>][i], plydata[<span class="string">'vertex'</span>][<span class="string">'y'</span>][i], plydata[<span class="string">'vertex'</span>][<span class="string">'z'</span>][i]]</div></pre></td></tr></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">plydata = PlyData.read(filename + <span class="string">'.ply'</span>)</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, plydata.elements[<span class="number">0</span>].count):</div><div class="line">    data[i] = [plydata[<span class="string">'vertex'</span>][<span class="string">'x'</span>][i], plydata[<span class="string">'vertex'</span>][<span class="string">'y'</span>][i], plydata[<span class="string">'vertex'</span>][<span class="string">'z'</span>][i]]</div></pre></td></tr></table></figure>
 <h1 id="Write-HDF5-File"><a href="#Write-HDF5-File" class="headerlink" title="Write HDF5 File"></a>Write HDF5 File</h1><p>We use the <a href="https://github.com/h5py/h5py" target="_blank" rel="external">h5py</a> package as the interface to the HDF5 data format.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libhdf5-dev</div><div class="line">pip install h5py</div></pre></td></tr></table></figure>
 <p>We first import this package.</p>
@@ -453,6 +453,16 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -522,6 +532,8 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
+        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
+    
         <span class="sidebar-tag-name"><a href= "#">geometry-processing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">hough-transform</a></span>
@@ -530,27 +542,25 @@
     
         <span class="sidebar-tag-name"><a href= "#">plane-detection</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">hello-world</a></span>
-    
-        <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">computational-geometry</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">voronoi-diagram</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">delaunay-triangulation</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">data-preprocessing</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">ubuntu</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">rapter</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">tutte-embedding</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">convex-hull</a></span>
     
