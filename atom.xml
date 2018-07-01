@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Isaac&#39;s Blog</title>
   
-  <subtitle>Ayant le soleil en face, il faut que nous vivons fièrement</subtitle>
+  
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://isaacguan.github.io/"/>
@@ -10,7 +10,7 @@
   <id>https://isaacguan.github.io/</id>
   
   <author>
-    <name>Isaac Guan</name>
+    <name>Yanran Guan</name>
     
   </author>
   
