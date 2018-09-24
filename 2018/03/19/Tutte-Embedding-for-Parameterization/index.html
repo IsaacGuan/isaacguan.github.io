@@ -202,11 +202,11 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>In terms of geometry processing, <a href="https://en.wikipedia.org/wiki/Tutte_embedding" target="_blank" rel="external">Tutte embedding</a>, also known as barycentric embedding, can be used for <a href="https://en.wikipedia.org/wiki/Mesh_parameterization" target="_blank" rel="external">mesh parameterization</a> by fixing the boundary vertices of the mesh on a certain convex polygon, and building a <a href="https://en.wikipedia.org/wiki/Tutte_embedding" target="_blank" rel="external">crossing-free straight-line embedding</a> with the interior vertices inside the convex boundary.</p>
-<h1 id="Implementation-of-Tutte-Embedding"><a href="#Implementation-of-Tutte-Embedding" class="headerlink" title="Implementation of Tutte Embedding"></a>Implementation of Tutte Embedding</h1><p>In order to implement a Tutte embedding, we have to use two vectors $\mathbf{u}$ and $\mathbf{v}$ to store the parameterized coordinates, and another two vectors $\bar{\mathbf{u}}$ and $\bar{\mathbf{v}}$ to store the boundary vertices. For the interior vertex $i$, we can directly applying the following equation on it to build the barycentric mapping:$$\begin{equation}\sum_{}a_{i,j}\begin{pmatrix}u_j\\v_j\end{pmatrix}-a_{i,i}\begin{pmatrix}u_i\\v_i\end{pmatrix}=0,\tag{1}\label{eq:1}\end{equation}$$where $j$ denotes the adjacent vertices of $i$.</p>
+        <p>In geometry processing, <a href="https://en.wikipedia.org/wiki/Tutte_embedding" target="_blank" rel="external">Tutte embedding</a>, also known as barycentric embedding, can be used for <a href="https://en.wikipedia.org/wiki/Mesh_parameterization" target="_blank" rel="external">mesh parameterization</a> by fixing the boundary vertices of the mesh on a certain convex polygon, and building a <a href="https://en.wikipedia.org/wiki/Tutte_embedding" target="_blank" rel="external">crossing-free straight-line embedding</a> with the interior vertices inside the convex boundary.</p>
+<h1 id="Implementation-of-Tutte-Embedding"><a href="#Implementation-of-Tutte-Embedding" class="headerlink" title="Implementation of Tutte Embedding"></a>Implementation of Tutte Embedding</h1><p>In order to implement a Tutte embedding, we have to use two vectors $\mathbf{u}$ and $\mathbf{v}$ to store the parameterized coordinates, and another two vectors $\bar{\mathbf{u}}$ and $\bar{\mathbf{v}}$ to store the boundary vertices. For the interior vertex $i$, we can directly apply the following equation to it to build the barycentric mapping:$$\begin{equation}\sum_{}a_{i,j}\begin{pmatrix}u_j\\v_j\end{pmatrix}-a_{i,i}\begin{pmatrix}u_i\\v_i\end{pmatrix}=0,\tag{1}\label{eq:1}\end{equation}$$where $j$ denotes the adjacent vertices of $i$.</p>
 <p>For those vertices on the boundary, we use the equation below and set $a_{i,i}=1$, to have them fixed on a convex shape:$$\begin{equation}\sum_{}a_{i,i}\begin{pmatrix}u_i\\v_i\end{pmatrix}=\begin{pmatrix}\bar{u}_i\\\bar{v}_i\end{pmatrix}.\tag{2}\label{eq:2}\end{equation}$$</p>
 <p>Thus, we can build the two linear systems below:$$\begin{equation}\begin{cases}\mathbf{A}\mathbf{u}=\bar{\mathbf{u}},\\\mathbf{A}\mathbf{v}=\bar{\mathbf{v}},\end{cases}\tag{3}\label{eq:3}\end{equation}$$where $\mathbf{A}=(a_{i,j})$ is a sparse matrix storing all the weights $a_{i,j}$. And we can find the parameterized coordinates by solving for the two linear systems.</p>
-<p>I chose a disk as the convex shape for fixing the boundary vertices. And I am still using <a href="https://github.com/GeometryCollective/geometry-processing-js" target="_blank" rel="external">geometry-processing-js</a> as mesh library, which is the same library I used in <a href="https://isaacguan.github.io/2018/01/26/Mesh-Smoothing/">Mesh Smoothing</a>.</p>
+<p>I chose a disk as the convex shape for fixing the boundary vertices and used the <a href="https://github.com/GeometryCollective/geometry-processing-js" target="_blank" rel="external">geometry-processing-js</a> library for the data structure of meshes.</p>
 <h1 id="Weighting-Schemes"><a href="#Weighting-Schemes" class="headerlink" title="Weighting Schemes"></a>Weighting Schemes</h1><p>I tried three different weight sets, namely the uniform Laplacian weights, the Laplace-Beltrami weights, and the mean value weights.</p>
 <h2 id="Uniform-Laplacian-Weights"><a href="#Uniform-Laplacian-Weights" class="headerlink" title="Uniform Laplacian Weights"></a>Uniform Laplacian Weights</h2><p>The uniform Laplacian weight set is easiest to build, but it does not take the geometric feature of the mesh into consideration. We can simply set the entries of the weight matrix in the following manner:$$\begin{equation}\begin{cases}a_{i,j}=1,\\a_{i,i}=-\sum_{}a_{i,j}=-D_i,\end{cases}\tag{4}\label{eq:4}\end{equation}$$where $D_i$ is the degree of vertex $i$, i.e., the number of edges connecting $i$.</p>
 <h2 id="Laplace-Beltrami-Weights"><a href="#Laplace-Beltrami-Weights" class="headerlink" title="Laplace-Beltrami Weights"></a>Laplace-Beltrami Weights</h2><p>We can also derive weights from the <a href="https://en.wikipedia.org/wiki/Laplace%E2%80%93Beltrami_operator" target="_blank" rel="external">Laplace-Beltrami operator</a>:$$\begin{equation}\begin{cases}a_{i,j}=\frac{1}{2A_i}(\cot\alpha_{i,j}+\cot\beta_{i,j}),\\a_{i,i}=-\sum_{}a_{i,j},\end{cases}\tag{5}\label{eq:5}\end{equation}$$where $A_i$ denotes the area of the <a href="https://en.wikipedia.org/wiki/Voronoi_diagram" target="_blank" rel="external">Voronoi region</a> of the vertex $i$, $\alpha_{i,j}$ and $\beta_{i,j}$ denote respectively the two corners opposite to the edge $(i,j)$, as shown in Figure 1.</p>
@@ -226,16 +226,16 @@
 
 <p>In the real implementation, like what we did in calculating the Voronoi region, we can still take advantage of the sequence of half-edges to find the corresponding corners:</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> delta = h.next.corner;</div><div class="line"><span class="keyword">let</span> gamma = h.twin.prev.corner;</div></pre></td></tr></table></figure>
-<h1 id="Results-and-Conclusion"><a href="#Results-and-Conclusion" class="headerlink" title="Results and Conclusion"></a>Results and Conclusion</h1><p>The results of Tutte embedding is shown in Figure 4, applied on different objects with different weight sets.</p>
+<h1 id="Results-and-Conclusion"><a href="#Results-and-Conclusion" class="headerlink" title="Results and Conclusion"></a>Results and Conclusion</h1><p>The results of Tutte embedding are shown in Figure 4, applied to different objects with different weight sets.</p>
 <p><img src="/img/tutte_embedding_for_parameterization/tutte_embedding_for_parameterization_4.jpg" alt="tutte embedding for parameterization figure 4"></p>
 <center><b>Figure 4:</b> Results of Tutte embedding.</center>
 
-<p>We can conclude from the results that the Laplace-Beltrami weight set and mean value weight set can better preserve the shape of triangles in the original mesh. This leads to the interior holes of a mesh to enlarge, which is clearly shown in beetle. For better illustrating this property, we can take a close look at the mesh (Figure 5).</p>
+<p>We can conclude from the results that the Laplace-Beltrami weight set and mean value weight set can better preserve the shape of triangles in the original mesh. This leads to the interior holes of a mesh to enlarge, which is clearly shown in the beetle. For better illustrating this property, we can take a close look at the mesh (Figure 5).</p>
 <p><img src="/img/tutte_embedding_for_parameterization/tutte_embedding_for_parameterization_5.jpg" alt="tutte embedding for parameterization figure 5"></p>
 <center><b>Figure 5:</b> Parts of parameterizations of cow.</center>
 
-<p>Figure 5 takes the same 200×200 pixels parts from the screen shots of the parametrizations of cow object. It shows that uniform Laplacian weight can cause the triangles on the parameterization to become more regular, but the triangles on the parameterized mesh of Laplace-Beltrami weight and mean value weight are more similar to those on the original mesh.</p>
-<p>Besides, Laplace-Beltrami weight and mean value weight can even better preserve the patterns on the mesh. As shown in Figure 6, the features on the face object (i.e., mouth and eyes) are more distinguishable if we use Laplace-Beltrami weight or mean value weight.</p>
+<p>Figure 5 takes the same 200×200 pixels parts from the screenshots of the parametrizations of the cow object. It shows that the uniform Laplacian weight can cause the triangles on the parameterization to become more regular, but the triangles on the parameterized mesh of the Laplace-Beltrami weight and the mean value weight are more similar to those on the original mesh.</p>
+<p>Besides, the Laplace-Beltrami weight and the mean value weight can even better preserve the patterns on the mesh. As shown in Figure 6, the features on the face object (i.e., the mouth and the eyes) are more distinguishable if we use the Laplace-Beltrami weight or the mean value weight.</p>
 <p><img src="/img/tutte_embedding_for_parameterization/tutte_embedding_for_parameterization_6.jpg" alt="tutte embedding for parameterization figure 6"></p>
 <center><b>Figure 6:</b> Parameterizations of face.</center>
 
@@ -509,7 +509,7 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">06/01</span><a class="archive-post-title" href= "/2018/06/01/Plane-Detection-Using-Machine-Learning-Approach/" >Plane Detection Using Machine Learning Approach</a>
+            <span class="archive-post-date">06/01</span><a class="archive-post-title" href= "/2018/06/01/Plane-Detection-Using-Deep-Learning-Approach/" >Plane Detection Using Deep Learning Approach</a>
         </li>
     
     
@@ -588,7 +588,7 @@
     
         <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
+        <span class="sidebar-tag-name"><a href= "#">deep-learning</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
     

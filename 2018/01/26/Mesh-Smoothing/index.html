@@ -200,8 +200,8 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>Mesh smoothing, also known as mesh denoising, is an important and widely discussed topic in terms of geometry processing. Basically, a mesh smoothing method takes three steps: loading a mesh from a file; smoothing that mesh; outputting the mesh to a file. Recently, I implemented a few basic algorithms regarding mesh smoothing.</p>
-<h1 id="Selection-of-Mesh-Library"><a href="#Selection-of-Mesh-Library" class="headerlink" title="Selection of Mesh Library"></a>Selection of Mesh Library</h1><p>There are a lot of mesh libraries that give us a data structure so that we can use to build a mesh for an object file. What I am using is the <a href="https://github.com/GeometryCollective/geometry-processing-js" target="_blank" rel="external">geometry-processing-js</a> library. It is a library written in JavaScript which constructs a mesh based on <a href="https://en.wikipedia.org/wiki/Doubly_connected_edge_list" target="_blank" rel="external">half-edge</a>. It also gives plenty of predefined functions regarding the components of a mesh e.g. half-edge, vertex, edge, face, etc. Besides, it also includes a linear algebra library which makes it handy for users to do matrix-vector operations.</p>
+        <p>Mesh smoothing, also known as mesh denoising, is an important and widely discussed topic in geometry processing. Basically, a mesh smoothing method takes three steps: loading a mesh from a file; smoothing that mesh; outputting the mesh to a file. Recently, I implemented a few basic algorithms regarding mesh smoothing.</p>
+<h1 id="Selection-of-Mesh-Library"><a href="#Selection-of-Mesh-Library" class="headerlink" title="Selection of Mesh Library"></a>Selection of Mesh Library</h1><p>There are a lot of mesh libraries that give us a data structure such that we can use to build a mesh for a 3D object. What I am using is the <a href="https://github.com/GeometryCollective/geometry-processing-js" target="_blank" rel="external">geometry-processing-js</a> library. It is a library written in JavaScript which constructs a mesh based on <a href="https://en.wikipedia.org/wiki/Doubly_connected_edge_list" target="_blank" rel="external">half-edge</a>. It also gives plenty of predefined functions regarding the components of a mesh e.g. half-edge, vertex, edge, face, etc. Besides, it also includes a linear algebra library which makes it handy for users to do matrix-vector operations.</p>
 <h1 id="Mesh-Smoothing-Algorithms"><a href="#Mesh-Smoothing-Algorithms" class="headerlink" title="Mesh Smoothing Algorithms"></a>Mesh Smoothing Algorithms</h1><p>I implemented two algorithms for mesh smoothing, a mean filtering algorithm, and a weighted mean filtering algorithm.</p>
 <h2 id="Mean-Filtering-Algorithm"><a href="#Mean-Filtering-Algorithm" class="headerlink" title="Mean Filtering Algorithm"></a>Mean Filtering Algorithm</h2><p>A most naïve mean filtering algorithm goes as follows:</p>
 <p><strong><em>Begin</em></strong></p>
@@ -209,7 +209,7 @@
 <p><em>Step 2:</em> For each vertex $\mathbf{v}$ in the mesh, calculate $\mathrm{positions}[\mathbf{v}]$ by the average position of the neighbor vertices in the one-ring neighborhood of $\mathbf{v}$;</p>
 <p><em>Step 3:</em> After the whole iteration, update the positions of vertices in the mesh by the hash map $\mathrm{positions}$.</p>
 <p><strong><em>End</em></strong></p>
-<p>However, if the object has some holes on it, this algorithm could cause the holes to enlarge after times of iteration, which is shown in Figure 1.</p>
+<p>However, if the object has some holes in it, this algorithm could cause the holes to enlarge after times of iteration, which is shown in Figure 1.</p>
 <p><img src="/img/mesh_smoothing/mesh_smoothing_1.jpg" alt="mesh smoothing figure 1"></p>
 <center><b>Figure 1:</b> Holes enlarge on the object, steps = 5.</center>
 
@@ -217,18 +217,18 @@
 <p><strong><em>Begin</em></strong></p>
 <p><em>Step 1:</em> Create a hash map $\mathrm{positions}$ mapping each vertex with its position to be updated;</p>
 <p><em>Step 2:</em> For each vertex $\mathbf{v}$ in the mesh, calculate $\mathrm{positions}[\mathbf{v}]$ by the average position of the neighbor vertices in the one-ring neighborhood of $\mathbf{v}$;</p>
-<p><em>Step 3:</em> To preserve the boundary of holes on the mesh, if vertex $\mathbf{v}$ is on boundary, update $\mathrm{positions}[\mathbf{v}]$ to the original position of vertex $\mathbf{v}$ in the mesh;</p>
+<p><em>Step 3:</em> To preserve the boundary of holes on the mesh, if vertex $\mathbf{v}$ is on the boundary, update $\mathrm{positions}[\mathbf{v}]$ to the original position of vertex $\mathbf{v}$ in the mesh;</p>
 <p><em>Step 4:</em> After the whole iteration, update the positions of vertices in the mesh by the hash map $\mathrm{positions}$.</p>
 <p><strong><em>End</em></strong></p>
 <h2 id="Weighted-Mean-Filtering-Algorithm"><a href="#Weighted-Mean-Filtering-Algorithm" class="headerlink" title="Weighted Mean Filtering Algorithm"></a>Weighted Mean Filtering Algorithm</h2><p>The weighting method simply weights each neighboring vertex by the area of the two faces incident to it. The weighted mean filtering algorithm goes like this:</p>
 <p><strong><em>Begin</em></strong></p>
 <p><em>Step 1:</em>  Create a hash map $\mathrm{positions}$ that maps each vertex to its position to be updated;</p>
-<p><em>Step 2:</em> For each vertex $\mathbf{v}$ in the mesh, traverse its neighborhood vertices. And for each neighbor vertex $\mathbf{v}^\ast$ calculate the weight value $w^\ast$ on each neighborhood vertex by adding area of the two incident faces together;</p>
+<p><em>Step 2:</em> For each vertex $\mathbf{v}$ in the mesh, traverse its neighborhood vertices. And for each neighbor vertex $\mathbf{v}^\ast$ calculate the weight value $w^\ast$ on each neighborhood vertex by adding the area of the two incident faces together;</p>
 <p><em>Step 3:</em> After the traversal of neighborhood vertices, calculate the total weight $w$ on the vertex $\mathbf{v}$ by accumulating every $w^\ast$, and calculate $\mathrm{positions}[\mathbf{v}]=\frac{\sum_{}w^\ast\cdot\mathbf{v}^\ast}{w}$;</p>
-<p><em>Step 4:</em> To preserve the boundary of holes on the mesh, if vertex $\mathbf{v}$ is on boundary, update $\mathrm{positions}[\mathbf{v}]$ to the original position of vertex $\mathbf{v}$ in the mesh;</p>
+<p><em>Step 4:</em> To preserve the boundary of holes on the mesh, if vertex $\mathbf{v}$ is on the boundary, update $\mathrm{positions}[\mathbf{v}]$ to the original position of vertex $\mathbf{v}$ in the mesh;</p>
 <p><em>Step 5:</em> After the whole iteration, update the positions of vertices in the mesh by the hash map $\mathrm{positions}$.</p>
 <p><strong><em>End</em></strong></p>
-<p>However, in the implementation, I found this could cause the faces of the mesh overlapping one another after several times of iterations, because the position of vertex could fall outside its one-ring neighborhood. As shown in Figure 2, overlapping occurs after 5 times of iteration.</p>
+<p>However, in the implementation, I found this could cause the faces of the mesh overlapping one another after several times of iterations, as the position of vertex could fall outside its one-ring neighborhood. As shown in Figure 2, overlapping occurs after 5 times of iteration.</p>
 <p><img src="/img/mesh_smoothing/mesh_smoothing_2.jpg" alt="mesh smoothing figure 2"></p>
 <center><b>Figure 2:</b> Overlapping of faces, steps = 5.</center>
 
@@ -239,25 +239,25 @@
 <p>And from $(\mathbf{q}-\mathbf{v})\perp\mathbf{n}$, we can derive:$$\begin{equation}a(x^\prime-x_0)+b(y^\prime-y_0)+c(z^\prime-z_0)=0.\tag{2}\label{eq:2}\end{equation}$$</p>
 <p>Combining $\eqref{eq:1}$ and $\eqref{eq:2}$, we can solve for $t$:$$\begin{equation}t=\frac{ax_0+by_0+cz_0-(ax+by+cz)}{a^2+b^2+c^2}.\tag{3}\label{eq:3}\end{equation}$$</p>
 <p>Then we can solve for the projection $\mathbf{q}=(x^\prime,y^\prime,z^\prime)$ by combining $\eqref{eq:1}$ and $\eqref{eq:3}$.</p>
-<p>As the data structure of mesh is based on half-edge, and all the faces are defined by half-edges in counter-clock-wise order. Thus, for each vertex $\mathbf{v}$, we can simply get the boundary edges of a star-shaped neighborhood in counter-clock-wise order, project them along with the position to be updated $\mathrm{positions}[\mathbf{v}]$ onto the plane that is defined by vertex $\mathbf{v}$ and its normal vector $\mathbf{n}$. Then we can do the left-turn/right-turn check on that plane to see whether the new position for vertex $\mathbf{v}$ $\mathrm{positions}[\mathbf{v}]$ is outside its neighborhood polygon or not.</p>
+<p>As the data structure of mesh is based on half-edge, and all the faces are defined by half-edges in counterclockwise order. Thus, for each vertex $\mathbf{v}$, we can simply get the boundary edges of a star-shaped neighborhood in counterclockwise order, project them along with the position to be updated $\mathrm{positions}[\mathbf{v}]$ onto the plane that is defined by vertex $\mathbf{v}$ and its normal vector $\mathbf{n}$. Then we can do the left-turn/right-turn check on that plane to see whether the new position for vertex $\mathbf{v}$ $\mathrm{positions}[\mathbf{v}]$ is outside its neighborhood polygon or not.</p>
 <p>So the modified algorithm goes as follows:</p>
 <p><strong><em>Begin</em></strong></p>
 <p><em>Step 1:</em> Create a hash map $\mathrm{positions}$ that maps each vertex to its position to be updated;</p>
-<p><em>Step 2:</em> For each vertex $\mathbf{v}$ in the mesh, traverse its neighborhood vertices. And for each neighbor vertex $\mathbf{v}^\ast$ calculate the weight value $w^\ast$ on each neighborhood vertex by adding area of the two incident faces together;</p>
+<p><em>Step 2:</em> For each vertex $\mathbf{v}$ in the mesh, traverse its neighborhood vertices. And for each neighbor vertex $\mathbf{v}^\ast$ calculate the weight value $w^\ast$ on each neighborhood vertex by adding the area of the two incident faces together;</p>
 <p><em>Step 3:</em> After the traversal of neighborhood vertices, calculate the total weight $w$ on the vertex $\mathbf{v}$ by accumulating every $w^\ast$, and calculate $\mathrm{positions}[\mathbf{v}]=\frac{\sum_{}w^\ast\cdot\mathbf{v}^\ast}{w}$;</p>
-<p><em>Step 4:</em> Check whether $\mathrm{positions}[\mathbf{v}]$ falls outside its one-ring neighborhood, if so, use the mean filtering algorithm to update the new position;</p>
-<p><em>Step 5:</em> To preserve the boundary of holes on the mesh, if vertex $\mathbf{v}$ is on boundary, update $\mathrm{positions}[\mathbf{v}]$ to the original position of vertex $\mathbf{v}$ in the mesh;</p>
+<p><em>Step 4:</em> Check whether $\mathrm{positions}[\mathbf{v}]$ falls outside its one-ring neighborhood. If so, use the mean filtering algorithm to update the new position;</p>
+<p><em>Step 5:</em> To preserve the boundary of holes on the mesh, if vertex $\mathbf{v}$ is on the boundary, update $\mathrm{positions}[\mathbf{v}]$ to the original position of vertex $\mathbf{v}$ in the mesh;</p>
 <p><em>Step 6:</em> After the whole iteration, update the positions of vertices in the mesh by the hash map $\mathrm{positions}$.</p>
 <p><strong><em>End</em></strong></p>
-<h1 id="Results-and-Conclusion"><a href="#Results-and-Conclusion" class="headerlink" title="Results and Conclusion"></a>Results and Conclusion</h1><p>As for the mean filtering algorithm, Figure 3 shows the results for after applying it on different objects with different step numbers.</p>
+<h1 id="Results-and-Conclusion"><a href="#Results-and-Conclusion" class="headerlink" title="Results and Conclusion"></a>Results and Conclusion</h1><p>As for the mean filtering algorithm, Figure 3 shows the results after applying it to different objects with different step numbers.</p>
 <p><img src="/img/mesh_smoothing/mesh_smoothing_3.jpg" alt="mesh smoothing figure 3"></p>
 <center><b>Figure 3:</b> Results of mean filtering algorithm.</center>
 
-<p>As for the weighted mean filtering algorithm, Figure 4 shows the results for after applying it on different objects with different step numbers.</p>
+<p>As for the weighted mean filtering algorithm, Figure 4 shows the results after applying it to different objects with different step numbers.</p>
 <p><img src="/img/mesh_smoothing/mesh_smoothing_4.jpg" alt="mesh smoothing figure 4"></p>
 <center><b>Figure 4:</b> Results of weighted mean filtering algorithm.</center>
 
-<p>We can conclude that the results of both algorithms basically look alike, and both of them could cause the volume of object to shrink if we apply too many times.</p>
+<p>We can conclude that the results of both algorithms basically look alike, and both of them could cause the volume of the object to shrink if we apply too many times.</p>
 <p>I have also uploaded the project to this blog: <a href="/projects/mesh-smoothing">/projects/mesh-smoothing</a>, we can go there to see how exactly the algorithms work.</p>
 
     </article>
@@ -528,7 +528,7 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">06/01</span><a class="archive-post-title" href= "/2018/06/01/Plane-Detection-Using-Machine-Learning-Approach/" >Plane Detection Using Machine Learning Approach</a>
+            <span class="archive-post-date">06/01</span><a class="archive-post-title" href= "/2018/06/01/Plane-Detection-Using-Deep-Learning-Approach/" >Plane Detection Using Deep Learning Approach</a>
         </li>
     
     
@@ -607,7 +607,7 @@
     
         <span class="sidebar-tag-name"><a href= "#">mesh-smoothing</a></span>
     
-        <span class="sidebar-tag-name"><a href= "#">machine-learning</a></span>
+        <span class="sidebar-tag-name"><a href= "#">deep-learning</a></span>
     
         <span class="sidebar-tag-name"><a href= "#">pointnet</a></span>
     
