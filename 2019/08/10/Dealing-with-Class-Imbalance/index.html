@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        Isaac&#39;s Blog
+        Dealing with Class Imbalance · Isaac&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -64,16 +64,27 @@
         })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         ga('create', 'UA-109312212-1', 'auto');
         ga('send', 'pageview');
-    </script>
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
     
 </head>
     
+        <body class="post-body">
     
-<header class="header">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Isaac&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Dealing with Class Imbalance</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>Isaac's Blog</a>
 </header>
@@ -81,21 +92,45 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            Dealing with Class Imbalance
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = data-preprocessing>data-preprocessing</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = class-imbalance>class-imbalance</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2019/08/10</span>
+            </div>
         
     </div>
 </div>
@@ -163,72 +198,75 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>Class imbalance is a common problem in machine learning. In this post, I am going to share a few techniques that help handle imbalanced datasets, using <a href="https://www.r-project.org/" target="_blank" rel="external">R</a> language.</p>
+<h1 id="Weighting"><a href="#Weighting" class="headerlink" title="Weighting"></a>Weighting</h1><p>The most regular method is to assign weights to each class. Considering a dataset named <code>data_training</code> with the target class <code>target</code> as a binary class and with <code>Y</code> being positive and <code>N</code> being negative, the class weight assignment can be written as follows.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">weights &lt;- ifelse(data_training$target == <span class="string">"Y"</span>,</div><div class="line">                  (<span class="number">1</span>/table(data_training$target)[<span class="number">1</span>]),</div><div class="line">                  (<span class="number">1</span>/table(data_training$target)[<span class="number">2</span>]))</div></pre></td></tr></table></figure>
+<h1 id="Resampling"><a href="#Resampling" class="headerlink" title="Resampling"></a>Resampling</h1><p>The simplest data resampling methods are downsampling and upsampling. Both of them are covered by the <a href="http://topepo.github.io/caret/" target="_blank" rel="external">caret</a> package.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">library</span>(caret)</div></pre></td></tr></table></figure>
+<p>We only need to specify the resampling method in the control object for training. For downsampling:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctrl &lt;- trainControl(method = <span class="string">"repeatedcv"</span>,</div><div class="line">                     repeats = <span class="number">5</span>,</div><div class="line">                     classProbs = <span class="literal">TRUE</span>,</div><div class="line">                     summaryFunction = twoClassSummary,</div><div class="line">                     sampling = <span class="string">"down"</span>)</div></pre></td></tr></table></figure>
+<p>And for upsampling:</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctrl &lt;- trainControl(method = <span class="string">"repeatedcv"</span>,</div><div class="line">                     repeats = <span class="number">5</span>,</div><div class="line">                     classProbs = <span class="literal">TRUE</span>,</div><div class="line">                     summaryFunction = twoClassSummary,</div><div class="line">                     sampling = <span class="string">"up"</span>)</div></pre></td></tr></table></figure>
+<p>There are also a few hybrid methods, such as <a href="https://link.springer.com/article/10.1007/s10618-012-0295-5" target="_blank" rel="external">random over-sampling examples (ROSE)</a> and <a href="https://www.jair.org/index.php/jair/article/view/10302" target="_blank" rel="external">synthetic minority over-sampling technique (SMOTE)</a>, which downsample the majority class and synthesize new data points in the minority class. To use ROSE, we need to load the <a href="https://cran.r-project.org/web/packages/ROSE/" target="_blank" rel="external">ROSE</a> package.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">library</span>(ROSE)</div></pre></td></tr></table></figure>
+<p>And we create a wrapper around the <code>ROSE</code> function.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">rosest &lt;- list(name = <span class="string">"ROSE"</span>,</div><div class="line">               func = <span class="keyword">function</span>(x, y) &#123;</div><div class="line">                 dat &lt;- <span class="keyword">if</span> (is.data.frame(x)) x <span class="keyword">else</span> as.data.frame(x)</div><div class="line">                 dat$.y &lt;- y</div><div class="line">                 dat &lt;- ROSE(.y ~ ., data = dat, hmult.majo = <span class="number">1</span>, hmult.mino = <span class="number">1</span>)$data</div><div class="line">                 list(x = dat[, !grepl(<span class="string">".y"</span>, colnames(dat), fixed = <span class="literal">TRUE</span>)], </div><div class="line">                      y = dat$.y)</div><div class="line">               &#125;,</div><div class="line">               first = <span class="literal">TRUE</span>)</div></pre></td></tr></table></figure>
+<p>We specify the resampling method in the control object.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctrl &lt;- trainControl(method = <span class="string">"repeatedcv"</span>,</div><div class="line">                     repeats = <span class="number">5</span>,</div><div class="line">                     classProbs = <span class="literal">TRUE</span>,</div><div class="line">                     summaryFunction = twoClassSummary,</div><div class="line">                     sampling = rosest)</div></pre></td></tr></table></figure>
+<p>Similarly, to use SMOTE, we first load the <a href="https://cran.r-project.org/web/packages/DMwR/" target="_blank" rel="external">DMwR</a> package.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">library</span>(DMwR)</div></pre></td></tr></table></figure>
+<p>Then we create a wrapper around the <code>SMOTE</code> function.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">smotest &lt;- list(name = <span class="string">"SMOTE"</span>,</div><div class="line">                func = <span class="keyword">function</span>(x, y) &#123;</div><div class="line">                  dat &lt;- <span class="keyword">if</span> (is.data.frame(x)) x <span class="keyword">else</span> as.data.frame(x)</div><div class="line">                  dat$.y &lt;- y</div><div class="line">                  dat &lt;- SMOTE(.y ~ ., data = dat, perc.over = <span class="number">100</span>, k = <span class="number">5</span>)</div><div class="line">                  list(x = dat[, !grepl(<span class="string">".y"</span>, colnames(dat), fixed = <span class="literal">TRUE</span>)], </div><div class="line">                       y = dat$.y)</div><div class="line">                &#125;,</div><div class="line">                first = <span class="literal">TRUE</span>)</div></pre></td></tr></table></figure>
+<p>Finally, we specify the resampling method in the control object.</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctrl &lt;- trainControl(method = <span class="string">"repeatedcv"</span>,</div><div class="line">                     repeats = <span class="number">5</span>,</div><div class="line">                     classProbs = <span class="literal">TRUE</span>,</div><div class="line">                     summaryFunction = twoClassSummary,</div><div class="line">                     sampling = smotest)</div></pre></td></tr></table></figure>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2018/07/24/From-Shanghai-to-Xiamen-Biking-along-the-South-East-Coast-of-China/" title= From Shanghai to Xiamen: Biking along the South-East Coast of China >
+                    <span>Previous Post</span>
+                    <span>From Shanghai to Xiamen: Biking along the South-East Coast of China</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://isaacguan.github.io/2019/08/10/Dealing-with-Class-Imbalance/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "Dealing with Class Imbalance"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://isaacguan.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
     
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/12/22/Implementation-of-Voronoi-Diagram-and-Delaunay-Triangulation/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Implementation of Voronoi Diagram and Delaunay Triangulation</span>
-                    </h2>
-                <div class="abstract-content">
-                    The Voronoi diagram and the Delaunay triangulation are dual representations of a set of points to each other. Due to their wide applications in science and technology, the Voronoi diagram and the Delaunay triangulation play important roles in the field of computational geometry. In this post, I a...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = computational-geometry>computational-geometry</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = voronoi-diagram>voronoi-diagram</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = delaunay-triangulation>delaunay-triangulation</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/22</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/19/Width-of-a-Set-in-the-Plane/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Width of a Set in the Plane</span>
-                    </h2>
-                <div class="abstract-content">
-                    The book Geometric Transforms for Fast Geometric Algorithms introduces an interesting algorithm from page 84 of computing the diameter of a set of points in two dimensions. Inspired by this, I come up with a solution to computing the width of a set using geometric transformation.
-Definition of th...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = computational-geometry>computational-geometry</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = convex-hull>convex-hull</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/19</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+    <!--PC版-->
+
+    <!--PC版-->
+
+
     
 </main>
             <!-- profile -->
@@ -293,6 +331,13 @@ Definition of th...
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Weighting"><span class="toc-number">1.</span> <span class="toc-text">Weighting</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Resampling"><span class="toc-number">2.</span> <span class="toc-text">Resampling</span></a></li></ol>
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
@@ -611,7 +656,7 @@ jsonContent:
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>
 
