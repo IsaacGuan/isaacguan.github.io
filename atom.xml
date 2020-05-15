@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://isaacguan.github.io/"/>
-  <updated>2019-08-17T20:07:39.735Z</updated>
+  <updated>2020-05-15T18:18:41.661Z</updated>
   <id>https://isaacguan.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>3D Shape Context for Instance Segmentation</title>
+    <link href="https://isaacguan.github.io/2020/05/15/3D-Shape-Context-for-Instance-Segmentation/"/>
+    <id>https://isaacguan.github.io/2020/05/15/3D-Shape-Context-for-Instance-Segmentation/</id>
+    <published>2020-05-15T17:49:08.000Z</published>
+    <updated>2020-05-15T18:18:41.661Z</updated>
+    
+    <content type="html"><![CDATA[<p>While many deep learning-based methods have been developed to enable 3D instance segmentation, such as <a href="https://github.com/laughtervv/SGPN" target="_blank" rel="external">SGPN</a> and <a href="https://github.com/WXinlong/ASIS" target="_blank" rel="external">ASIS</a>, it is still interesting to see how some traditional methods can perform on this task, for example, using <a href="https://link.springer.com/chapter/10.1007/978-3-540-24672-5_18" target="_blank" rel="external">3D shape contexts</a>. The <a href="https://en.wikipedia.org/wiki/Shape_context" target="_blank" rel="external">shape context</a> is a kind of regional point descriptor that measures the similarity between shapes by calculating the point-wise correspondences between a query shape and a reference shape, and the 3D shape context is its extension to 3D shapes.</p><p>The basic idea of doing instance segmentation leveraging 3D shape contexts is that we iteratively find and remove the best matching shape of each query so as to retrieve the individual instance shapes. This enables a simple form of instance segmentation. For example, using this method, we can retrieve all the instances of straight leg chairs from a room as input, as shown in Figure 1.</p><p><img src="/img/3d_shape_context_for_instance_segmentation/3d_shape_context_for_instance_segmentation_1.jpg" alt="3d shape context for instance segmentation figure 1"></p><center><b>Figure 1:</b> Instances retrieved from an input room, with each marked in a different color.</center>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;While many deep learning-based methods have been developed to enable 3D instance segmentation, such as &lt;a href=&quot;https://github.com/laught
+      
+    
+    </summary>
+    
+    
+      <category term="geometry-processing" scheme="https://isaacguan.github.io/tags/geometry-processing/"/>
+    
+      <category term="shape-context" scheme="https://isaacguan.github.io/tags/shape-context/"/>
+    
+      <category term="instance-segmentation" scheme="https://isaacguan.github.io/tags/instance-segmentation/"/>
+    
+  </entry>
   
   <entry>
     <title>Dealing with Class Imbalance</title>

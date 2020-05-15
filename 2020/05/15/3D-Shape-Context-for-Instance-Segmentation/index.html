@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        Isaac&#39;s Blog
+        3D Shape Context for Instance Segmentation · Isaac&#39;s Blog
         
     </title>
     <link rel="icon" href= /favicon.ico>
@@ -64,16 +64,27 @@
         })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
         ga('create', 'UA-109312212-1', 'auto');
         ga('send', 'pageview');
-    </script>
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
     
 </head>
     
+        <body class="post-body">
     
-<header class="header">
+    
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Isaac&#39;s Blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">3D Shape Context for Instance Segmentation</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>Isaac's Blog</a>
 </header>
@@ -81,21 +92,47 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            3D Shape Context for Instance Segmentation
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = geometry-processing>geometry-processing</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = shape-context>shape-context</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = instance-segmentation>instance-segmentation</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2020/05/15</span>
+            </div>
         
     </div>
 </div>
@@ -163,71 +200,58 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/19/Width-of-a-Set-in-the-Plane/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Width of a Set in the Plane</span>
-                    </h2>
-                <div class="abstract-content">
-                    The book Geometric Transforms for Fast Geometric Algorithms introduces an interesting algorithm from page 84 of computing the diameter of a set of points in two dimensions. Inspired by this, I come up with a solution to computing the width of a set using geometric transformation.
-Definition of th...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = computational-geometry>computational-geometry</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = convex-hull>convex-hull</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/19</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/11/01/Hello-World/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>Hello World</span>
-                    </h2>
-                <div class="abstract-content">
-                    
-Existence precedes essence.
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>While many deep learning-based methods have been developed to enable 3D instance segmentation, such as <a href="https://github.com/laughtervv/SGPN" target="_blank" rel="external">SGPN</a> and <a href="https://github.com/WXinlong/ASIS" target="_blank" rel="external">ASIS</a>, it is still interesting to see how some traditional methods can perform on this task, for example, using <a href="https://link.springer.com/chapter/10.1007/978-3-540-24672-5_18" target="_blank" rel="external">3D shape contexts</a>. The <a href="https://en.wikipedia.org/wiki/Shape_context" target="_blank" rel="external">shape context</a> is a kind of regional point descriptor that measures the similarity between shapes by calculating the point-wise correspondences between a query shape and a reference shape, and the 3D shape context is its extension to 3D shapes.</p>
+<p>The basic idea of doing instance segmentation leveraging 3D shape contexts is that we iteratively find and remove the best matching shape of each query so as to retrieve the individual instance shapes. This enables a simple form of instance segmentation. For example, using this method, we can retrieve all the instances of straight leg chairs from a room as input, as shown in Figure 1.</p>
+<p><img src="/img/3d_shape_context_for_instance_segmentation/3d_shape_context_for_instance_segmentation_1.jpg" alt="3d shape context for instance segmentation figure 1"></p>
+<center><b>Figure 1:</b> Instances retrieved from an input room, with each marked in a different color.</center>
 
-During the high school years, I once kept a diary, sort of artsy lifestyle possessed by the petty bourgeoisie. And this experience told me the truth that writing is really time-consuming, especially when you are making “sentimental twaddle” on trivial things in daily...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2019/08/10/Dealing-with-Class-Imbalance/" title= Dealing with Class Imbalance >
+                    <span>Previous Post</span>
+                    <span>Dealing with Class Imbalance</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
-        <a class="post-tag" href="javascript:void(0);" data-href = hello-world>hello-world</a>
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        
+        var disqus_config = function () {
+        this.page.url = "https://isaacguan.github.io/2020/05/15/3D-Shape-Context-for-Instance-Segmentation/";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = "3D Shape Context for Instance Segmentation"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        
+        (function () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://isaacguan.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
     
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/11/01</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+    <!--PC版-->
+
+    <!--PC版-->
+
+
     
 </main>
             <!-- profile -->
@@ -292,6 +316,13 @@ During the high school years, I once kept a diary, sort of artsy lifestyle posse
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
@@ -639,7 +670,7 @@ jsonContent:
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>
 
