@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>COMP 5704 Project</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    </head>
+    <body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); margin: 45px auto; width: 90%;" alink="#000000" link="#000000" vlink="#000000">
+        <table border="0" width="100%">
+            <tbody>
+                <tr>
+                    <td height="27" width="70%">
+                        <h2>COMP 5704: Parallel Algorithms and Applications in Data Science</h2>
+                    </td>
+                    <td height="27" width="30%">
+                        <p><b>School of Computer Science</b><br><b>Carleton University, Ottawa, Canada</b></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr noshade="noshade">
+        <h2><font color="#005128">Project Title: Parallel Beam Search for Functionality Partial Matching</font></font></h2>
+        <h2><font><font color="#005128">Name: Yanran Guan</font></font></h2>
+        <h2><font><font color="#005128">E-Mail: yanran.guan@carleton.ca</font></font></h2>
+        <hr noshade="noshade">
+        <p><b><font color="#005128">Project Outline:</font></b> In the context of 3D shape modeling, functionality partial matching refers to the process of localizing the functionality analysis of 3D shapes from the category/object level down to the patch/part level, which can help today's cross-category shape modeling systems that generate multi-functional shapes to evaluate the functionality of the generated shapes. Recently, a functionality partial matching method was proposed based on the beam search. Beam search is a generalized breadth-first search that only expands it's search tree at the most "promising" nodes at each depth level, using a heuristic function. However, the current implementation of functionality partial matching uses a sequential beam search which is unoptimized and time-consuming. Thus, based on the idea of level synchronization, similar to a parallel breadth-first search with shared memory, we can develop a parallel beam search to improve the running time of functionality partial matching.</p>
+        <p><b><font color="#005128">Startup Papers:</font></b></p>
+        <ul>
+            <li>Yang Zhang and Eric A. Hansen. Parallel breadth-first heuristic search on a shared-memory architecture. In <i>AAAI Workshop on Heuristic Search, Memory-Based Heuristics and Their Applications</i>, 2006. [<a href="https://www.aaai.org/Library/Workshops/2006/ws06-08-007.php">URL</font></a>]</li>
+            <li>David A. Bader and Kamesh Madduri. Designing multithreaded algorithms for breadth-first search and $st$-connectivity on the Cray MTA-2. In <i>International Conference on Parallel Processing</i>, pages 523--530, 2006. [<a href="https://ieeexplore.ieee.org/document/1690657">URL</font></a>]</li>
+            <li>Charles E. Leiserson and Tao B. Schardl. A work-efficient parallel breadth-first search algorithm (or how to cope with the nondeterminism of reducers). In <i>ACM Symposium on Parallelism in Algorithms and Architectures</i>, pages 303--314, 2010. [<a href="https://dl.acm.org/doi/10.1145/1810479.1810534">URL</font></a>]</li>
+            <li>Yanran Guan. 3D functionality analysis for shape modeling via partial matching. Master's thesis, Carleton University, 2020. [<a href="https://curve.carleton.ca/76a75e52-1c07-49b9-b6c5-e5ec1b40981e">URL</font></a>]</li>
+            <li>Yanran Guan, Han Liu, Kun Liu, Kangxue Yin, Ruizhen Hu, Oliver van Kaick, Yan Zhang, Ersin Yumer, Nathan Carr, Radomir Mech, and Hao Zhang. 3D shape generation via functionality-aware model evolution. <i>IEEE Transactions on Visualization and Computer Graphics</i>, minor revision, 2020. [<a href="https://arxiv.org/abs/2005.04464">URL</font></a>]</li>
+        </ul>
+        <p><b><font color="#005128">Deliverables:</font></b></p>
+        <ul>
+            <li><a href="#">Literature Review</font></a></li>
+            <li><a href="#">Presentation Outline</font></a></li>
+            <li><a href="#">Slide Presentation</font></a></li>
+            <li><a href="#">Final Paper</font></a></li>
+            <li><a href="#">Code and Data</font></a></li>
+        </ul>
+        <p><b><font color="#005128">Relevant References:</font></b></p>
+        <ul>
+            <li>To be added.</li>
+        </ul>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                    inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+                    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+                    processEscapes: true
+                }
+            });
+            MathJax.Hub.Queue(function() {
+                var all = MathJax.Hub.getAllJax();
+                for (var i = 0; i < all.length; ++i)
+                    all[i].SourceElement().parentNode.className += ' has-jax';
+            });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    </body>
+</html>
